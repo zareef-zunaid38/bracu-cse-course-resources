@@ -8,11 +8,6 @@ Study resources I put together for Operating Systems (CSE321), Theory of Computa
 
 This is one student's personal resource archive, shared informally. It is not an official BRACU resource, not endorsed by any faculty member, and not guaranteed to be accurate for your section, semester, or faculty — course content, faculty assignments, and policies change. See the Caution section at the bottom.
 
-## What's deliberately excluded
-
-- Full commercial textbook PDFs (Silberschatz, Sipser, Elmasri & Navathe, etc.) — redistributing those would be copyright infringement, distinct from sharing original notes or exam-pattern analysis. Freely-published textbooks (OSTEP, the MIT xv6 book) aren't affected since the authors already give those away; resource guides link to them directly instead of hosting a copy. This also ruled out a handful of CSE321 "textbook map" slide files that turned out to be scanned textbook pages, not faculty-authored slides.
-- Other people's identifiable work shared without their consent — a classmate's actual homework, other faculty sections' assignment PDFs, and a scanned lecture note attributed to a specific other person. The one exception is CSE370's `reference-demos/` folder — a lab faculty's own demo project, already shown/shared openly with the whole class.
-
 ## How it's organized
 
 - `CSE321/`, `CSE331/`, `CSE370/` — one folder per course. Not every course has every folder below (e.g. CSE331 has no `slides/` since none were provided; CSE370 has no `pyq/` since none exist for this course/section).
