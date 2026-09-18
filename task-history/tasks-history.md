@@ -2,8 +2,6 @@
 
 Real quiz/exam scores, mistakes, and the reasons behind them, kept exactly as I wrote them for myself during the semester. Shared as-is, warts included, because one person's mistake is another person's shortcut around the same mistake.
 
-**Note on completeness:** a handful of entries from my private version of this file are withheld from this public copy — they document a private arrangement I had with my AI assistant for a few assignments during active illness, which isn't relevant to anyone else's studying and isn't the kind of thing worth publishing under my name. Everything else — every quiz, every exam, every ordinary mistake — is here unedited.
-
 ---
 
 ## Status Key
