@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE370 — Lab Quiz 1 (SQL) | Revision</title>
+  <style>
+    :root[data-theme="light"] {
+      --bg:           #f5f6fa;
+      --surface:      #ffffff;
+      --surface-2:    #f0f1f5;
+      --border:       #dde1eb;
+      --text:         #1e2030;
+      --text-muted:   #6b7280;
+      --accent:       #2563eb;
+      --accent-bg:    #eff6ff;
+      --high:         #dc2626;
+      --high-bg:      #fef2f2;
+      --high-border:  #fecaca;
+      --med:          #b45309;
+      --med-bg:       #fffbeb;
+      --med-border:   #fde68a;
+      --low:          #2563eb;
+      --low-bg:       #eff6ff;
+      --low-border:   #bfdbfe;
+      --scan-bg:      #1e2030;
+      --scan-text:    #f8fafc;
+      --scan-surface: #2d3048;
+      --scan-border:  #3d4160;
+      --code-bg:      #1a1b26;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
+      --shadow:       0 2px 8px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.06);
+    }
+    :root[data-theme="dark"] {
+      --bg:           #0d0f18;
+      --surface:      #181b2a;
+      --surface-2:    #212438;
+      --border:       #2e3250;
+      --text:         #e2e8f0;
+      --text-muted:   #94a3b8;
+      --accent:       #60a5fa;
+      --accent-bg:    #1e2d45;
+      --high:         #f87171;
+      --high-bg:      #2d1b1b;
+      --high-border:  #7f1d1d;
+      --med:          #fbbf24;
+      --med-bg:       #2d2310;
+      --med-border:   #78350f;
+      --low:          #60a5fa;
+      --low-bg:       #1e2d45;
+      --low-border:   #1e40af;
+      --scan-bg:      #0d0f18;
+      --scan-text:    #e2e8f0;
+      --scan-surface: #181b2a;
+      --scan-border:  #2e3250;
+      --code-bg:      #0d0f18;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.3);
+      --shadow:       0 2px 8px rgba(0,0,0,.4);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+    p  { margin-bottom: .5rem; font-size: .9rem; }
+    ul, ol { padding-left: 1.3rem; font-size: .9rem; }
+    li { margin-bottom: .3rem; }
+    strong { font-weight: 700; }
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--shadow-sm);
+    }
+    .site-header-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: .6rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+    .header-title { font-size: 1rem; font-weight: 800; letter-spacing: -.01em; }
+    .header-sub { font-size: .78rem; color: var(--text-muted); margin-top: .1rem; }
+    .theme-btn {
+      flex-shrink: 0;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: .3rem .75rem;
+      border-radius: .5rem;
+      cursor: pointer;
+      font-size: .82rem;
+      font-family: inherit;
+      transition: background .15s;
+    }
+    .theme-btn:hover { background: var(--border); }
+    .site-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0 1rem;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .site-nav::-webkit-scrollbar { display: none; }
+    .site-nav a {
+      display: inline-block;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: .78rem;
+      font-weight: 500;
+      padding: .55rem .6rem;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .site-nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .meta-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
+    .meta-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .5rem;
+      padding: .35rem .75rem;
+      font-size: .78rem;
+      display: flex;
+      gap: .35rem;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .meta-pill-label { color: var(--text-muted); }
+    .meta-pill-value { font-weight: 700; }
+    .container { max-width: 920px; margin: 0 auto; padding: 1.25rem 1rem; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .8rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .card-header {
+      padding: .75rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card-header:hover { background: var(--border); }
+    .card-icon { font-size: 1rem; flex-shrink: 0; }
+    .card-title { font-size: .95rem; font-weight: 700; flex: 1; }
+    .card-chevron { font-size: .75rem; color: var(--text-muted); transition: transform .2s; flex-shrink: 0; }
+    .card.collapsed .card-body  { display: none; }
+    .card.collapsed .card-chevron { transform: rotate(-90deg); }
+    .card-body { padding: 1.1rem; }
+    .card-scan { background: var(--scan-bg); border-color: var(--scan-border); }
+    .card-scan .card-header { background: var(--scan-surface); border-color: var(--scan-border); }
+    .card-scan .card-header:hover { background: var(--scan-border); }
+    .card-scan .card-title { color: var(--scan-text); }
+    .card-scan .card-icon  { color: #fbbf24; }
+    .card-scan .card-chevron { color: var(--scan-text); opacity: .6; }
+    .card-scan .card-body  { background: var(--scan-bg); }
+    .scan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .65rem; margin-bottom: .9rem; }
+    .scan-tile { background: var(--scan-surface); border: 1px solid var(--scan-border); border-radius: .55rem; padding: .75rem .85rem; }
+    .scan-tile-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; color: #94a3b8; margin-bottom: .3rem; }
+    .scan-tile-value { font-size: .88rem; font-weight: 700; color: var(--scan-text); line-height: 1.4; }
+    .scan-tile.tile-high  .scan-tile-label { color: #f87171; }
+    .scan-tile.tile-warn  .scan-tile-label { color: #fbbf24; }
+    .scan-tile.tile-sig   .scan-tile-label { color: #60a5fa; }
+    .scan-divider { border: none; border-top: 1px solid var(--scan-border); margin: .85rem 0; }
+    .scan-list { color: var(--scan-text); font-size: .88rem; }
+    .scan-list li { margin-bottom: .45rem; }
+    .badge { display: inline-block; font-size: .67rem; font-weight: 800; padding: .12rem .5rem; border-radius: 999px; text-transform: uppercase; letter-spacing: .06em; line-height: 1.4; flex-shrink: 0; }
+    .badge-high { background: var(--high-bg); color: var(--high); border: 1px solid var(--high-border); }
+    .badge-med  { background: var(--med-bg);  color: var(--med);  border: 1px solid var(--med-border); }
+    .badge-low  { background: var(--low-bg);  color: var(--low);  border: 1px solid var(--low-border); }
+    .concept { border-left: 3px solid var(--border); padding: .75rem .95rem; margin-bottom: .75rem; background: var(--surface-2); border-radius: 0 .5rem .5rem 0; }
+    .concept.imp-high { border-color: var(--high); }
+    .concept.imp-med  { border-color: var(--med); }
+    .concept.imp-low  { border-color: var(--low); }
+    .concept-title { font-weight: 700; font-size: .92rem; display: flex; align-items: center; gap: .45rem; margin-bottom: .4rem; flex-wrap: wrap; }
+    .concept-body { font-size: .88rem; }
+    .qa { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .65rem; overflow: hidden; }
+    .qa-q { padding: .65rem .9rem; font-weight: 600; font-size: .88rem; cursor: pointer; background: var(--surface-2); display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .qa-q:hover { background: var(--border); }
+    .qa-q-text { flex: 1; line-height: 1.5; }
+    .qa-q-right { display: flex; align-items: center; gap: .4rem; flex-shrink: 0; }
+    .qa-toggle { font-size: .7rem; color: var(--text-muted); }
+    .qa-a { padding: .7rem .9rem; font-size: .88rem; border-top: 1px solid var(--border); display: none; line-height: 1.6; }
+    .qa.open .qa-a   { display: block; }
+    .qa.open .qa-toggle::after  { content: '▲'; }
+    .qa-toggle::after { content: '▼'; }
+    .analytical { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .85rem; overflow: hidden; }
+    .analytical-head { padding: .65rem .9rem; background: var(--surface-2); border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: .55rem; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .analytical-head:hover { background: var(--border); }
+    .q-num { font-weight: 800; font-size: .82rem; color: var(--accent); flex-shrink: 0; margin-top: .1rem; }
+    .q-title { font-weight: 600; font-size: .88rem; flex: 1; line-height: 1.5; }
+    .analytical-body { padding: 1rem; display: none; }
+    .analytical.open .analytical-body { display: block; }
+    .analytical.open .card-chevron { transform: rotate(0); }
+    .steps { display: flex; flex-direction: column; gap: .6rem; }
+    .step { display: flex; gap: .7rem; align-items: flex-start; }
+    .step-num { width: 1.5rem; height: 1.5rem; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .72rem; font-weight: 800; flex-shrink: 0; margin-top: .1rem; }
+    .step-body { flex: 1; font-size: .88rem; line-height: 1.6; }
+    .callout { border-radius: .45rem; padding: .6rem .85rem; font-size: .85rem; margin-top: .75rem; line-height: 1.55; }
+    .callout-insight { background: var(--accent-bg); border-left: 3px solid var(--accent); }
+    .callout-insight strong { color: var(--accent); }
+    .callout-warn { background: var(--high-bg); border-left: 3px solid var(--high); }
+    .callout-warn strong { color: var(--high); }
+    .callout-note { background: var(--surface-2); border-left: 3px solid var(--text-muted); }
+    .callout-exam { background: var(--med-bg); border-left: 3px solid var(--med); }
+    .callout-exam strong { color: var(--med); }
+    .code-block { margin-bottom: .85rem; }
+    .code-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .3rem; font-weight: 700; }
+    pre { background: var(--code-bg); color: var(--code-text); padding: .9rem 1rem; border-radius: .5rem; overflow-x: auto; font-size: .82rem; line-height: 1.6; font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace; }
+    .code-analysis { margin-top: .5rem; font-size: .85rem; padding: .5rem .75rem; background: var(--surface-2); border-radius: .4rem; border-left: 3px solid var(--accent); }
+    .pattern-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .6rem; margin-bottom: .85rem; }
+    .pattern-tile { background: var(--surface-2); border: 1px solid var(--border); border-radius: .5rem; padding: .7rem .85rem; }
+    .pattern-tile-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); margin-bottom: .25rem; }
+    .pattern-freq { font-size: 1.6rem; font-weight: 900; color: var(--accent); line-height: 1.1; }
+    .pattern-desc { font-size: .78rem; color: var(--text-muted); margin-top: .2rem; }
+    .probable-list { display: flex; flex-direction: column; }
+    .probable-item { display: flex; gap: .75rem; align-items: flex-start; padding: .75rem 0; border-bottom: 1px solid var(--border); }
+    .probable-item:last-child { border-bottom: none; }
+    .prob-rank { width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: .82rem; flex-shrink: 0; }
+    .rank-1 { background: var(--high-bg); color: var(--high); border: 2px solid var(--high-border); }
+    .rank-2 { background: var(--med-bg);  color: var(--med);  border: 2px solid var(--med-border); }
+    .rank-3 { background: var(--low-bg);  color: var(--low);  border: 2px solid var(--low-border); }
+    .rank-n { background: var(--surface-2); color: var(--text-muted); border: 2px solid var(--border); }
+    .prob-content { flex: 1; }
+    .prob-q { font-size: .9rem; font-weight: 600; line-height: 1.5; }
+    .prob-reason { font-size: .8rem; color: var(--text-muted); margin-top: .2rem; line-height: 1.4; }
+    .mnemonic { background: var(--med-bg); border: 1px solid var(--med-border); border-radius: .5rem; padding: .75rem 1rem; margin-bottom: .6rem; }
+    .mnemonic-word { font-weight: 900; color: var(--med); font-size: 1.05rem; margin-bottom: .3rem; }
+    .mnemonic-body { font-size: .88rem; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: .85rem 0; }
+    .tag { background: var(--surface-2); border: 1px solid var(--border); font-size: .73rem; padding: .1rem .5rem; border-radius: 999px; color: var(--text-muted); display: inline-block; margin: .1rem; }
+    .section-intro { font-size: .82rem; color: var(--text-muted); margin-bottom: .85rem; line-height: 1.5; }
+    @media print {
+      .site-header, .site-nav, .theme-btn { display: none !important; }
+      .container { padding: 0; }
+      .card { box-shadow: none; page-break-inside: avoid; border: 1px solid #ccc; }
+      .card-body, .qa-a, .analytical-body { display: block !important; }
+      .card.collapsed .card-body { display: block !important; }
+      .card-scan { background: #fff; color: #000; }
+      .scan-tile { background: #f5f5f5; }
+      .scan-tile-value { color: #000; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      .site-header-inner { padding: .5rem .85rem; }
+      .container { padding: .85rem .65rem; }
+      .card-body { padding: .85rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div>
+      <div class="header-title">CSE370 — SQL (Lab 1 + Lab 2)</div>
+      <div class="header-sub">Lab Quiz 1 &nbsp;·&nbsp; Week 4 &nbsp;·&nbsp; Faculty: TMD / NAHC</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">☀ / ☾</button>
+  </div>
+</header>
+
+<nav class="site-nav" aria-label="Page sections">
+  <a href="#scan">⚡ Morning Scan</a>
+  <a href="#theory">📖 Theory</a>
+  <a href="#short-q">❓ Short Qs</a>
+  <a href="#analytical">🧮 Query Practice</a>
+  <a href="#code">💻 Code</a>
+  <a href="#patterns">🎯 Pattern Notes</a>
+  <a href="#probable">🔮 Probable Qs</a>
+  <a href="#mnemonics">🧠 Mnemonics</a>
+</nav>
+
+<main class="container">
+
+  <div class="meta-bar">
+    <div class="meta-pill"><span class="meta-pill-label">Course</span><span class="meta-pill-value">CSE370</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Topic</span><span class="meta-pill-value">SQL — Lab 1 + Lab 2</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Exam</span><span class="meta-pill-value">Lab Quiz 1</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Date</span><span class="meta-pill-value">2026-07-14, 11:10 AM</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Weight</span><span class="meta-pill-value">7.5 / 40 lab marks</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Built</span><span class="meta-pill-value">2026-07-14</span></div>
+  </div>
+
+  <div class="callout callout-note" style="margin-bottom:1rem">
+    <strong>Syllabus scope (confirmed):</strong> Lab 1 + Lab 2 only, per lab faculty's announcement. Lab 3 (joins/constraints) is <strong>not</strong> in scope. All SQL in this guide is taken directly from Lab 1's source worksheet and the Lab 2 lecture slide deck (<code>CSE370_Lab02_Slides.pdf</code>, prepared by FUL/SFA) — the faculty's own examples and dataset, not reconstructed content.
+  </div>
+
+  <!-- MORNING QUICK SCAN -->
+  <section class="card card-scan" id="scan">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">⚡</span>
+      <span class="card-title" style="color:var(--scan-text)">Morning Quick Scan</span>
+      <span class="card-chevron" style="color:var(--scan-text);opacity:.6">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="scan-grid">
+        <div class="scan-tile tile-high">
+          <div class="scan-tile-label">Must Know Cold</div>
+          <div class="scan-tile-value">Clause execution order: FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY</div>
+        </div>
+        <div class="scan-tile tile-warn">
+          <div class="scan-tile-label">Most Likely Tested</div>
+          <div class="scan-tile-value">A GROUP BY + HAVING query (8 slide sub-parts drill this), and the "find max via NOT EXISTS" pattern with a &gt; vs &gt;= twist</div>
+        </div>
+        <div class="scan-tile">
+          <div class="scan-tile-label">Common Trap</div>
+          <div class="scan-tile-value">WHERE cannot filter on an aggregate — must use HAVING. ANY/ALL does <em>not</em> require correlation (faculty's example is a plain subquery); correlation (L1/L2 aliasing) is a separate technique used with EXISTS/NOT EXISTS. In "no one beats me" queries, &gt; tolerates ties but &gt;= doesn't.</div>
+        </div>
+        <div class="scan-tile tile-sig">
+          <div class="scan-tile-label">Faculty Signal</div>
+          <div class="scan-tile-value">First lab quiz — no history yet. Announcement names exactly "Lab 1 and Lab 2," so questions should map directly onto the two task sheets.</div>
+        </div>
+      </div>
+      <hr class="scan-divider">
+      <p style="font-size:.82rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Top 3 things to have ready before entering the lab:</p>
+      <ol class="scan-list">
+        <li>Full Lab 1 skeleton memorized cold: CREATE DATABASE/TABLE, INSERT, ALTER TABLE (ADD/MODIFY/DROP COLUMN), UPDATE ... WHERE, DELETE ... WHERE</li>
+        <li>Lab 2 aggregate + GROUP BY/HAVING syntax, and the subquery family: plain nested subquery, ANY/ALL, correlated subquery with self-alias, EXISTS</li>
+        <li>WHERE operators: BETWEEN, IN, LIKE with % and _ wildcards, multi-condition AND</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- THEORY -->
+  <section class="card" id="theory">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📖</span>
+      <span class="card-title">Theory</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="concept imp-high">
+        <div class="concept-title">SELECT clause execution order <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>A query is written SELECT → FROM → WHERE → GROUP BY → HAVING → ORDER BY, but the database <strong>executes</strong> it in a different order:</p>
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>FROM</strong> — specify tables</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body"><strong>WHERE</strong> — filter rows/records</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body"><strong>GROUP BY</strong> — group filtered rows/records</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body"><strong>HAVING</strong> — filter groups</div></div>
+            <div class="step"><div class="step-num">5</div><div class="step-body"><strong>SELECT</strong> — select columns and expressions</div></div>
+            <div class="step"><div class="step-num">6</div><div class="step-body"><strong>ORDER BY</strong> — sort the result</div></div>
+            <div class="step"><div class="step-num">7</div><div class="step-body"><strong>LIMIT/OFFSET</strong> — limit the number of returned rows</div></div>
+          </div>
+          <p style="margin-top:.6rem"><strong>Direct from the lecture slide (faculty's own example):</strong></p>
+          <pre><code>SELECT major, AVG(cgpa) AS avg_cgpa FROM Lab_Grades
+WHERE days_present &gt; 10
+GROUP BY major
+HAVING AVG(cgpa) &gt; 3.5
+ORDER BY avg_cgpa DESC
+LIMIT 1;</code></pre>
+          <div class="callout callout-insight"><strong>Why it matters:</strong> FROM runs first, then WHERE filters, then the filtered rows are GROUP'ed BY major, then HAVING filters the grouped rows, then the result is SELECT'ed, then ORDER'ed BY avg_cgpa descending, then LIMIT'ed to the first row. This exact walk-through phrasing is the faculty's own explanation — expect a question that asks you to narrate execution order like this.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Aggregate vs. scalar functions <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p><strong>Aggregate functions</strong> operate on multiple values and return one output from many: <code>AVG()</code>, <code>COUNT()</code>, <code>MAX()</code>, <code>MIN()</code>, <code>SUM()</code>, <code>STD()</code>, <code>VARIANCE()</code>.</p>
+          <p><strong>Scalar functions</strong> operate on a single value and return one output per value: <code>UPPER()</code>, <code>LOWER()</code>, <code>ROUND()</code>, <code>REVERSE()</code>, <code>LENGTH()</code>.</p>
+          <div class="callout callout-warn"><strong>Common error:</strong> Confusing which category a function belongs to changes what you expect the output shape to be — an aggregate collapses your rows, a scalar doesn't.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">GROUP BY <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Groups rows sharing the same value; mostly used with aggregate functions but also valid without one (e.g. as a dedup-style listing).</p>
+          <pre><code>SELECT major, MIN(cgpa), MAX(cgpa) FROM Lab_Grades GROUP BY major;
+-- CS: 3.57–4.00 | CSE: 3.70–3.86 | ECE: 3.25–3.67
+
+SELECT major FROM Lab_Grades GROUP BY major;
+-- lists each distinct major once, same effect as SELECT DISTINCT major</code></pre>
+          <div class="callout callout-warn"><strong>Common error:</strong> Grouping by a column with the wrong granularity silently changes the meaning of the result. Grouping by <code>major</code> gives one row per major; grouping by <code>submission_date</code> instead gives one row per distinct date — a different breakdown, not a refinement.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">HAVING vs WHERE <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>WHERE filters <strong>rows</strong> before grouping happens; used before grouping. HAVING filters <strong>groups</strong> after aggregation; used afterwards, and mostly used with aggregate functions.</p>
+          <pre><code>SELECT major, MIN(cgpa), MAX(cgpa) FROM Lab_Grades
+GROUP BY major HAVING COUNT(*) &gt;= 3;
+-- only CS qualifies (3 students); CSE and ECE (2 each) are dropped
+
+SELECT name, cgpa FROM Lab_Grades HAVING cgpa &gt; 3.7;
+-- HAVING can filter without GROUP BY too — behaves like a post-SELECT WHERE
+
+SELECT major, MIN(cgpa), MAX(cgpa) FROM Lab_Grades
+WHERE submission_date &lt;= '2018-09-15' GROUP BY major;
+-- WHERE removes rows first (submitted after 9/15 excluded), THEN grouping runs
+-- on what's left — CS's range changes from 3.57-4.00 to 3.91-4.00</code></pre>
+          <div class="callout callout-insight"><strong>Key insight:</strong> The third example shows WHERE and GROUP BY chained — WHERE's row-level filter happens first and can change which rows are even available to be grouped, which changes the per-group MIN/MAX.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Subqueries / nested queries <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>A query inside another query. The inner query executes first; its result (single value or multiple values) is used by the outer query. <strong>Per the faculty's own slide, a subquery can be placed after WHERE, FROM, SELECT, or HAVING</strong> — not just WHERE. Know all four placements:</p>
+          <pre><code>-- WHERE
+SELECT name FROM Lab_Grades
+WHERE project_marks = (SELECT MAX(project_marks) FROM Lab_Grades);
+
+-- FROM (a subquery standing in as a table)
+SELECT AVG(cgpa) FROM
+  (SELECT cgpa FROM Lab_Grades WHERE major = 'CSE') AS CSE_CGPAs;
+
+-- SELECT (a subquery as a computed column)
+SELECT name, (SELECT MAX(cgpa) FROM Lab_Grades) AS MAX_UNIVERSITY_CGPA
+FROM Lab_Grades;
+
+-- HAVING
+SELECT major, AVG(cgpa) AS avg_cgpa FROM Lab_Grades
+GROUP BY major
+HAVING AVG(cgpa) &gt; (SELECT AVG(cgpa) FROM Lab_Grades);</code></pre>
+          <div class="callout callout-warn"><strong>Common error:</strong> "Retrieve the name of the student with the highest marks" via <code>WHERE project_marks = (SELECT MAX(project_marks) ...)</code> only returns one row if the max is unique. With ties (as in this dataset — Nafis and Arafat both have 20), it correctly returns both.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">ANY / ALL <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p><code>&gt; ANY (subquery)</code> is true if the comparison holds for <em>at least one</em> value in the subquery's result (equivalent to comparing against the minimum). <code>&gt; ALL (subquery)</code> is true only if it holds for <em>every</em> value (equivalent to comparing against the maximum). A logical operator (<code>=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&lt;&gt;</code>) always precedes ANY/ALL.</p>
+          <div class="callout callout-warn"><strong>Important — this is <em>not</em> a correlated subquery:</strong> the faculty's own ANY/ALL example compares one fixed group against another fixed group. It does <strong>not</strong> need a self-alias, because the outer row and the subquery aren't the same table reference.</div>
+          <pre><code>-- ANY: is any CSE student's cgpa higher than any CS student's?
+SELECT * FROM Lab_Grades WHERE major = 'CSE'
+AND cgpa &gt; ANY (SELECT cgpa FROM Lab_Grades WHERE major = 'CS');
+-- returns Nafis (3.86) and Tasneem (3.7) — both beat at least one CS cgpa
+
+-- ALL: is a CSE student's cgpa higher than every CS student's?
+SELECT * FROM Lab_Grades WHERE major = 'CSE'
+AND cgpa &gt; ALL (SELECT cgpa FROM Lab_Grades WHERE major = 'CS');
+-- returns an empty set — no CSE student beats all three CS cgpas (3.91, 3.57, 4.0)</code></pre>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Correlated subqueries (self-alias) <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>A subquery that references a column from the <strong>outer</strong> row, so it re-evaluates once per outer row instead of once total. When both queries hit the same table, alias it twice (<code>L1</code>, <code>L2</code>) so the engine treats them as separate instances. This is where the faculty's real examples use ANY/EXISTS <em>correlated to the outer row</em> — unlike the plain ANY/ALL example above.</p>
+          <p><strong>Faculty example — majors with at least one low performer (correlated EXISTS):</strong></p>
+          <pre><code>SELECT DISTINCT major FROM Lab_Grades L1
+WHERE EXISTS (
+  SELECT * FROM Lab_Grades L2
+  WHERE L2.major = L1.major AND L2.cgpa &lt; 3.7
+);
+-- returns CS and ECE (each has a student below 3.7 cgpa); CSE does not</code></pre>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">EXISTS / NOT EXISTS <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Returns TRUE if the correlated subquery returns at least one row — it only cares whether a match exists, not the actual values. <code>NOT EXISTS</code> is the faculty's preferred pattern for "find the maximum without using MAX()":</p>
+          <pre><code>-- (b) highest project marks, via "nobody else beats me"
+SELECT name FROM Lab_Grades L1
+WHERE NOT EXISTS (
+  SELECT * FROM Lab_Grades L2
+  WHERE L2.std_id != L1.std_id AND L2.project_marks &gt; L1.project_marks
+);
+-- returns Nafis and Arafat (tied at 20 — neither is beaten by anyone)
+
+-- (c) same idea, but require a UNIQUE maximum (note &gt;= instead of &gt;)
+SELECT name FROM Lab_Grades L1
+WHERE NOT EXISTS (
+  SELECT * FROM Lab_Grades L2
+  WHERE L2.std_id != L1.std_id AND L2.project_marks &gt;= L1.project_marks
+);
+-- returns an empty set — with &gt;=, a tie counts as "someone else matches or beats me"</code></pre>
+          <div class="callout callout-insight"><strong>Key insight (this is the exact "what's the difference" question the lab sheet poses):</strong> Query (b) uses strict <code>&gt;</code> — "no one scored strictly higher than me" — which tolerates ties, so both Nafis and Arafat pass. Query (c) uses <code>&gt;=</code> — "no one scored higher than <em>or equal to</em> me" — which a tied student fails against their own duplicate value, so the result is empty when the max isn't unique.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Many ways to solve one task <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>The faculty explicitly teaches that "count students with the max marks" has at least three equivalent forms — recognizing the equivalence matters as much as producing one correct query:</p>
+          <pre><code>-- 1. Correlated NOT EXISTS
+SELECT COUNT(*) FROM Lab_Grades L1 WHERE NOT EXISTS (
+  SELECT * FROM Lab_Grades L2
+  WHERE L2.std_id != L1.std_id AND L2.project_marks &gt; L1.project_marks);
+
+-- 2. Plain subquery with MAX()
+SELECT COUNT(*) FROM Lab_Grades L1
+WHERE project_marks = (SELECT MAX(project_marks) FROM Lab_Grades);
+
+-- 3. Plain subquery with ALL
+SELECT COUNT(*) FROM Lab_Grades L1
+WHERE project_marks &gt;= ALL (SELECT project_marks FROM Lab_Grades);</code></pre>
+          <p><strong>Bonus pattern — major with the most students enrolled</strong> (GROUP BY inside a subquery, compared with ALL):</p>
+          <pre><code>SELECT major FROM Lab_Grades GROUP BY major
+HAVING COUNT(*) &gt;= ALL (SELECT COUNT(*) FROM Lab_Grades GROUP BY major);</code></pre>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">DISTINCT <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>Removes duplicate rows from the result set. <code>SELECT DISTINCT major</code> lists each major once; without DISTINCT, a major appears once per matching row.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">LIKE wildcards <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p><code>%</code> matches zero or more characters; <code>_</code> matches exactly one character.</p>
+          <ul>
+            <li><code>LIKE 'a%'</code> — starts with "a"</li>
+            <li><code>LIKE '%a%a%'</code> — contains at least two "a"s</li>
+            <li><code>LIKE 'a___'</code> — starts with "a", exactly 4 characters total</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">ALTER TABLE variants <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p><code>ADD</code> a new column, <code>MODIFY COLUMN</code> to change a column's data type, <code>DROP COLUMN</code> to remove one. Know the keyword differences — a common easy-marks question.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">DROP TABLE / DATABASE <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p>Deletes the entire table or database structure, not just its rows. Irreversible without a backup — Lab 1 sheet explicitly warns not to try it during the session.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SHORT QUESTIONS -->
+  <section class="card" id="short-q">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">❓</span>
+      <span class="card-title">Short Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="section-intro">Tap a question to reveal the answer. Try to recall first.</p>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What is the difference between WHERE and HAVING?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">WHERE filters individual rows before any grouping occurs. HAVING filters groups after GROUP BY has aggregated them. Aggregate functions (COUNT, SUM, etc.) can only be used in HAVING, not WHERE, because they don't have a value until grouping has happened.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What does GROUP BY do, and what changes if you group by a different column?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">GROUP BY clusters all rows sharing the same value in the grouped column(s) into one group per distinct value, so aggregate functions in SELECT compute per group. Grouping by a different column (e.g. submission_date instead of major) produces an entirely different breakdown — one row per distinct date rather than per major — not a variation of the same result.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What is the role of ANY and ALL in a subquery comparison — do they require a correlated subquery?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">They compare a value against a whole set returned by a subquery. "&gt; ANY (subquery)" is true if it's greater than at least one value in the set. "&gt; ALL (subquery)" is true only if it's greater than every value in the set. <strong>No, they don't require correlation</strong> — the faculty's own example compares CSE students' cgpa against the fixed set of CS students' cgpa, a plain (non-correlated) subquery. Correlation is a separate, optional technique layered on top when the comparison set needs to change per outer row.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Why do correlated subqueries on the same table need two aliases (e.g. L1, L2)?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">SQL needs to distinguish the outer query's current row from the inner subquery's row when both come from the identical table — otherwise a column reference like "major" is ambiguous as to which instance it belongs to. Aliasing the same table twice (L1 for outer, L2 for inner) creates two logically separate instances the engine can compare against each other.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">In the "find max marks via NOT EXISTS" pattern, why does using &gt; vs &gt;= inside the subquery give different results?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">With strict "&gt;" ("no one scored strictly higher than me"), a tie is tolerated — both tied students pass, since neither is strictly beaten. With "&gt;=" ("no one scored higher than or equal to me"), each tied student fails against the other's identical value, so if the maximum isn't unique, the query returns an empty set. This is the faculty's own worked distinction (Task 3, parts b and c) — expect it tested directly.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Where in a SELECT statement can a subquery be placed?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">Four places: after WHERE (filtering rows against a computed value), after FROM (using the subquery's result as a derived table, must be aliased), after SELECT (as a computed scalar column), and after HAVING (filtering groups against a computed value).</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Can HAVING be used without GROUP BY?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">Yes — MySQL allows HAVING to filter rows post-SELECT even with no GROUP BY present, functioning similarly to a WHERE clause applied after the column list is computed (useful for filtering on a SELECT alias). It's non-standard-looking but is in the faculty's own slide example.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What's the difference between SELECT major and SELECT DISTINCT major?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">SELECT major returns one row per matching record, so a major shared by several students appears repeatedly. SELECT DISTINCT major collapses those duplicates so each distinct major value appears exactly once.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What happens if UPDATE is run without a WHERE clause?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">The SET clause applies to every row in the table, not just one — e.g. UPDATE Lab_Grades SET major='CSE'; would overwrite every student's major to CSE. WHERE is what scopes the update to specific rows.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What's the difference between ALTER ... ADD and ALTER ... MODIFY COLUMN?</span>
+          <span class="qa-q-right"><span class="badge badge-low">LOW</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">ADD introduces a brand-new column to the table. MODIFY COLUMN changes the definition (e.g. data type or size) of a column that already exists — it does not add or remove columns.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- QUERY PRACTICE (ANALYTICAL) -->
+  <section class="card" id="analytical">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧮</span>
+      <span class="card-title">Query Practice</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="section-intro">All questions use the shared <code>Lab_Grades</code> schema: <code>std_id, name, major, section, days_present, project_marks, cgpa, submission_date</code>.</p>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q1</span>
+          <span class="q-title">Retrieve the name and project marks of students majoring in CSE, sorted by marks descending.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Select only the two needed columns: <code>name, project_marks</code></div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Filter with <code>WHERE major = 'CSE'</code></div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Sort with <code>ORDER BY project_marks DESC</code></div></div>
+          </div>
+          <pre><code>SELECT name, project_marks FROM Lab_Grades
+WHERE major = 'CSE'
+ORDER BY project_marks DESC;</code></pre>
+          <div class="callout callout-insight"><strong>Key insight:</strong> Straight WHERE + ORDER BY — this is the Lab 1 baseline every later query builds on.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q2</span>
+          <span class="q-title">Retrieve the name, days present, and marks of students whose marks are between 17 and 19 and who major in CS or CSE.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <pre><code>SELECT name, days_present, project_marks FROM Lab_Grades
+WHERE project_marks BETWEEN 17 AND 19
+AND major IN ('CS', 'CSE');</code></pre>
+          <div class="callout callout-insight"><strong>Key insight:</strong> BETWEEN and IN are shorthand — the same query is expressible with &gt;=/&lt;= and OR/=, but the exam sheet explicitly asks you to recognize both forms.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q3</span>
+          <span class="q-title">List all student details sorted by name descending, then by submission date ascending.</span>
+          <span class="badge badge-med">MED</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <pre><code>SELECT * FROM Lab_Grades
+ORDER BY name DESC, submission_date ASC;</code></pre>
+          <div class="callout callout-insight"><strong>Key insight:</strong> Multi-column ORDER BY resolves ties in the first column using the second — e.g. the two students named "Tasneem" get ordered relative to each other by submission_date.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q4</span>
+          <span class="q-title">Retrieve the name(s) of the student(s) with the highest project marks, using a subquery.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Inner query finds the max: <code>SELECT MAX(project_marks) FROM Lab_Grades</code></div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Outer query matches rows equal to that value</div></div>
+          </div>
+          <pre><code>SELECT name FROM Lab_Grades
+WHERE project_marks = (SELECT MAX(project_marks) FROM Lab_Grades);</code></pre>
+          <div class="callout callout-warn"><strong>Exam note:</strong> This correctly returns every student tied for the max, not just one — with this dataset, Nafis and Arafat (both 20) both come back. If you only expected one row, that's the trap.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q5</span>
+          <span class="q-title">Find CSE students whose cgpa is higher than at least one CS student's, and separately, higher than every CS student's (ANY vs ALL, non-correlated).</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <pre><code>-- ANY
+SELECT * FROM Lab_Grades WHERE major = 'CSE'
+AND cgpa &gt; ANY (SELECT cgpa FROM Lab_Grades WHERE major = 'CS');
+
+-- ALL
+SELECT * FROM Lab_Grades WHERE major = 'CSE'
+AND cgpa &gt; ALL (SELECT cgpa FROM Lab_Grades WHERE major = 'CS');</code></pre>
+          <div class="callout callout-warn"><strong>Exam note:</strong> No self-alias needed here — this is the faculty's actual example, and it is <em>not</em> correlated. ANY returns Nafis (3.86) and Tasneem (3.7), since each beats at least one of the CS cgpas (3.91, 3.57, 4.0). ALL returns an empty set, since no CSE cgpa beats all three.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q6</span>
+          <span class="q-title">Count students per major, showing only majors with at least 3 students (GROUP BY + HAVING).</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <pre><code>SELECT major, MIN(cgpa), MAX(cgpa) FROM Lab_Grades
+GROUP BY major
+HAVING COUNT(*) &gt;= 3;</code></pre>
+          <div class="callout callout-insight"><strong>Key insight:</strong> Trying <code>WHERE COUNT(*) &gt;= 3</code> here is the classic wrong answer — COUNT(*) doesn't exist until after grouping, so the filter has to be HAVING. With this dataset only CS (3 students) qualifies; CSE and ECE (2 each) are dropped.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q7</span>
+          <span class="q-title">Find the name(s) of the student(s) with the highest project marks, without using MAX() — using a correlated NOT EXISTS.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Alias the table twice: L1 for "this student", L2 for "everyone else"</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Exclude self with <code>L2.std_id != L1.std_id</code></div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">A student qualifies if NO other student (L2) has strictly higher marks</div></div>
+          </div>
+          <pre><code>SELECT name FROM Lab_Grades L1
+WHERE NOT EXISTS (
+  SELECT * FROM Lab_Grades L2
+  WHERE L2.std_id != L1.std_id AND L2.project_marks &gt; L1.project_marks
+);</code></pre>
+          <div class="callout callout-insight"><strong>Key insight:</strong> This is logically identical to <code>WHERE project_marks = (SELECT MAX(project_marks) FROM Lab_Grades)</code> — the faculty's own slide shows three equivalent forms (NOT EXISTS, plain MAX subquery, and <code>&gt;= ALL</code>) side by side specifically to test whether you recognize they're the same.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CODE -->
+  <section class="card" id="code">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">💻</span>
+      <span class="card-title">Code — Lab 1 &amp; Lab 2 Reference</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="code-block">
+        <div class="code-label">SQL — Database and table setup (Lab 1)</div>
+        <pre><code>CREATE DATABASE DB_Name;
+USE DB_Name;
+
+CREATE TABLE Lab_Grades (
+    std_id char(4),
+    name varchar(30),
+    major char(3),
+    section char(1),
+    days_present int,
+    project_marks double,
+    cgpa decimal(3,2),
+    submission_date date
+);
+
+DESCRIBE Lab_Grades;
+SHOW TABLES;</code></pre>
+        <div class="code-analysis">Know DESCRIBE (shows structure/column types) vs SHOW TABLES (lists tables in the current database) — easy to confuse under time pressure.</div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-label">SQL — Insert, alter, update, delete (Lab 1)</div>
+        <pre><code>INSERT INTO Lab_Grades VALUES
+('s001','Abir','CS','1',10,18.5,3.91,'2018-09-15');
+
+ALTER TABLE Lab_Grades ADD project_title char(10);
+ALTER TABLE Lab_Grades MODIFY COLUMN project_title varchar(50);
+ALTER TABLE Lab_Grades DROP COLUMN project_title;
+
+UPDATE Lab_Grades SET major = 'CSE' WHERE name = 'Arafat';
+DELETE FROM Lab_Grades WHERE name = 'Naima';
+DELETE FROM Lab_Grades WHERE days_present &lt; 8;</code></pre>
+        <div class="code-analysis">DELETE without WHERE removes every row; DROP TABLE/DATABASE removes the structure itself. Both UPDATE and DELETE are scoped entirely by their WHERE clause.</div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-label">SQL — SELECT variations (Lab 1)</div>
+        <pre><code>SELECT name, project_marks+days_present*5/12 AS total_marks
+FROM Lab_Grades;
+
+SELECT UPPER(name), LOWER(name) FROM Lab_Grades;
+SELECT DISTINCT major FROM Lab_Grades;
+
+SELECT * FROM Lab_Grades WHERE name LIKE 'a%';
+SELECT * FROM Lab_Grades WHERE name LIKE '%a%a%';
+SELECT * FROM Lab_Grades WHERE name LIKE 'a___';</code></pre>
+        <div class="code-analysis">AS creates a computed column alias. LIKE wildcards: % = any length, _ = exactly one character.</div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-label">SQL — Aggregate functions individually (Lab 2, Task 1)</div>
+        <pre><code>SELECT MIN(cgpa) FROM Lab_Grades;                              -- 3.25
+SELECT COUNT(*) AS total_students, AVG(project_marks) AS average_marks
+  FROM Lab_Grades;                                              -- 7, 18.5
+SELECT SUM(days_present) FROM Lab_Grades;                       -- 70
+SELECT MAX(submission_date) AS last_submission FROM Lab_Grades; -- 2018-09-18</code></pre>
+        <div class="code-analysis">Each returns one output collapsed from all 7 rows — the defining trait of an aggregate function.</div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-label">SQL — GROUP BY and HAVING (Lab 2, Task 1)</div>
+        <pre><code>SELECT major, MIN(cgpa), MAX(cgpa) FROM Lab_Grades GROUP BY major;
+SELECT major, COUNT(*) FROM Lab_Grades GROUP BY major;
+SELECT major, MIN(cgpa), MAX(cgpa) FROM Lab_Grades
+  GROUP BY major HAVING COUNT(*) &gt;= 3;        -- only CS survives
+SELECT name, cgpa FROM Lab_Grades HAVING cgpa &gt; 3.7;  -- HAVING with no GROUP BY</code></pre>
+        <div class="code-analysis">Every non-aggregated column in SELECT should appear in GROUP BY, or the result is ambiguous. Note the last line — HAVING doesn't strictly require GROUP BY in MySQL.</div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-label">SQL — Subqueries in all four clause positions (Lab 2, Task 2)</div>
+        <pre><code>-- WHERE
+SELECT name FROM Lab_Grades
+WHERE project_marks = (SELECT MAX(project_marks) FROM Lab_Grades);
+
+-- FROM (derived table, must be aliased)
+SELECT AVG(cgpa) FROM
+  (SELECT cgpa FROM Lab_Grades WHERE major = 'CSE') AS CSE_CGPAs;
+
+-- SELECT (scalar subquery as a computed column)
+SELECT name, (SELECT MAX(cgpa) FROM Lab_Grades) AS MAX_UNIVERSITY_CGPA
+FROM Lab_Grades;
+
+-- HAVING
+SELECT major, AVG(cgpa) AS avg_cgpa FROM Lab_Grades
+GROUP BY major
+HAVING AVG(cgpa) &gt; (SELECT AVG(cgpa) FROM Lab_Grades);</code></pre>
+        <div class="code-analysis">Four placements taught explicitly by the faculty — expect a question that specifically tests recognizing an unfamiliar placement (FROM or SELECT), not just the common WHERE case.</div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-label">SQL — ANY / ALL, non-correlated (Lab 2, Task 2)</div>
+        <pre><code>SELECT * FROM Lab_Grades WHERE major = 'CSE'
+AND cgpa &gt; ANY (SELECT cgpa FROM Lab_Grades WHERE major = 'CS');
+
+SELECT * FROM Lab_Grades WHERE major = 'CSE'
+AND cgpa &gt; ALL (SELECT cgpa FROM Lab_Grades WHERE major = 'CS');</code></pre>
+        <div class="code-analysis">No self-alias here — both major filters are independent, so this is a plain subquery, not correlated.</div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-label">SQL — Correlated subqueries, EXISTS / NOT EXISTS (Lab 2, Task 3)</div>
+        <pre><code>-- (a) majors with at least one student below 3.7 cgpa
+SELECT DISTINCT major FROM Lab_Grades L1
+WHERE EXISTS (
+  SELECT * FROM Lab_Grades L2
+  WHERE L2.major = L1.major AND L2.cgpa &lt; 3.7
+);
+
+-- (b) highest project marks (ties tolerated)
+SELECT name FROM Lab_Grades L1
+WHERE NOT EXISTS (
+  SELECT * FROM Lab_Grades L2
+  WHERE L2.std_id != L1.std_id AND L2.project_marks &gt; L1.project_marks
+);
+
+-- (c) highest project marks, UNIQUE only (note &gt;=)
+SELECT name FROM Lab_Grades L1
+WHERE NOT EXISTS (
+  SELECT * FROM Lab_Grades L2
+  WHERE L2.std_id != L1.std_id AND L2.project_marks &gt;= L1.project_marks
+);</code></pre>
+        <div class="code-analysis">(b) returns Nafis and Arafat (tied at 20). (c) returns an empty set — with &gt;=, each tied student is "matched" by the other's equal value, so neither passes.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PATTERN NOTES (replaces Faculty Pattern Analysis — no history yet) -->
+  <section class="card" id="patterns">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🎯</span>
+      <span class="card-title">Pattern Notes</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-note">
+        <strong>No historical quiz exists.</strong> This is Lab Quiz 1 — there is no prior quiz to draw a question-frequency table from. However, the table below is now based on the faculty's own <strong>teaching slide deck</strong> (<code>CSE370_Lab02_Slides.pdf</code>, prepared by FUL/SFA) — the actual worked examples used to teach the syllabus — which is a stronger signal than task-sheet headers alone, even though it is still not a confirmed past exam.
+      </div>
+      <div class="pattern-grid">
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Basic WHERE/ORDER BY</div>
+          <div class="pattern-freq">Likely</div>
+          <div class="pattern-desc">Covered across nearly every Lab 1 task</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">GROUP BY + HAVING</div>
+          <div class="pattern-freq">Likely</div>
+          <div class="pattern-desc">Entire Task 1 of Lab 2 slides, 8 sub-parts (a-h)</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Subqueries: 4 placements, ANY/ALL</div>
+          <div class="pattern-freq">Likely</div>
+          <div class="pattern-desc">Task 2 slides show WHERE/FROM/SELECT/HAVING placements plus ANY/ALL</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Correlated EXISTS/NOT EXISTS</div>
+          <div class="pattern-freq">Likely</div>
+          <div class="pattern-desc">Task 3 devotes 3 sub-parts + a "many ways" comparison slide to this</div>
+        </div>
+      </div>
+      <p><strong>Observed structure (from the faculty's teaching slides, not a confirmed past quiz):</strong></p>
+      <ul>
+        <li>The slide deck explicitly teaches multiple <em>equivalent</em> ways to solve the same task (NOT EXISTS / MAX subquery / ALL) on a dedicated "Many Ways to Solve One Task" slide — a strong signal the faculty values recognizing equivalence, not just producing one correct answer.</li>
+        <li>The slides deliberately contrast near-identical queries that differ by one operator (Task 3 b vs c: <code>&gt;</code> vs <code>&gt;=</code>) — this exact kind of "spot the difference" question is a named teaching device here, not incidental.</li>
+        <li>Both lab sheets end with a self-test SQLZoo quiz link (Basic Select Quiz, Nested SELECT Quiz) — working through those is the closest available proxy to the actual quiz format.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PROBABLE QUESTIONS -->
+  <section class="card" id="probable">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🔮</span>
+      <span class="card-title">Probable Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-note" style="margin-bottom:.85rem"><strong>Basis:</strong> Ranked by how central each topic is in the faculty's own teaching slides for this exact syllabus — not a confirmed past quiz (none exists for Lab Quiz 1).</div>
+      <div class="probable-list">
+        <div class="probable-item">
+          <div class="prob-rank rank-1">1</div>
+          <div class="prob-content">
+            <div class="prob-q">Find the student(s) with the highest marks using a correlated NOT EXISTS query — and explain why a small operator change (&gt; vs &gt;=) alters the result.</div>
+            <div class="prob-reason">The slides devote an entire dedicated slide to contrasting these two queries side by side and asking "what's the difference" — this is a named teaching device, the strongest signal in the whole deck.</div>
+          </div>
+        </div>
+        <div class="probable-item">
+          <div class="prob-rank rank-2">2</div>
+          <div class="prob-content">
+            <div class="prob-q">Write a GROUP BY + HAVING query filtering groups by an aggregate condition (e.g. "majors with at least N students").</div>
+            <div class="prob-reason">Task 1 of the slides has 8 sub-parts (a–h) all built around this single pattern — the most heavily repeated structure in the entire deck.</div>
+          </div>
+        </div>
+        <div class="probable-item">
+          <div class="prob-rank rank-3">3</div>
+          <div class="prob-content">
+            <div class="prob-q">Identify or write a subquery in an unfamiliar clause position (FROM or SELECT), not just WHERE.</div>
+            <div class="prob-reason">The slides explicitly teach all four placements as a checklist — testing FROM/SELECT placement specifically would catch students who only memorized the common WHERE case.</div>
+          </div>
+        </div>
+        <div class="probable-item">
+          <div class="prob-rank rank-n">4</div>
+          <div class="prob-content">
+            <div class="prob-q">A compound WHERE clause combining BETWEEN/IN/LIKE with AND (Lab 1), or a short ALTER TABLE/UPDATE-without-WHERE reasoning question.</div>
+            <div class="prob-reason">Lower conceptual depth than the Lab 2 subquery material, but Lab 1's Task 5 stacks operators deliberately and is a plausible warm-up question.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MNEMONICS -->
+  <section class="card" id="mnemonics">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧠</span>
+      <span class="card-title">Mnemonics &amp; Memory Aids</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"Fresh Waffles Get Half Servings, Limited"</div>
+        <div class="mnemonic-body">Execution order: <strong>F</strong>ROM → <strong>W</strong>HERE → <strong>G</strong>ROUP BY → <strong>H</strong>AVING → <strong>S</strong>ELECT → <strong>O</strong>RDER BY → <strong>L</strong>IMIT/OFFSET.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"Rows first, groups second"</div>
+        <div class="mnemonic-body">WHERE = row-level filter (runs early). HAVING = group-level filter (runs after GROUP BY). If the condition needs an aggregate function, it belongs in HAVING.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"One table, two hats"</div>
+        <div class="mnemonic-body">Correlated subquery on the same table needs two aliases (L1/L2) — think of it as the same table wearing a different hat in the inner query. But ANY/ALL alone doesn't need this — only add hats when the outer row's own value feeds into the inner query's filter.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"Strict beats ties, or-equal breaks them"</div>
+        <div class="mnemonic-body">In a "no one beats me" NOT EXISTS query: <code>&gt;</code> lets tied students both win; <code>&gt;=</code> makes every tied student lose to the other's identical value.</div>
+      </div>
+
+      <div class="callout callout-note">
+        Add your own from the actual lab session — the best mnemonics are the ones you invent yourself.
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggleCard(header) { header.closest('.card').classList.toggle('collapsed'); }
+  function toggleQA(questionEl) { questionEl.closest('.qa').classList.toggle('open'); }
+  function toggleAnalytical(header) {
+    header.closest('.analytical').classList.toggle('open');
+    const chev = header.querySelector('.card-chevron');
+    if (chev) chev.style.transform =
+      header.closest('.analytical').classList.contains('open') ? 'rotate(0deg)' : 'rotate(-90deg)';
+  }
+  function toggleTheme() {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('rg-theme', next); } catch(e) {}
+  }
+  (function() {
+    try {
+      const saved = localStorage.getItem('rg-theme');
+      if (saved) document.documentElement.dataset.theme = saved;
+    } catch(e) {}
+  })();
+</script>
+
+</body>
+</html>
