@@ -13,6 +13,7 @@ This is one student's personal resource archive, shared informally. It is not an
 - `CSE321/`, `CSE331/`, `CSE370/` — one folder per course. Not every course has every folder below (e.g. CSE331 has no `slides/` since none were provided; CSE370 has no `pyq/` since none exist for this course/section).
   - `topics/` — topic maps, dependency graphs, and the course's own index page
   - `concepts/` (CSE321, CSE370) / `lecture-notes/` (CSE331) — actual study notes: pre-filled module notes for CSE321, full lecture-by-lecture transcriptions for CSE331 (which has no faculty slides), topic concept notes for CSE370
+    - **Coverage caveat (CSE321, CSE370):** these concise notes only exist for the post-midterm material. I didn't realise I needed them until after the midterm, so the pre-midterm topics don't have one. For those, rely on the faculty slides, the `resources/` mapping, and the topic maps instead.
   - `resources/` — textbook chapter / practice sheet mapping per topic (links out to free textbooks, doesn't host commercial ones)
   - `practice/` — faculty-issued or faculty-shared practice sheets (verified to be original material, not textbook excerpts)
   - `pyq/` — previous-question pattern analysis, plus the actual PYQ PDFs where available (CSE370 doesn't share PYQs — confirmed, not an oversight)
