@@ -8,7 +8,7 @@ status: active
 
 ## Assessment Creator Map
 
-> [!confirmed] Assessment creator distinction confirmed 2026-06-27.
+> **Confirmed:** Assessment creator distinction confirmed 2026-06-27.
 > - **Centrally created (BRACU question committee):** Midterm, Final, Lab (all except quiz)
 > - **Faculty written (NFF / lab faculty):** Quizzes, Assignments, Lab quiz
 >
@@ -48,19 +48,19 @@ status: active
 **Weight:** 25% (reconfirmed 2026-08-25)
 **Score:** 16.875/25 (67.5%) — reconfirmed 2026-09-13 via CSE370 marks Google Sheet
 
-> [!confirmed] Weight conflict resolved 2026-08-01 (retroactively, via missed official announcement, posted 2026-07-24): exam was out of 40 marks, converted to 25. Notebook's 25% was correct; the earlier 20% (PDF-sourced) was wrong.
+> **Confirmed:** Weight conflict resolved 2026-08-01 (retroactively, via missed official announcement, posted 2026-07-24): exam was out of 40 marks, converted to 25. Notebook's 25% was correct; the earlier 20% (PDF-sourced) was wrong.
 
 **Question pattern (from official announcement, 2026-07-24 — missed until 2026-08-01, exam already sat):**
 5 questions, all mandatory. At least: 1 theory/conceptual, 1 ER/EER diagram, 1 Schema Mapping, 1 Normalization problem, 1 Relational Algebra. Marks: 40 raw → converted to 25.
 
-> [!tip] "Explain" questions only need 1–2 lines of justification — do not over-write these.
+> **Tip:** "Explain" questions only need 1–2 lines of justification — do not over-write these.
 
-> [!note] Logged after the fact for future central-exam pattern reference (Final likely follows the same 5-question central-pool structure, though topics differ — unconfirmed until Final's own announcement). Not actionable for this midterm.
+> **Note:** Logged after the fact for future central-exam pattern reference (Final likely follows the same 5-question central-pool structure, though topics differ — unconfirmed until Final's own announcement). Not actionable for this midterm.
 
 **Created by:** Central (BRACU)
 **PYQ location:** None. **Confirmed 2026-09-05: not available** — some BRACU courses/sections don't share previous question papers, and this is one of them. Not an open action item; do not keep asking NFF or seniors.
 
-> [!note] No CSE370 PYQs exist. Final (and Midterm, retroactively) revision prep for this course runs on slides + textbook + practice sheets only — no PYQ-based pattern/probable-questions analysis is possible here, unlike CSE321/CSE331.
+> **Note:** No CSE370 PYQs exist. Final (and Midterm, retroactively) revision prep for this course runs on slides + textbook + practice sheets only — no PYQ-based pattern/probable-questions analysis is possible here, unlike CSE321/CSE331.
 
 **Practice sheets (buX, per official announcement 2026-07-24):** `CSE370/practice/` — checked 2026-07-25.
 
@@ -71,12 +71,12 @@ status: active
 | 3 | Ch 4, EER Model | `CSE370_practice_ch04_eer.pdf` present |
 | 4 | Ch 5, Relational Data Model & Constraints | `CSE370_practice_ch05.pdf` present |
 | 5 | Ch 7/9, Schema Mapping | `CSE370_practice_ch07_relational_schema.pdf` present — covers Ch 7 only, no Ch 9 sheet found |
-| 6 | Normalization (updated slides) | `CSE370_practice_ch10_normalization.docx` present |
+| 6 | Normalization (updated slides) | `CSE370_practice_ch10_normalization.pdf` present |
 | 7 | Ch 8, Relational Algebra | `CSE370_practice_ch08_relational_algebra.pdf` present — obtained 2026-07-29 |
 
-> [!missing] Ch 9 (second half of Schema Mapping) still has no dedicated sheet — verify whether buX has one or whether Ch 7's sheet is meant to cover both.
+> **Missing:** Ch 9 (second half of Schema Mapping) still has no dedicated sheet — verify whether buX has one or whether Ch 7's sheet is meant to cover both.
 
-> [!tip] Relational Algebra grading risk (per classmate, 2026-07-22): these questions are reportedly easy to score full marks on, but grading is strict from the very first step of the expression — an early mistake can zero the entire answer with no partial credit. Build the expression carefully from the first operator and verify incrementally rather than writing the whole thing in one pass.
+> **Tip:** Relational Algebra grading risk (per classmate, 2026-07-22): these questions are reportedly easy to score full marks on, but grading is strict from the very first step of the expression — an early mistake can zero the entire answer with no partial credit. Build the expression carefully from the first operator and verify incrementally rather than writing the whole thing in one pass.
 
 <!-- Add pattern notes after PYQs are collected -->
 
@@ -84,7 +84,7 @@ status: active
 
 ## Final Pattern
 
-> [!confirmed] **Official central Final Exam Notice received 2026-09-13** (BUX/Discord announcement, mentioning @everyone). Supersedes the prior user-confirmed working scope (2026-09-06) — that scope is now officially verified correct, with one exclusion refinement noted below.
+> **Confirmed:** **Official central Final Exam Notice received 2026-09-13** (BUX/Discord announcement, mentioning @everyone). Supersedes the prior user-confirmed working scope (2026-09-06) — that scope is now officially verified correct, with one exclusion refinement noted below.
 
 **Official syllabus (2026-09-13 announcement):**
 
@@ -96,7 +96,7 @@ status: active
 | Lecture 11 (Query Processing) | All Slides | Topic 22 part 1 — `CSE370_t22_query_processing_optimization.md` |
 | Lecture 12 (Query Optimization) | All Slides | Topic 22 part 2 — `CSE370_t22_query_processing_optimization.md` |
 
-> [!warning] **Lecture 9's "Pages 1–28" cap excludes MV2PL — verified by direct page inspection, 2026-09-13.** The 30-page deck's last two pages: p.29 = "Multiversion Two-Phase Locking Using Certify Locks (MV2PL)", p.30 = closing transition slide to Lecture 10. Pages 1–28 cover ACID, transaction states, log-based recovery (undo/redo), all 5 concurrency problems, SQL isolation levels, and the Multiversion **Timestamp-Ordering** technique (including its worked example) — all still in scope. **MV2PL specifically is now confirmed OUT of scope.** `CSE370_t24_concurrency_control.md` currently documents MV2PL as in-scope material and needs a scope-exclusion flag added.
+> **Warning:** **Lecture 9's "Pages 1–28" cap excludes MV2PL — verified by direct page inspection, 2026-09-13.** The 30-page deck's last two pages: p.29 = "Multiversion Two-Phase Locking Using Certify Locks (MV2PL)", p.30 = closing transition slide to Lecture 10. Pages 1–28 cover ACID, transaction states, log-based recovery (undo/redo), all 5 concurrency problems, SQL isolation levels, and the Multiversion **Timestamp-Ordering** technique (including its worked example) — all still in scope. **MV2PL specifically is now confirmed OUT of scope.** `CSE370_t24_concurrency_control.md` currently documents MV2PL as in-scope material and needs a scope-exclusion flag added.
 
 **SQL (Topics 3–9) remains lab-only; 4NF/5NF (Topic 18) remains out of scope entirely** — both confirmations from 2026-09-06 stand.
 
@@ -104,9 +104,9 @@ status: active
 **Questions:** 5, all mandatory — confirms the note logged under Midterm Pattern above speculating the Final would follow the same 5-question central-pool structure.
 **Marks:** Exam out of 40–50 raw marks, converted to 30 (same raw→weighted conversion pattern as Midterm's 40→25).
 
-> [!confirmed] **Question-weight breakdown confirmed 2026-09-17** from the "CSE370 Section 11 ALL" marks Google Sheet's Final tab structure: Q1(10), Q2(8), Q3(12), Q4(5), Q5(10) — raw total 45, scaled to 30. Archived to `task-history/tasks-history.md` #44.
+> **Confirmed:** **Question-weight breakdown confirmed 2026-09-17** from the "CSE370 Section 11 ALL" marks Google Sheet's Final tab structure: Q1(10), Q2(8), Q3(12), Q4(5), Q5(10) — raw total 45, scaled to 30. Archived to `task-history/tasks-history.md` #44.
 
-> [!confirmed] **Final result: 23.33/30 (raw 35/45, 77.8%) — confirmed 2026-09-20** via the section marks sheet's per-student Final breakdown: Q1 10/10, Q2 6/8, Q3 11/12, Q4 2/5, Q5 6/10. Q4 and Q5 account for 7 of the 10 raw marks lost; question-to-topic mapping not yet recorded. **Course total: 72.65/100 — confirmed 2026-09-20 on the official section marks sheet** (Total (100) 72.648, rounded 72.65) **→ B- (2.70), letter grade computed** (no grade column visible in the sheet view) — Lab 20.44/30 + Assignment 3/5 + Quiz 9/10 + Midterm 16.875/25 + Final 23.33/30.
+> **Confirmed:** **Final result: 23.33/30 (raw 35/45, 77.8%) — confirmed 2026-09-20** via the section marks sheet's per-student Final breakdown: Q1 10/10, Q2 6/8, Q3 11/12, Q4 2/5, Q5 6/10. Q4 and Q5 account for 7 of the 10 raw marks lost; question-to-topic mapping not yet recorded. **Course total: 72.65/100 — confirmed 2026-09-20 on the official section marks sheet** (Total (100) 72.648, rounded 72.65) **→ B- (2.70), letter grade computed** (no grade column visible in the sheet view) — Lab 20.44/30 + Assignment 3/5 + Quiz 9/10 + Midterm 16.875/25 + Final 23.33/30.
 
 **Weight:** 30% *(resolved 2026-08-01 by arithmetic: Assignment 5% + Quiz 10% + Midterm 25% (confirmed) + Project 15% + Lab work 15% = 70%, leaving 30% for Final — matches notebook, not the outline PDF's 35%)*
 **Created by:** Central (BRACU)
@@ -118,7 +118,7 @@ status: active
 
 **Standard exam-conduct notes from the announcement:** no questions during the exam (understanding the question is part of the exam), no washroom breaks, no unfair means (expulsion risk), ID card mandatory.
 
-> [!confirmed] **Query Tree Optimization (Algebraic Modifications) — official procedure, per Central Discord announcement ("370 central"), received 2026-09-16 (day of exam).** When a question asks to optimize a query tree via algebraic modifications, the expected process is 5 steps, with a specific drawing requirement:
+> **Confirmed:** **Query Tree Optimization (Algebraic Modifications) — official procedure, per Central Discord announcement ("370 central"), received 2026-09-16 (day of exam).** When a question asks to optimize a query tree via algebraic modifications, the expected process is 5 steps, with a specific drawing requirement:
 > 1. Cascade of Selection (σ)
 > 2. Pushdown selection to relevant leaf
 > 3. Apply the most restrictive selection first (compare operators, or check the catalog)
@@ -138,7 +138,7 @@ status: active
 **Weight:** 10% (4 quizzes, best 3 averaged)
 **Created by:** NFF
 
-> [!confirmed] **Component finalized: 9/10 — confirmed 2026-09-17 via the "CSE370 Section 11 ALL" marks Google Sheet.** All four counted slots now graded: Quiz 1 = 7/10, Quiz 2 Makeup = 10/10 (replaces the missed Quiz 2), Quiz 3 = 10/10, Quiz 4 = 7/10. Best 3 of 4 drops one of the two 7s → average of {10, 10, 7} = **9/10**, no components still pending.
+> **Confirmed:** **Component finalized: 9/10 — confirmed 2026-09-17 via the "CSE370 Section 11 ALL" marks Google Sheet.** All four counted slots now graded: Quiz 1 = 7/10, Quiz 2 Makeup = 10/10 (replaces the missed Quiz 2), Quiz 3 = 10/10, Quiz 4 = 7/10. Best 3 of 4 drops one of the two 7s → average of {10, 10, 7} = **9/10**, no components still pending.
 
 ### Quiz 2
 
@@ -169,13 +169,13 @@ status: active
 **Syllabus:** Transactions, Concurrency Control, Locks (confirmed) — matches Lecture 9 (Transactions) and Lecture 10 (Concurrency Control), consistent with the earlier verbal "lecture slides 9 and 10" estimate.
 **Announced:** In-class verbal, 2026-08-31 (unconfirmed at the time) — officially confirmed via Discord, 2026-09-03.
 
-> [!note] NFF stated in-class (verbal, unconfirmed status until officially announced) that the quiz will be short and easy, reasoning that some syllabus (likely Concurrency Control, Lecture 10) is still being covered. User assesses this as plausible given the remaining-coverage constraint. Treat as an expectation signal, not a confirmed question-pattern or difficulty guarantee.
+> **Note:** NFF stated in-class (verbal, unconfirmed status until officially announced) that the quiz will be short and easy, reasoning that some syllabus (likely Concurrency Control, Lecture 10) is still being covered. User assesses this as plausible given the remaining-coverage constraint. Treat as an expectation signal, not a confirmed question-pattern or difficulty guarantee.
 
 **Also announced 2026-08-31 (in-class), same unconfirmed status at the time:** a makeup quiz to be held on the day of the Final Exam (2026-09-16 — see Final Pattern above, and the Quiz 2 Makeup section below). Confirmed this is the same makeup as the Quiz 2 makeup, not a separate slot.
 
 **Status:** Sat. Self-assessed quite bad overall. **Score: 7/10 — confirmed 2026-09-13 via CSE370 marks Google Sheet** (higher than the self-assessment going in). Archived to `task-history/tasks-history.md` #38.
 
-**Question pattern (from this sitting):** one concurrency scenario (2 transactions interacting concurrently), 5 small sub-questions built around it — matches the Teller/Auditor worked example already in `concepts/CSE370_t24_concurrency_control.md` (sourced from `CSE370_practice_ps9_transactions.pdf` Q14) almost exactly, and was the top-ranked prediction that session's `CSE370_quiz4_probable_questions.md` made (file since deleted per its own temporary-file note, now that the quiz has sat).
+**Question pattern (from this sitting):** one concurrency scenario (2 transactions interacting concurrently), 5 small sub-questions built around it — matches the Teller/Auditor worked example already in `concepts/CSE370_t24_concurrency_control.md` (sourced from `CSE370_practice_ps9_transactions.pdf` Q14) almost exactly.
 
 - **Q1:** Identify the concurrency problem in the scenario → **Dirty Read**. Missed live during the quiz; confirmed correct by NFF post-quiz.
 - **Q2:** Name the ACID property violated → **Isolation**.
@@ -209,7 +209,7 @@ status: active
 
 **Released:** 2026-09-03 (Discord) | **Deadline:** 2026-09-09 (Wed)
 **Format:** Handwritten, Google Form submission, no late submission accepted (confirmed pattern, matches Assignments 1–2).
-**Content:** Hash index construction (forward chaining), B+ Tree sequential deletion (order 3) — full detail: `courses/CSE370/assignments/CSE370_assignment_03.md`.
+**Content:** Hash index construction (forward chaining), B+ Tree sequential deletion (order 3) — full detail: [`assignments/CSE370_assignment_03.pdf`](assignments/CSE370_assignment_03.pdf).
 
 <!-- Add pattern notes here. Ask about submission format for each assignment. -->
 

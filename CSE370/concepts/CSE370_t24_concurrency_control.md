@@ -16,9 +16,9 @@ prerequisites: ["CSE370_t23_transactions.md"]
 
 **Sources used:** `CSE370_Lecture_09_transactions.pdf` and `CSE370_Lecture_10_concurrency_control.pdf` (both read via their text versions), `CSE370_practice_ps9_transactions.pdf` (17 questions with solutions — mixes Transactions and Concurrency Control scenarios; **updated 2026-09-13**, Q1–17 cited below unchanged, new Q18–19 added for Timestamp-Ordering practice), and **new 2026-09-13**: `CSE370_practice_ps10_concurrency_control.pdf` (10 questions — 2PL growing/shrinking/lock-point/upgrade-downgrade graph-reading, deadlock conditions, Wait-Die/Wound-Wait). No PYQs exist for CSE370 (confirmed).
 
-> [!confirmed] Final syllabus officially confirmed 2026-09-13: Lecture 10 in full (all slides). **MV2PL (below) is confirmed OUT of scope** — see the flag at that section; only the Timestamp-Ordering MVCC technique (documented in `CSE370_t23_transactions.md`, pages 26–28 of Lecture 9) remains examinable.
+> **Confirmed:** Final syllabus officially confirmed 2026-09-13: Lecture 10 in full (all slides). **MV2PL (below) is confirmed OUT of scope** — see the flag at that section; only the Timestamp-Ordering MVCC technique (documented in `CSE370_t23_transactions.md`, pages 26–28 of Lecture 9) remains examinable.
 
-> [!note] Textbook sourcing corrected 2026-09-06 (audit): `cse370_resources.md` maps this topic to Silberschatz 6e Ch 15, but the local copy of that PDF is a 94-page front-matter excerpt that ends at Chapter 3 — Ch 15 is not actually present. That citation has been removed rather than left implying the chapter was read. This note is built entirely from the lecture slides and practice sheet above.
+> **Note:** Textbook sourcing corrected 2026-09-06 (audit): `cse370_resources.md` maps this topic to Silberschatz 6e Ch 15, but the local copy of that PDF is a 94-page front-matter excerpt that ends at Chapter 3 — Ch 15 is not actually present. That citation has been removed rather than left implying the chapter was read. This note is built entirely from the lecture slides and practice sheet above.
 
 ---
 

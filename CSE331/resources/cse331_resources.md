@@ -10,7 +10,7 @@ status: complete
 **Introduction to the Theory of Computation** — Michael Sipser (3rd ed.)
 The course follows this book. Definitions, theorems, and proofs in this course are Sipser's unless your faculty states otherwise. Read the relevant chapter section before attending a lecture on that topic.
 
-> [!info] No slides for this course. TNF confirmed verbally — no lecture slides will be provided for Summer 2026. Rely on Sipser, MIT OCW, and in-class notes.
+> **Info:** No slides for this course. TNF confirmed verbally — no lecture slides will be provided for Summer 2026. Rely on Sipser, MIT OCW, and in-class notes.
 > Partial gap-fill: [Lecture Notes](../lecture-notes/CSE331_lecture_01_prelims.md) (2026-06-08 to 2026-06-29) transcribed from Farhan Labib's handwritten notes, status `needs-review`. Covers Topics 1–3 (Preliminaries through NFA→DFA subset construction).
 
 ## Lecture Notes Shared by TNF

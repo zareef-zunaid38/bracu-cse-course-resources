@@ -16,14 +16,14 @@ Three reference books listed. Order in the outline is the official order.
 | 2 | Database Systems: A Practical Approach | Connolly & Begg | 6th ed. | 2014 | Pearson |
 | 3 | Database Systems Concepts | Silberschatz, Korth & Sudarshan | 6th ed. | 2011 | McGraw-Hill |
 
-> [!warning] Verified 2026-09-06 (concept-note audit): both local textbook PDFs are **short front-matter excerpts, not the full books.** Silberschatz is 94 pages and ends mid-Chapter 3 (SQL basics); Elmasri & Navathe is 48 pages and ends mid-Chapter 1. Neither contains any of Ch 10 onward (Silberschatz) or Ch 3 onward (E&N) — so every topic-by-topic chapter citation below Storage & Indexing is currently **unreadable from the local copies**, despite being the correct chapter per the course outline mapping. Do not cite these chapters as an actually-consulted source in a concept note without first re-checking the local file (a fuller copy may be obtained later) — `CSE370_t19_indexing.md`, `CSE370_t23_transactions.md`, `CSE370_t24_concurrency_control.md`, and `CSE370_t22_query_processing_optimization.md` all had this citation error and were corrected on this date.
+> **Warning:** Verified 2026-09-06 (concept-note audit): both local textbook PDFs are **short front-matter excerpts, not the full books.** Silberschatz is 94 pages and ends mid-Chapter 3 (SQL basics); Elmasri & Navathe is 48 pages and ends mid-Chapter 1. Neither contains any of Ch 10 onward (Silberschatz) or Ch 3 onward (E&N) — so every topic-by-topic chapter citation below Storage & Indexing is currently **unreadable from the local copies**, despite being the correct chapter per the course outline mapping. Do not cite these chapters as an actually-consulted source in a concept note without first re-checking the local file (a fuller copy may be obtained later) — `CSE370_t19_indexing.md`, `CSE370_t23_transactions.md`, `CSE370_t24_concurrency_control.md`, and `CSE370_t22_query_processing_optimization.md` all had this citation error and were corrected on this date.
 
-> [!note] Textbooks (not hosted in this repo):
+> **Note:** Textbooks (not hosted in this repo):
 > - `Silberschatz_Korth_Sudarshan_Database_System_Concepts_6e.pdf` — excerpt only, see warning above
 > - `Elmasri_Navathe_Fundamentals_of_Database_Systems_7e.pdf` — excerpt only, see warning above
 > - Connolly & Begg 6e — not yet obtained.
 
-> [!note] Prior versions of this file incorrectly listed Silberschatz 7th ed. as the sole primary textbook. The outline lists it third at 6th ed. Elmasri & Navathe is listed first. Topic-by-topic notes below may reference Silberschatz chapter numbers — treat those as approximate until confirmed with NFF.
+> **Note:** Prior versions of this file incorrectly listed Silberschatz 7th ed. as the sole primary textbook. The outline lists it third at 6th ed. Elmasri & Navathe is listed first. Topic-by-topic notes below may reference Silberschatz chapter numbers — treat those as approximate until confirmed with NFF.
 
 ## Lab Environment
 
@@ -38,7 +38,7 @@ Use for SELECT and JOIN practice after each SQL topic.
 
 **Location:** `CSE370/slides/`
 
-> [!note] Filenames follow slide-download order, not confirmed exam-syllabus order. Cross-check `cse370_exam_notes.md` for what was actually examined before treating any file below as "next" or "not yet covered" — do not infer scope from the topic map or this table alone.
+> **Note:** Filenames follow slide-download order, not confirmed exam-syllabus order. Cross-check `cse370_exam_notes.md` for what was actually examined before treating any file below as "next" or "not yet covered" — do not infer scope from the topic map or this table alone.
 
 | File | Topics Covered | Exam status |
 |---|---|---|
@@ -56,7 +56,7 @@ Use for SELECT and JOIN practice after each SQL topic.
 | `CSE370_Lecture_12_query_optimization.pdf` | Topic 22: Query Processing and Optimization (part 2) | Not on Midterm. Added 2026-09-03. |
 | `CSE370_Lecture_12_heuristic_optimization_supplement.pdf` | Topic 22: Heuristic Query Optimization — condensed 11-slide handout, same Aquarius worked example as the main Lecture 12 deck. **Added 2026-09-13**, provided directly by NFF ("additional slide I used in class"). Clean text PDF, no separate text version needed. | Not on Midterm. Confirmed used in the actual class session for this material — treat as authoritative alongside `CSE370_Lecture_12_query_optimization.pdf`. |
 
-> [!missing] Slides for Topics 5–9 (Relational Model, SQL) not yet downloaded from Brightspace.
+> **Missing:** Slides for Topics 5–9 (Relational Model, SQL) not yet downloaded from Brightspace.
 
 ## Practice Sheets
 

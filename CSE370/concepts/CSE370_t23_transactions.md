@@ -16,9 +16,9 @@ prerequisites: []
 
 **Sources used:** `CSE370_Lecture_09_transactions.pdf` (primary — read via its text version, `CSE370_Lecture_09_transactions.md`), `CSE370_practice_ps9_transactions.pdf` (practice, 17 questions with solutions; **updated 2026-09-13 to 19 questions** — new Q18–19 cover the Timestamp-Ordering MVCC algorithm, Q1–17 cited below unchanged). No PYQs exist for CSE370 (confirmed).
 
-> [!confirmed] Final syllabus for this lecture officially confirmed 2026-09-13: **Pages 1–28 only** (not the full 30-page deck) — everything documented in this note is within that range.
+> **Confirmed:** Final syllabus for this lecture officially confirmed 2026-09-13: **Pages 1–28 only** (not the full 30-page deck) — everything documented in this note is within that range.
 
-> [!note] Textbook sourcing corrected 2026-09-06 (audit): `cse370_resources.md` maps this topic to Silberschatz 6e Ch 14, but the local copy of that PDF is a 94-page front-matter excerpt that ends at Chapter 3 — Ch 14 is not actually present. That citation has been removed rather than left implying the chapter was read. This note is built entirely from the lecture slides and practice sheet above.
+> **Note:** Textbook sourcing corrected 2026-09-06 (audit): `cse370_resources.md` maps this topic to Silberschatz 6e Ch 14, but the local copy of that PDF is a 94-page front-matter excerpt that ends at Chapter 3 — Ch 14 is not actually present. That citation has been removed rather than left implying the chapter was read. This note is built entirely from the lecture slides and practice sheet above.
 
 ---
 

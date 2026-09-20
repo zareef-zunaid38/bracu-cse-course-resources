@@ -21,14 +21,14 @@ status: active
 | Project | 15% | Group project (lab component) |
 | Lab work | 15% | Weekly lab tasks (lab component) |
 
-> [!confirmed] Midterm weight resolved 2026-08-01: official mid-term announcement (posted 2026-07-24, missed until after the exam) states the exam was out of 40 marks, converted to 25 — confirming the notebook's 25% over the outline PDF's 20%.
+> **Confirmed:** Midterm weight resolved 2026-08-01: official mid-term announcement (posted 2026-07-24, missed until after the exam) states the exam was out of 40 marks, converted to 25 — confirming the notebook's 25% over the outline PDF's 20%.
 
-> [!confirmed] Final weight resolved 2026-08-01 by arithmetic: Assignment 5% + Quiz 10% + Midterm 25% (confirmed) + Project 15% + Lab work 15% = 70%, leaving 30% for Final (components sum to 100%) — matches the notebook, not the outline PDF's 35%.
+> **Confirmed:** Final weight resolved 2026-08-01 by arithmetic: Assignment 5% + Quiz 10% + Midterm 25% (confirmed) + Project 15% + Lab work 15% = 70%, leaving 30% for Final (components sum to 100%) — matches the notebook, not the outline PDF's 35%.
 
 **Midterm syllabus (Weeks 1–5):** Introduction → ER Model → EER Model → Relational Data Model → Review
 **Final syllabus (Weeks 7–12):** ER/EER to Relational Schema Mapping → Functional Dependencies → Normalization → Indexing and Hashing → Transaction Processing → SQL Queries
 
-> [!missing] Theory lecture slides not yet received. Requested from NFF via Discord (classes conducted so far).
+> **Missing:** Theory lecture slides not yet received. Requested from NFF via Discord (classes conducted so far).
 
 ## Files
 

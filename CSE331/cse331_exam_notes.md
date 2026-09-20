@@ -8,7 +8,7 @@ status: active
 
 ## Assessment Creator Map
 
-> [!confirmed] Assessment creator distinction confirmed 2026-06-27.
+> **Confirmed:** Assessment creator distinction confirmed 2026-06-27.
 > - **Centrally created (BRACU question committee):** Midterm, Final
 > - **Faculty written (TNF):** Quizzes, Assignments
 >
@@ -62,7 +62,7 @@ All in-class construction methods are the foundation for any proof question that
 
 One example proof was shown in class before this official guidance (NFA → single accepting state via ε-transitions) — transcribed at `courses/CSE331/practice/CSE331_nfa_single_accepting_state_proof.md`.
 
-> [!confirmed] **Result: 29.05/35 (83%) — confirmed 2026-09-17 via the official "CSE331-16 Summer 2026 Attendance and Marksheet" Google Sheet** (raw 41.5/50, scaled ×35/50). This corrects the 29.5/35 figure previously recorded in `task-history/tasks-history.md` #19 — the two don't match, and the sheet is treated as authoritative since it also carries the final course-grade computation cross-checked against every other component. Cause of the original discrepancy not identified.
+> **Confirmed:** **Result: 29.05/35 (83%) — confirmed 2026-09-17 via the official "CSE331-16 Summer 2026 Attendance and Marksheet" Google Sheet** (raw 41.5/50, scaled ×35/50). This corrects the 29.5/35 figure previously recorded in `task-history/tasks-history.md` #19 — the two don't match, and the sheet is treated as authoritative since it also carries the final course-grade computation cross-checked against every other component. Cause of the original discrepancy not identified.
 
 <!-- Add pattern notes after locating PYQs -->
 
@@ -100,7 +100,7 @@ Item 1 now explicitly says "for Regular Languages" — confirms the earlier lect
 
 **Stable across all 3 sittings collected:** Problem 1 is always a 5-point Pumping Lemma proof (CO5). Derivations/Parse Trees/Ambiguity is always exactly 10 points, same 4-part structure. CFG design and PDA design are always present (15 pts each in the older Spring25 format, 10 pts each in the current Fall25/Spring26 format). Fall25/Spring26 additionally carry a 5-point True/False section absent in Spring25. See [CSE331_final_probable_questions](pyq/CSE331_final_probable_questions.md) for full breakdown, module-by-module question types, and ranked probable questions.
 
-> [!confirmed] **Result: 24.33/35 — confirmed 2026-09-17 via the official CSE331 marks Google Sheet** (raw 34.75/50, scaled ×35/50, no bonus). Per-component breakdown from the sheet's Final tab:
+> **Confirmed:** **Result: 24.33/35 — confirmed 2026-09-17 via the official CSE331 marks Google Sheet** (raw 34.75/50, scaled ×35/50, no bonus). Per-component breakdown from the sheet's Final tab:
 >
 > | Component | CO | Marks | Score |
 > |---|---|---|---|
@@ -255,7 +255,7 @@ Item 1 now explicitly says "for Regular Languages" — confirms the earlier lect
 
 **PYQ reference:** `CSE331/pyq/other-faculty-assignments/` — past assignments from multiple faculty sections, see [pyq_index](pyq/pyq_index.md)
 
-> [!confirmed] **Component finalized: 4.75/10 — confirmed 2026-09-17 via the official CSE331 marks Google Sheet.** Both Assignment 1 parts (A and B) were missed (`task-history/tasks-history.md` #12) → Assignment 1 total = 0/10. Assignment 2 Part A = 4.5/5 (post-penalty, #36), Part B = **5/5** (newly confirmed, #48) → Assignment 2 total = 9.5/10. Overall component = average of the two assignments' totals = (0 + 9.5)/2 = **4.75/10**, no components still pending.
+> **Confirmed:** **Component finalized: 4.75/10 — confirmed 2026-09-17 via the official CSE331 marks Google Sheet.** Both Assignment 1 parts (A and B) were missed (`task-history/tasks-history.md` #12) → Assignment 1 total = 0/10. Assignment 2 Part A = 4.5/5 (post-penalty, #36), Part B = **5/5** (newly confirmed, #48) → Assignment 2 total = 9.5/10. Overall component = average of the two assignments' totals = (0 + 9.5)/2 = **4.75/10**, no components still pending.
 
 ### Assignment 1 Part B — Common Mistake Patterns (aggregated, anonymized; TNF class feedback, 2026-07-26)
 

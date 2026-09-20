@@ -4,32 +4,58 @@ Study resources I put together for Operating Systems (CSE321), Theory of Computa
 
 **Read this file before digging into anything else — it'll save you time and explain what you're looking at.**
 
+## Start here
+
+Pick your course. Each has its own guide that tells you what to read first, in order, and links to everything else.
+
+| Course | Guide | Jump straight to |
+|---|---|---|
+| **CSE321** — Operating Systems | [CSE321/README.md](CSE321/README.md) | [exam notes](CSE321/cse321_exam_notes.md) · [past papers](CSE321/pyq/pyq_index.md) · [revision guides](CSE321/revision-guides) · [lab guide](CSE321/lab/README.md) |
+| **CSE331** — Theory of Computation | [CSE331/README.md](CSE331/README.md) | [exam notes](CSE331/cse331_exam_notes.md) · [past papers](CSE331/pyq/pyq_index.md) · [revision guides](CSE331/revision-guides) · [lecture notes](CSE331/lecture-notes) |
+| **CSE370** — Database Systems | [CSE370/README.md](CSE370/README.md) | [exam notes](CSE370/cse370_exam_notes.md) · [slides](CSE370/slides) · [revision guides](CSE370/revision-guides) · [lab guide](CSE370/lab/README.md) |
+
+And for all three: [`task-history/`](task-history/tasks-history.md) — my real quiz and exam scores, what went wrong, and why.
+
 ## What this is (and isn't)
 
 This is one student's personal resource archive, shared informally. It is not an official BRACU resource, not endorsed by any faculty member, and not guaranteed to be accurate for your section, semester, or faculty — course content, faculty assignments, and policies change. See the Caution section at the bottom.
 
-## How it's organized
+## Viewing the files
 
-- `CSE321/`, `CSE331/`, `CSE370/` — one folder per course. Not every course has every folder below (e.g. CSE331 has no `slides/` since none were provided; CSE370 has no `pyq/` since none exist for this course/section).
-  - `topics/` — topic maps, dependency graphs, and the course's own index page
-  - `concepts/` (CSE321, CSE370) / `lecture-notes/` (CSE331) — actual study notes: pre-filled module notes for CSE321, full lecture-by-lecture transcriptions for CSE331 (which has no faculty slides), topic concept notes for CSE370
-    - **Credit (CSE331):** lecture notes 1–6 are transcribed from Farhan Labib's handwritten notes; lecture 7 onward is from my own notes.
-    - **Coverage caveat (CSE321, CSE370):** these concise notes only exist for the post-midterm material. I didn't realise I needed them until after the midterm, so the pre-midterm topics don't have one. For those, rely on the faculty slides, the `resources/` mapping, and the topic maps instead.
-  - `resources/` — textbook chapter / practice sheet mapping per topic (links out to free textbooks, doesn't host commercial ones)
-  - `practice/` — faculty-issued or faculty-shared practice sheets (verified to be original material, not textbook excerpts). CSE321 has the questions only, with no solutions.
-  - `assignments/` — the faculty-issued assignment question PDFs only (CSE321 theory, CSE331 Parts A/B, CSE370 assignments 1–3). No solutions or submissions.
-  - `docs/` — faculty-issued course documents: course outlines and schedule, plus CSE321's exam questionnaire preparation strategy and CSE331's additional-resources list
-  - `lab/` (CSE321, CSE370) — faculty lab material. CSE321: lab outline, `lab-assignments/` (the two prompts), `lab-tasks/` (handouts, example code and practice problems for labs 0.1–6, plus the lottery-scheduling reading materials from lab 6: an OSTEP chapter and a UCR lecture deck), `project/` (the SimpleFS term-project specification, the supplementary animated walkthrough — the spec is authoritative if they differ — and a printout of the submission form's instructions). CSE370: `lab-assignments/` (the three prompts), `sheets/` (lab sheets and their data) and the lab submission template. Lab slides for CSE370 are under `slides/lab/`.
-  - `pyq/` — previous-question pattern analysis, plus the actual PYQ PDFs where available (CSE370 doesn't share PYQs — confirmed, not an oversight). CSE331 also has `pyq/other-faculty-assignments/`: past assignment sheets from other faculty sections, useful for practice but not written by TNF.
-  - `shared-notes/` (CSE331 only) — Turing Machines and Reducibility lecture notes that TNF shared with the class, with authors credited in `resources/cse331_resources.md`
-  - `slides/` — faculty lecture slides, where shared
-  - `mock-exams/` — self-built mock question sets
-  - `revision-guides/` — consolidated per-exam revision guides
-  - `{code}_exam_notes.md` (course root) — assessment-creator map (central vs. faculty), grading policy notes, and per-quiz/exam pattern breakdowns
-  - `reference-demos/` (CSE370 only) — a lab faculty's own demo project, shared for reference
-- A note on `.md` files: many faculty documents were originally Word/ODT files. Where they appear here as `.md`, they are text transcriptions made with AI assistance so GitHub can display them. The wording is the faculty's, but check exact numbers and figures against the original if it matters.
-- **My xv6 lab work:** [zareef-zunaid38/xv6-riscv](https://github.com/zareef-zunaid38/xv6-riscv) — a fork of MIT's xv6-riscv where I worked through the priority-scheduler exercise from the Lab 5/6 handouts (`lab-tasks/lab05`, `lab-tasks/lab06` here). Treat it as a reference for how the exercise can be approached, not as an answer key.
-- `task-history/` — my actual session/task log for the semester: real quiz and exam scores, what went wrong, why, and what I'd do differently. Included deliberately, not despite being unflattering in places — one person's mistake is another person's shortcut around the same mistake. Read it as a list of specific, avoidable failure patterns, not as a benchmark to compare yourself against.
+- **`.md` files** display normally on GitHub. Many faculty documents were originally Word/ODT files. Where they appear here as `.md`, they are text transcriptions made with AI assistance so GitHub can display them. The wording is the faculty's, but check exact numbers and figures against the original if it matters.
+- **`.html` files** (the revision guides, and the CSE321 SimpleFS walkthrough) show as source code if you open them on GitHub. Click the file, choose **Download raw file** (the download icon), then open the saved file in your browser. They are designed for phones too.
+- **`.pdf` and `.pptx` files** open or download from GitHub as usual.
+
+## How each course folder is organised
+
+Every course folder uses the same layout, so once you know one you know all three. Not every course has every folder (e.g. CSE331 has no `slides/` since none were provided; CSE370 has no past papers since none exist for this course/section).
+
+**Study material I wrote**
+
+- `topics/` — topic maps, dependency graphs, and the course's own index page
+- `concepts/` (CSE321, CSE370) / `lecture-notes/` (CSE331) — actual study notes: module notes for CSE321, full lecture-by-lecture transcriptions for CSE331 (which has no faculty slides), topic concept notes for CSE370
+  - **Credit (CSE331):** lecture notes 1–6 are transcribed from Farhan Labib's handwritten notes; lecture 7 onward is from my own notes.
+  - **Coverage note:** CSE370's concept notes only cover the post-midterm topics (19–24) — I didn't realise I'd need them until after the midterm, so for earlier topics use the faculty slides, the `resources/` mapping and the topic map. CSE321's module notes cover all eight modules: modules 1–4 (the midterm topics) were written in June, modules 5–8 (post-midterm) are drafts.
+- `resources/` — textbook chapter / practice sheet mapping per topic (links out to free textbooks, doesn't host commercial ones)
+- `{code}_exam_notes.md` (course root) — who writes each assessment (central vs. faculty), grading policy notes, and per-quiz/exam pattern breakdowns
+- `mock-exams/` — self-built mock question sets
+- `revision-guides/` — consolidated per-exam revision guides (HTML; see "Viewing the files")
+- `pyq/` — previous-question index and pattern analysis, plus the papers themselves where available. CSE331 also has `pyq/other-faculty-assignments/`: past assignment sheets from other faculty sections, useful for practice but not written by TNF.
+
+**Faculty material (not mine)**
+
+- `slides/` — faculty lecture slides, where shared
+- `practice/` — practice sheets. Faculty-issued or faculty-shared for the most part (original material, not textbook excerpts); CSE321 has the questions only, with no solutions. CSE331's folder also holds two study aids I compiled myself, which say so in their front matter.
+- `assignments/` — the faculty-issued assignment question PDFs only (CSE321 theory, CSE331 Parts A/B, CSE370 assignments 1–3). No solutions or submissions.
+- `docs/` — faculty-issued course documents: course outlines and schedule, plus CSE321's exam questionnaire preparation strategy and CSE331's additional-resources list
+- `lab/` (CSE321, CSE370) — faculty lab material; see the lab guide in each course
+- `shared-notes/` (CSE331 only) — Turing Machines and Reducibility lecture notes that TNF shared with the class, with authors credited in `resources/cse331_resources.md`
+- `reference-demos/` (CSE370 only) — a lab faculty's own demo project, shared for reference
+
+**Other**
+
+- **My xv6 lab work:** [zareef-zunaid38/xv6-riscv](https://github.com/zareef-zunaid38/xv6-riscv) — a fork of MIT's xv6-riscv where I worked through the priority-scheduler exercise from the Lab 5/6 handouts (`lab-tasks/lab05`, `lab-tasks/lab06` in [CSE321/lab](CSE321/lab/README.md)). Treat it as a reference for how the exercise can be approached, not as an answer key.
+- [`task-history/`](task-history/tasks-history.md) — my actual session/task log for the semester: real quiz and exam scores, what went wrong, why, and what I'd do differently. Included deliberately, not despite being unflattering in places — one person's mistake is another person's shortcut around the same mistake. Read it as a list of specific, avoidable failure patterns, not as a benchmark to compare yourself against.
 
 ## Caution
 

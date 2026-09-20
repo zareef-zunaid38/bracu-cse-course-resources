@@ -8,7 +8,7 @@ status: active
 
 ## Assessment Creator Map
 
-> [!confirmed] Assessment creator distinction confirmed 2026-06-27.
+> **Confirmed:** Assessment creator distinction confirmed 2026-06-27.
 > - **Centrally created (BRACU question committee):** Midterm, Final, Assignments, Lab (all except quiz)
 > - **Faculty written (NTR / MAFZ / SZD):** Theory quiz (NTR), Lab quiz (MAFZ / SZD)
 >
@@ -63,9 +63,9 @@ Note: Protection and Security carry conceptual questions only per the confirmed 
 **Created by:** Central (BRACU)
 **PYQ location:** `CSE321/pyq/` — multiple semesters available, see [pyq_index](pyq/pyq_index.md)
 
-> [!note] Grading, per NTR (stated in-class 2026-08-24): even though the Final is centrally created, NTR grades her own section's scripts to the central rubric's numbers, sometimes showing leniency. So central creation sets the questions, not necessarily the mark-by-mark strictness — worth keeping in mind for borderline answers rather than assuming zero-tolerance rubric adherence.
+> **Note:** Grading, per NTR (stated in-class 2026-08-24): even though the Final is centrally created, NTR grades her own section's scripts to the central rubric's numbers, sometimes showing leniency. So central creation sets the questions, not necessarily the mark-by-mark strictness — worth keeping in mind for borderline answers rather than assuming zero-tolerance rubric adherence.
 
-> [!confirmed] **Final result: 24/35 (68.6%) — from NTR's posted final marks, 2026-09-20.** The faculty shared only the final mark and grade; no per-question breakdown exists. **Course total: 65.25/100 → C+ (2.30)** — Lab 21.25/25 + Assignments 5/5 + Quizzes 5.00/10 + Midterm 10/25 + Final 24/35. **Grade confirmed:** NTR's posted final grade shows C+, matching the computation and confirming the 65 band edge. Archived to `task-history/tasks-history.md` #45.
+> **Confirmed:** **Final result: 24/35 (68.6%) — from NTR's posted final marks, 2026-09-20.** The faculty shared only the final mark and grade; no per-question breakdown exists. **Course total: 65.25/100 → C+ (2.30)** — Lab 21.25/25 + Assignments 5/5 + Quizzes 5.00/10 + Midterm 10/25 + Final 24/35. **Grade confirmed:** NTR's posted final grade shows C+, matching the computation and confirming the 65 band edge. Archived to `task-history/tasks-history.md` #45.
 
 <!-- Add pattern notes here -->
 
@@ -76,11 +76,11 @@ Note: Protection and Security carry conceptual questions only per the confirmed 
 **Weight:** 10% (4 quizzes, best 3 averaged)
 **Created by:** NTR
 
-> [!note] Grading policy (NTR, stated in-class 2026-08-24): no partial marks on quiz questions — full marks per question or none.
+> **Note:** Grading policy (NTR, stated in-class 2026-08-24): no partial marks on quiz questions — full marks per question or none.
 
-> [!note] Quiz difficulty ranking, NTR's own stated ranking (in-class, 2026-08-31): hardest to easiest — **Quiz 3 > Quiz 1 > Quiz 4 > Quiz 2**. **Cross-checked against official results, all four quizzes now graded (confirmed 2026-09-06):** Quiz 1 = 2.5/10 (first recorded as 2/10, see the Makeup Quiz callout below), Quiz 2 = 0/10 (missed), Quiz 3 = 6/10, Quiz 4 = 1/10 (`task-history/tasks-history.md` #5, #17, #27, #36). The ranking does not hold against actual scores — Quiz 3 (stated hardest) scored *highest*, and Quiz 4 (stated easier than Quiz 1 and Quiz 3) scored *lowest* among sat quizzes. Read with caution: score is confounded by prep depth (Quiz 4 was a near-cold-start attempt, `tasks-history.md` #36) as much as by question difficulty, so this doesn't necessarily disprove NTR's ranking — it shows self-reported prep effort dominated the outcome more than intrinsic quiz difficulty did this cycle.
+> **Note:** Quiz difficulty ranking, NTR's own stated ranking (in-class, 2026-08-31): hardest to easiest — **Quiz 3 > Quiz 1 > Quiz 4 > Quiz 2**. **Cross-checked against official results, all four quizzes now graded (confirmed 2026-09-06):** Quiz 1 = 2.5/10 (first recorded as 2/10, see the Makeup Quiz callout below), Quiz 2 = 0/10 (missed), Quiz 3 = 6/10, Quiz 4 = 1/10 (`task-history/tasks-history.md` #5, #17, #27, #36). The ranking does not hold against actual scores — Quiz 3 (stated hardest) scored *highest*, and Quiz 4 (stated easier than Quiz 1 and Quiz 3) scored *lowest* among sat quizzes. Read with caution: score is confounded by prep depth (Quiz 4 was a near-cold-start attempt, `tasks-history.md` #36) as much as by question difficulty, so this doesn't necessarily disprove NTR's ranking — it shows self-reported prep effort dominated the outcome more than intrinsic quiz difficulty did this cycle.
 
-> [!confirmed] **Makeup Quiz officially graded: 6.5/10 — confirmed 2026-09-17 via "321 marks.png.pdf" gradesheet screenshot.** The makeup quiz (Virtual Memory, sat 2026-09-08) replaces the missed Quiz 2 (0/10, `task-history/tasks-history.md` #17) in the best-3-of-4 pool, per standing course policy that a makeup supersedes the slot it was sat to cover — not an additional 5th score. **Best-3-of-4 pool is now: Quiz 1 = 2.5/10, Makeup (replacing Quiz 2) = 6.5/10, Quiz 3 = 6/10, Quiz 4 = 1/10 → drop Quiz 4 (lowest) → average of {2.5, 6.5, 6} = 5.00/10.** **Quiz 1 discrepancy resolved 2026-09-20:** the same screenshot shows Quiz 1 as 2.5/10, and the 2/10 first recorded on 2026-08-09 was the integer version of the same mark (per the user) — 2.5/10 is the figure of record. Midterm (10/25) and Quiz 3/4 (6/10, 1/10) on the same sheet match already-confirmed figures exactly, supporting the sheet's reliability overall.
+> **Confirmed:** **Makeup Quiz officially graded: 6.5/10 — confirmed 2026-09-17 via "321 marks.png.pdf" gradesheet screenshot.** The makeup quiz (Virtual Memory, sat 2026-09-08) replaces the missed Quiz 2 (0/10, `task-history/tasks-history.md` #17) in the best-3-of-4 pool, per standing course policy that a makeup supersedes the slot it was sat to cover — not an additional 5th score. **Best-3-of-4 pool is now: Quiz 1 = 2.5/10, Makeup (replacing Quiz 2) = 6.5/10, Quiz 3 = 6/10, Quiz 4 = 1/10 → drop Quiz 4 (lowest) → average of {2.5, 6.5, 6} = 5.00/10.** **Quiz 1 discrepancy resolved 2026-09-20:** the same screenshot shows Quiz 1 as 2.5/10, and the 2/10 first recorded on 2026-08-09 was the integer version of the same mark (per the user) — 2.5/10 is the figure of record. Midterm (10/25) and Quiz 3/4 (6/10, 1/10) on the same sheet match already-confirmed figures exactly, supporting the sheet's reliability overall.
 
 **Chapter 8 quiz (announced 2026-08-24, verbal only):** date given as 2026-08-31; later officially confirmed as Quiz 4, sat 2026-09-02, 1/10 (see `task-history/tasks-history.md` #36). "Chapter 8" = Memory Mgmt, Topics 24–26 in `cse321_topics.md` (memory basics/address spaces, contiguous allocation/fragmentation, paging) — user-confirmed 2026-08-24. Does not include Virtual Memory (Topic 27) or page replacement (Topic 28); same announcement flagged a probable makeup quiz on Virtual Memory covering that remainder, no date given at the time — see the Virtual Memory makeup entry directly below for the date NTR has since given.
 
@@ -170,7 +170,7 @@ Note: Protection and Security carry conceptual questions only per the confirmed 
 
 ## Lab Assessment Pattern
 
-**Weight:** 7% of lab grade per assessment slot (average of 2 assessments, out of 25 total lab marks — see `courses/CSE321/lab/lab_index.md`)
+**Weight:** 7% of lab grade per assessment slot (average of 2 assessments, out of 25 total lab marks)
 **Created by:** Central (BRACU) — see Assessment Creator Map above ("Lab — Other")
 
 ---

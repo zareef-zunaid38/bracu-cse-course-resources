@@ -16,7 +16,7 @@ prerequisites: []
 
 **Sources used:** `CSE370_Lecture_08_indexing_hashing.pdf` (primary for Topics 20–21 — this is what's actually examinable per the exam-notes rule), `CSE370_practice_ch11_indexing_hashing.pdf` (practice, solutions included). No PYQs exist for CSE370 yet (`pyq/pyq_index.md` — confirmed empty).
 
-> [!note] Textbook sourcing corrected 2026-09-06 (audit): `cse370_resources.md` maps this topic to Silberschatz 6e Ch 10–11 and Elmasri & Navathe 7e Ch 16–17, but the local copies are excerpts — Silberschatz's ends at Chapter 3, E&N's ends mid-Chapter 1. None of those four chapters are actually present in either file. Both citations have been removed rather than left implying the chapters were read (this affects not just Topic 19, as originally flagged, but Topics 20–21 too). This note is built entirely from the lecture slide and practice sheet above.
+> **Note:** Textbook sourcing corrected 2026-09-06 (audit): `cse370_resources.md` maps this topic to Silberschatz 6e Ch 10–11 and Elmasri & Navathe 7e Ch 16–17, but the local copies are excerpts — Silberschatz's ends at Chapter 3, E&N's ends mid-Chapter 1. None of those four chapters are actually present in either file. Both citations have been removed rather than left implying the chapters were read (this affects not just Topic 19, as originally flagged, but Topics 20–21 too). This note is built entirely from the lecture slide and practice sheet above.
 
 ---
 

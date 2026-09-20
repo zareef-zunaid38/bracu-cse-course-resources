@@ -27,37 +27,37 @@ Required for lab component. Read alongside Lab Classes 6–7 (xv6 introduction a
 ### Process (Topics 1–5)
 - Silberschatz Ch.3 (sections 3.1–3.4)
 - OSTEP Ch.4 (Process concept), Ch.5 (Process API — fork, exec, wait)
-- **Practice:** `practice/CSE321_practice_fork.docx` + `CSE321_practice_fork_solution.pdf` — work through all problems before midterm
+- **Practice:** [`practice/CSE321_practice_fork.md`](../practice/CSE321_practice_fork.md) — work through all problems before midterm (solutions are not included in this repo)
 - **Lab connection:** Lab 1 (System Calls, Week 3) and Lab 5 (IPC, Week 7)
 
 ### Threads (Topics 6–10)
 - Silberschatz Ch.4 (sections 4.1–4.6)
 - OSTEP Ch.26 (Concurrency intro), Ch.27 (Thread API)
-- **Practice:** `practice/CSE321_practice_threads.docx` — no solution provided; attempt independently
+- **Practice:** [`practice/CSE321_practice_threads.md`](../practice/CSE321_practice_threads.md) — no solution provided; attempt independently
 - **Lab connection:** Lab 4 (Threads and Synchronization, Week 6)
 
 ### CPU Scheduling (Topics 11–14)
 - Silberschatz Ch.5 (sections 5.1–5.3)
 - OSTEP Ch.7 (Scheduling: Introduction), Ch.8 (MLFQ) — MLFQ supplement used directly in slides
-- **Practice:** `practice/CSE321_practice_cpu_scheduling.docx` + `CSE321_practice_cpu_scheduling_mlfq_solution.png`
+- **Practice:** [`practice/CSE321_practice_cpu_scheduling.md`](../practice/CSE321_practice_cpu_scheduling.md)
 - **Key skill:** Given a process table with arrival times and burst times, draw the Gantt chart and calculate turnaround time, waiting time, and response time for all algorithms. This is the primary exam math pre-midterm.
 
 ### Synchronization (Topics 15–19)
 - Silberschatz Ch.6 (sections 6.1–6.8) and Ch.7 (section 7.1)
 - OSTEP Ch.28 (Locks), Ch.30 (Condition Variables), Ch.31 (Semaphores), Ch.32 (Common Concurrency Problems)
-- **Practice:** `practice/CSE321_practice_synchronization.docx` — no solution provided
+- **Practice:** [`practice/CSE321_practice_synchronization.md`](../practice/CSE321_practice_synchronization.md) — no solution provided
 - **Key skill:** Write semaphore-based solutions for the three classical problems (Bounded Buffer, Readers-Writers, Dining Philosophers). Recognize deadlock from a Resource Allocation Graph.
 
 ### File Systems (Topics 20–23)
 - Silberschatz Ch.11 (11.1.1), Ch.13 (13.1.1, 13.1.2), Ch.14 (14.4.3)
 - OSTEP Ch.40 (File System Implementation — VSFS), Ch.42 (Crash Consistency: FSCK and Journaling)
-- **Practice:** `practice/CSE321_practice_file_systems.docx` + `CSE321_practice_file_systems_solution.docx`
+- **Practice:** [`practice/CSE321_practice_file_systems.md`](../practice/CSE321_practice_file_systems.md)
 - **Key skill:** Given an inode structure, calculate the number of disk accesses needed to read a file of a given size. Understand direct, single-indirect, double-indirect blocks.
 
 ### Memory Management (Topics 24–28)
 - Silberschatz Ch.9 (9.1, 9.3, 9.4.1) and Ch.10 (10.1–10.2, 10.4)
 - OSTEP Ch.13 (Address Spaces), Ch.15 (Address Translation), Ch.18 (Paging), Ch.20 (TLBs), Ch.22 (Swapping)
-- **Practice:** `practice/CSE321_practice_memory_management.docx` + partial solutions (`_problem4_solution.png` through `_problem7_solution.jpg`)
+- **Practice:** [`practice/CSE321_practice_memory_management.md`](../practice/CSE321_practice_memory_management.md)
 - **Key skill (1):** Address translation — given logical address, page size, and page table, derive the physical address.
 - **Key skill (2):** Page replacement — given a reference string and frame count, trace FIFO, Optimal, and LRU to count page faults.
 - **Key skill (3):** Effective access time with TLB — calculate EAT given TLB hit rate and memory access times.
