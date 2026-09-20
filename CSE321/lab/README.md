@@ -30,7 +30,7 @@ The first assessment is on basic shell commands and C, which are **self-taught**
 
 - **Assignment 1** — [threads and synchronization](lab-assignments/CSE321_lab_assignment1.pdf) (multithreaded Fibonacci, and a sandwich-maker synchronization problem).
 - **Assignment 2** — [xv6 lottery scheduler](lab-assignments/CSE321_lab_assignment2.pdf): replace xv6's round-robin scheduler. Labs 5 and 6 are its groundwork.
-- **Term project** — [SimpleFS specification](<project/[Summer 2026] CSE321 Lab Project Specifications.pdf>): two C programs that build and fill a small file-system image. There is also a supplementary [animated walkthrough](project/CSE321_SimpleFS_Animated_Project_Walkthrough.html) (an HTML file, so download it and open it in a browser — the spec is authoritative if they differ) and a [printout of the submission form's instructions](<project/[Summer 2026] CSE321 Project Submission.pdf>).
+- **Term project** — [SimpleFS specification](<project/[Summer 2026] CSE321 Lab Project Specifications.pdf>): two C programs that build and fill a small file-system image. There is also a supplementary [animated walkthrough](https://zareef-zunaid38.github.io/bracu-cse-course-resources/CSE321/lab/project/CSE321_SimpleFS_Animated_Project_Walkthrough.html) (opens in the browser; the spec is authoritative if they differ) and a [printout of the submission form's instructions](<project/[Summer 2026] CSE321 Project Submission.pdf>).
 
 ## My xv6 work
 

@@ -17,13 +17,13 @@ There are **no past papers** for this course (no previous semester's questions a
 
 | Assessment | Use |
 |---|---|
-| Lab quiz 1 (SQL) | [revision guide](revision-guides/CSE370_labquiz1_sql.html) · [lab guide](lab/README.md) |
-| Quiz 2 (EER, constraints, schema mapping) | [revision guide](revision-guides/CSE370_quiz2_eer_constraints_mapping.html) |
-| Midterm | [revision guide](revision-guides/CSE370_midterm_revision_guide.html) · [official midterm review sheet](revision-guides/CSE370_midterm_review_sheet_official.pdf) |
-| Final | [revision guide](revision-guides/CSE370_final_revision_guide.html) · [mock final](mock-exams/cse370_final_mock_exam.md) |
+| Lab quiz 1 (SQL) | [revision guide](https://zareef-zunaid38.github.io/bracu-cse-course-resources/CSE370/revision-guides/CSE370_labquiz1_sql.html) · [lab guide](lab/README.md) |
+| Quiz 2 (EER, constraints, schema mapping) | [revision guide](https://zareef-zunaid38.github.io/bracu-cse-course-resources/CSE370/revision-guides/CSE370_quiz2_eer_constraints_mapping.html) |
+| Midterm | [revision guide](https://zareef-zunaid38.github.io/bracu-cse-course-resources/CSE370/revision-guides/CSE370_midterm_revision_guide.html) · [official midterm review sheet](revision-guides/CSE370_midterm_review_sheet_official.pdf) |
+| Final | [revision guide](https://zareef-zunaid38.github.io/bracu-cse-course-resources/CSE370/revision-guides/CSE370_final_revision_guide.html) · [mock final](mock-exams/cse370_final_mock_exam.md) |
 | Assignments | [prompts](assignments) |
 
-The revision guides are HTML files: download them and open in a browser (see the [main README](../README.md#viewing-the-files)).
+The revision-guide links above open as rendered pages in your browser (phone-friendly), not as source code. The [main README](../README.md#viewing-the-files) explains why.
 
 ## What is in each folder
 

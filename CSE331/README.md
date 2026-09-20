@@ -17,14 +17,14 @@ There are **no faculty lecture slides** for this course, so the [lecture notes](
 
 | Assessment | Use |
 |---|---|
-| Quiz 1 (DFAs, cross product) | [revision guide](revision-guides/CSE331_quiz1_dfa.html) |
-| Quiz 2 (regular expressions, FA to RE) | [revision guide](revision-guides/CSE331_quiz2_regex.html) · [regex practice](practice/CSE331_regex_practice_2024.md) |
-| Midterm (regular languages) | [revision guide](revision-guides/CSE331_midterm_regular_languages.html) · [pumping lemma exercises](practice/CSE331_pumping_lemma_exercises_solutions.pdf) · [rephrased proofs](practice/CSE331_pumping_lemma_rephrased_proofs.pdf) |
+| Quiz 1 (DFAs, cross product) | [revision guide](https://zareef-zunaid38.github.io/bracu-cse-course-resources/CSE331/revision-guides/CSE331_quiz1_dfa.html) |
+| Quiz 2 (regular expressions, FA to RE) | [revision guide](https://zareef-zunaid38.github.io/bracu-cse-course-resources/CSE331/revision-guides/CSE331_quiz2_regex.html) · [regex practice](practice/CSE331_regex_practice_2024.md) |
+| Midterm (regular languages) | [revision guide](https://zareef-zunaid38.github.io/bracu-cse-course-resources/CSE331/revision-guides/CSE331_midterm_regular_languages.html) · [pumping lemma exercises](practice/CSE331_pumping_lemma_exercises_solutions.pdf) · [rephrased proofs](practice/CSE331_pumping_lemma_rephrased_proofs.pdf) |
 | Quizzes 3–5 (pumping lemma, CFG, PDA) | [exam notes](cse331_exam_notes.md) · [quiz papers](pyq/pyq_index.md) |
 | Final | [mock final](mock-exams/cse331_final_mock_exam.md) · [pattern analysis](pyq/CSE331_final_probable_questions.md) · [past finals](pyq/pyq_index.md) |
 | Assignments | [prompts](assignments) · [other faculty's assignments for extra practice](pyq/other-faculty-assignments) |
 
-The revision guides are HTML files: download them and open in a browser (see the [main README](../README.md#viewing-the-files)).
+The revision-guide links above open as rendered pages in your browser (phone-friendly), not as source code. The [main README](../README.md#viewing-the-files) explains why.
 
 ## What is in each folder
 

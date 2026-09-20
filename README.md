@@ -6,7 +6,7 @@ Study resources I put together for Operating Systems (CSE321), Theory of Computa
 
 ## Start here
 
-Pick your course. Each has its own guide that tells you what to read first, in order, and links to everything else.
+The revision guides can be read straight in the browser on the [project site](https://zareef-zunaid38.github.io/bracu-cse-course-resources/). For everything else, pick your course. Each has its own guide that tells you what to read first, in order, and links to everything else.
 
 | Course | Guide | Jump straight to |
 |---|---|---|
@@ -23,7 +23,7 @@ This is one student's personal resource archive, shared informally. It is not an
 ## Viewing the files
 
 - **`.md` files** display normally on GitHub. Many faculty documents were originally Word/ODT files. Where they appear here as `.md`, they are text transcriptions made with AI assistance so GitHub can display them. The wording is the faculty's, but check exact numbers and figures against the original if it matters.
-- **`.html` files** (the revision guides, and the CSE321 SimpleFS walkthrough) show as source code if you open them on GitHub. Click the file, choose **Download raw file** (the download icon), then open the saved file in your browser. They are designed for phones too.
+- **`.html` files** (the revision guides, and the CSE321 SimpleFS walkthrough) are meant to be read as web pages. GitHub shows them as source code if you open the file here, so use the links in the course guides instead, or the [project site](https://zareef-zunaid38.github.io/bracu-cse-course-resources/), which opens them properly in your browser. They are designed for phones too. If you have no connection, click the file here, choose **Download raw file**, and open the saved file in your browser.
 - **`.pdf` and `.pptx` files** open or download from GitHub as usual.
 
 ## How each course folder is organised

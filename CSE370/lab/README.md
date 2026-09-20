@@ -12,7 +12,7 @@ Lab work is a large share of the marks in this course. The assessments are SQL q
 | The three lab assignment prompts | [`lab-assignments/`](lab-assignments) |
 | Lab slides | [`../slides/lab/`](../slides/lab) |
 | Format for submitting an assignment | [`CSE370_lab_submission_template.md`](CSE370_lab_submission_template.md) |
-| SQL revision guide for the lab quiz | [`../revision-guides/CSE370_labquiz1_sql.html`](../revision-guides/CSE370_labquiz1_sql.html) (HTML: download it and open in a browser) |
+| SQL revision guide for the lab quiz | [`../revision-guides/CSE370_labquiz1_sql.html`](https://zareef-zunaid38.github.io/bracu-cse-course-resources/CSE370/revision-guides/CSE370_labquiz1_sql.html) (opens in the browser) |
 | Demo project shown by a lab faculty | [`../reference-demos/`](../reference-demos) |
 
 ## The labs in order

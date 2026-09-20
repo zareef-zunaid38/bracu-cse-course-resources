@@ -15,14 +15,14 @@ Summer 2026 · theory: NTR · lab: MAFZ / SZD. Back to the [main README](../READ
 
 | Assessment | Use |
 |---|---|
-| Quiz 1 (processes) | [revision guide](revision-guides/CSE321_quiz1_process.html) · [module 1](concepts/CSE321_m1_process.md) |
-| Quiz 2 (CPU scheduling) | [revision guide](revision-guides/CSE321_quiz2_cpu_scheduling.html) · [module 3](concepts/CSE321_m3_cpu_scheduling.md) · [practice sheet](practice/CSE321_practice_cpu_scheduling.md) |
-| Midterm | [consolidated guide](revision-guides/CSE321_midterm_consolidated.html) · [pattern analysis](pyq/CSE321_midterm_probable_questions.md) · [past papers](pyq/pyq_index.md) |
-| Final | [revision guide](revision-guides/CSE321_final_revision_guide.html) · [mock final](mock-exams/cse321_final_mock_exam.md) · [pattern analysis](pyq/CSE321_final_probable_questions.md) |
+| Quiz 1 (processes) | [revision guide](https://zareef-zunaid38.github.io/bracu-cse-course-resources/CSE321/revision-guides/CSE321_quiz1_process.html) · [module 1](concepts/CSE321_m1_process.md) |
+| Quiz 2 (CPU scheduling) | [revision guide](https://zareef-zunaid38.github.io/bracu-cse-course-resources/CSE321/revision-guides/CSE321_quiz2_cpu_scheduling.html) · [module 3](concepts/CSE321_m3_cpu_scheduling.md) · [practice sheet](practice/CSE321_practice_cpu_scheduling.md) |
+| Midterm | [consolidated guide](https://zareef-zunaid38.github.io/bracu-cse-course-resources/CSE321/revision-guides/CSE321_midterm_consolidated.html) · [pattern analysis](pyq/CSE321_midterm_probable_questions.md) · [past papers](pyq/pyq_index.md) |
+| Final | [revision guide](https://zareef-zunaid38.github.io/bracu-cse-course-resources/CSE321/revision-guides/CSE321_final_revision_guide.html) · [mock final](mock-exams/cse321_final_mock_exam.md) · [pattern analysis](pyq/CSE321_final_probable_questions.md) |
 | Lab assessments, assignments, project | [lab guide](lab/README.md) |
 | Theory assignments | [assignments](assignments) |
 
-The revision guides are HTML files: download them and open in a browser (see the [main README](../README.md#viewing-the-files)).
+The revision-guide links above open as rendered pages in your browser (phone-friendly), not as source code. The [main README](../README.md#viewing-the-files) explains why.
 
 ## What is in each folder
 

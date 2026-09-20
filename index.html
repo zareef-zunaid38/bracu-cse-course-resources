@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSE321 · CSE331 · CSE370 Course Resources</title>
+<meta name="description" content="Study resources for CSE321, CSE331 and CSE370 at BRACU: revision guides you can read in the browser, and links to the full repository.">
+<style>
+  :root {
+    --bg: #ffffff; --card: #f5f7fa; --text: #1a2030; --muted: #566074;
+    --line: #dde3ec; --accent: #1f5fbf; --accent-soft: #e6effc;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #10141c; --card: #171d29; --text: #e8edf6; --muted: #98a3b8;
+      --line: #263042; --accent: #7db0ff; --accent-soft: #1c2740;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 16px 56px; }
+  h1 { font-size: 1.7rem; line-height: 1.25; margin: 0 0 8px; }
+  h2 { font-size: 1.15rem; margin: 0 0 4px; }
+  p { margin: 0 0 12px; }
+  .lead { color: var(--muted); }
+  a { color: var(--accent); }
+  .note {
+    background: var(--accent-soft); border-radius: 10px; padding: 12px 14px;
+    margin: 20px 0; font-size: .95rem;
+  }
+  .grid { display: grid; gap: 14px; margin-top: 20px; }
+  @media (min-width: 720px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 16px;
+  }
+  .card .sub { color: var(--muted); font-size: .9rem; margin-bottom: 10px; }
+  .card ul { margin: 0; padding-left: 18px; }
+  .card li { margin: 6px 0; }
+  .card .guide { display: inline-block; margin-top: 12px; font-weight: 600; }
+  footer { margin-top: 32px; color: var(--muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>CSE321 · CSE331 · CSE370<br>Course Resources</h1>
+  <p class="lead">Study resources for Operating Systems, Theory of Computation and Database Systems at BRACU, Summer 2026, shared for juniors. One student's personal archive: unofficial, and not guaranteed to match your section, semester or faculty.</p>
+
+  <div class="note">
+    <strong>This page is a shortcut to the revision guides,</strong> which you can read straight in the browser (phone-friendly). Everything else &mdash; topic maps, notes, past papers, slides, labs &mdash; lives in the
+    <a href="https://github.com/zareef-zunaid38/bracu-cse-course-resources">GitHub repository</a>.
+    Start with its <a href="https://github.com/zareef-zunaid38/bracu-cse-course-resources#readme">README</a>.
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>CSE321</h2>
+      <div class="sub">Operating Systems</div>
+      <ul>
+        <li><a href="CSE321/revision-guides/CSE321_quiz1_process.html">Quiz 1 &mdash; Processes</a></li>
+        <li><a href="CSE321/revision-guides/CSE321_quiz2_cpu_scheduling.html">Quiz 2 &mdash; CPU scheduling</a></li>
+        <li><a href="CSE321/revision-guides/CSE321_midterm_consolidated.html">Midterm &mdash; consolidated</a></li>
+        <li><a href="CSE321/revision-guides/CSE321_final_revision_guide.html">Final &mdash; topics 20&ndash;32</a></li>
+        <li><a href="CSE321/lab/project/CSE321_SimpleFS_Animated_Project_Walkthrough.html">SimpleFS project walkthrough</a></li>
+      </ul>
+      <a class="guide" href="https://github.com/zareef-zunaid38/bracu-cse-course-resources/tree/main/CSE321#readme">CSE321 guide &rarr;</a>
+    </section>
+
+    <section class="card">
+      <h2>CSE331</h2>
+      <div class="sub">Theory of Computation</div>
+      <ul>
+        <li><a href="CSE331/revision-guides/CSE331_quiz1_dfa.html">Quiz 1 &mdash; DFAs and cross product</a></li>
+        <li><a href="CSE331/revision-guides/CSE331_quiz2_regex.html">Quiz 2 &mdash; Regular expressions, FA to RE</a></li>
+        <li><a href="CSE331/revision-guides/CSE331_midterm_regular_languages.html">Midterm &mdash; Regular languages</a></li>
+      </ul>
+      <a class="guide" href="https://github.com/zareef-zunaid38/bracu-cse-course-resources/tree/main/CSE331#readme">CSE331 guide &rarr;</a>
+    </section>
+
+    <section class="card">
+      <h2>CSE370</h2>
+      <div class="sub">Database Systems</div>
+      <ul>
+        <li><a href="CSE370/revision-guides/CSE370_labquiz1_sql.html">Lab quiz 1 &mdash; SQL</a></li>
+        <li><a href="CSE370/revision-guides/CSE370_quiz2_eer_constraints_mapping.html">Quiz 2 &mdash; EER, constraints, mapping</a></li>
+        <li><a href="CSE370/revision-guides/CSE370_midterm_revision_guide.html">Midterm revision</a></li>
+        <li><a href="CSE370/revision-guides/CSE370_final_revision_guide.html">Final &mdash; topics 19&ndash;24</a></li>
+      </ul>
+      <a class="guide" href="https://github.com/zareef-zunaid38/bracu-cse-course-resources/tree/main/CSE370#readme">CSE370 guide &rarr;</a>
+    </section>
+  </div>
+
+  <footer>
+    Feel free to use any of it, and good luck. Questions or corrections: open an issue on the repository.
+  </footer>
+</main>
+</body>
+</html>
