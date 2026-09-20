@@ -1,0 +1,1140 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE370 — EER, Constraints & Schema Mapping | Revision</title>
+
+  <style>
+    :root[data-theme="light"] {
+      --bg:           #f5f6fa;
+      --surface:      #ffffff;
+      --surface-2:    #f0f1f5;
+      --border:       #dde1eb;
+      --text:         #1e2030;
+      --text-muted:   #6b7280;
+      --accent:       #2563eb;
+      --accent-bg:    #eff6ff;
+      --high:         #dc2626;
+      --high-bg:      #fef2f2;
+      --high-border:  #fecaca;
+      --med:          #b45309;
+      --med-bg:       #fffbeb;
+      --med-border:   #fde68a;
+      --low:          #2563eb;
+      --low-bg:       #eff6ff;
+      --low-border:   #bfdbfe;
+      --scan-bg:      #1e2030;
+      --scan-text:    #f8fafc;
+      --scan-surface: #2d3048;
+      --scan-border:  #3d4160;
+      --code-bg:      #1a1b26;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
+      --shadow:       0 2px 8px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.06);
+    }
+    :root[data-theme="dark"] {
+      --bg:           #0d0f18;
+      --surface:      #181b2a;
+      --surface-2:    #212438;
+      --border:       #2e3250;
+      --text:         #e2e8f0;
+      --text-muted:   #94a3b8;
+      --accent:       #60a5fa;
+      --accent-bg:    #1e2d45;
+      --high:         #f87171;
+      --high-bg:      #2d1b1b;
+      --high-border:  #7f1d1d;
+      --med:          #fbbf24;
+      --med-bg:       #2d2310;
+      --med-border:   #78350f;
+      --low:          #60a5fa;
+      --low-bg:       #1e2d45;
+      --low-border:   #1e40af;
+      --scan-bg:      #0d0f18;
+      --scan-text:    #e2e8f0;
+      --scan-surface: #181b2a;
+      --scan-border:  #2e3250;
+      --code-bg:      #0d0f18;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.3);
+      --shadow:       0 2px 8px rgba(0,0,0,.4);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+    p  { margin-bottom: .5rem; font-size: .9rem; }
+    ul, ol { padding-left: 1.3rem; font-size: .9rem; }
+    li { margin-bottom: .3rem; }
+    strong { font-weight: 700; }
+
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--shadow-sm);
+    }
+    .site-header-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: .6rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+    .header-title { font-size: 1rem; font-weight: 800; letter-spacing: -.01em; }
+    .header-sub { font-size: .78rem; color: var(--text-muted); margin-top: .1rem; }
+    .theme-btn {
+      flex-shrink: 0;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: .3rem .75rem;
+      border-radius: .5rem;
+      cursor: pointer;
+      font-size: .82rem;
+      font-family: inherit;
+      transition: background .15s;
+    }
+    .theme-btn:hover { background: var(--border); }
+
+    .site-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0 1rem;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .site-nav::-webkit-scrollbar { display: none; }
+    .site-nav a {
+      display: inline-block;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: .78rem;
+      font-weight: 500;
+      padding: .55rem .6rem;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .site-nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .meta-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
+    .meta-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .5rem;
+      padding: .35rem .75rem;
+      font-size: .78rem;
+      display: flex;
+      gap: .35rem;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .meta-pill-label { color: var(--text-muted); }
+    .meta-pill-value { font-weight: 700; }
+
+    .container { max-width: 920px; margin: 0 auto; padding: 1.25rem 1rem; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .8rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .card-header {
+      padding: .75rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card-header:hover { background: var(--border); }
+    .card-icon { font-size: 1rem; flex-shrink: 0; }
+    .card-title { font-size: .95rem; font-weight: 700; flex: 1; }
+    .card-chevron { font-size: .75rem; color: var(--text-muted); transition: transform .2s; flex-shrink: 0; }
+    .card.collapsed .card-body  { display: none; }
+    .card.collapsed .card-chevron { transform: rotate(-90deg); }
+    .card-body { padding: 1.1rem; }
+
+    .card-scan { background: var(--scan-bg); border-color: var(--scan-border); }
+    .card-scan .card-header { background: var(--scan-surface); border-color: var(--scan-border); }
+    .card-scan .card-header:hover { background: var(--scan-border); }
+    .card-scan .card-title { color: var(--scan-text); }
+    .card-scan .card-icon  { color: #fbbf24; }
+    .card-scan .card-chevron { color: var(--scan-text); opacity: .6; }
+    .card-scan .card-body  { background: var(--scan-bg); }
+    .scan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: .65rem;
+      margin-bottom: .9rem;
+    }
+    .scan-tile { background: var(--scan-surface); border: 1px solid var(--scan-border); border-radius: .55rem; padding: .75rem .85rem; }
+    .scan-tile-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; color: #94a3b8; margin-bottom: .3rem; }
+    .scan-tile-value { font-size: .88rem; font-weight: 700; color: var(--scan-text); line-height: 1.4; }
+    .scan-tile.tile-high  .scan-tile-label { color: #f87171; }
+    .scan-tile.tile-warn  .scan-tile-label { color: #fbbf24; }
+    .scan-tile.tile-sig   .scan-tile-label { color: #60a5fa; }
+    .scan-divider { border: none; border-top: 1px solid var(--scan-border); margin: .85rem 0; }
+    .scan-list { color: var(--scan-text); font-size: .88rem; }
+    .scan-list li { margin-bottom: .45rem; }
+
+    .badge {
+      display: inline-block; font-size: .67rem; font-weight: 800; padding: .12rem .5rem;
+      border-radius: 999px; text-transform: uppercase; letter-spacing: .06em; line-height: 1.4; flex-shrink: 0;
+    }
+    .badge-high { background: var(--high-bg); color: var(--high); border: 1px solid var(--high-border); }
+    .badge-med  { background: var(--med-bg);  color: var(--med);  border: 1px solid var(--med-border); }
+    .badge-low  { background: var(--low-bg);  color: var(--low);  border: 1px solid var(--low-border); }
+
+    .concept { border-left: 3px solid var(--border); padding: .75rem .95rem; margin-bottom: .75rem; background: var(--surface-2); border-radius: 0 .5rem .5rem 0; }
+    .concept.imp-high { border-color: var(--high); }
+    .concept.imp-med  { border-color: var(--med); }
+    .concept.imp-low  { border-color: var(--low); }
+    .concept-title { font-weight: 700; font-size: .92rem; display: flex; align-items: center; gap: .45rem; margin-bottom: .4rem; flex-wrap: wrap; }
+    .concept-body { font-size: .88rem; }
+
+    .qa { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .65rem; overflow: hidden; }
+    .qa-q { padding: .65rem .9rem; font-weight: 600; font-size: .88rem; cursor: pointer; background: var(--surface-2); display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .qa-q:hover { background: var(--border); }
+    .qa-q-text { flex: 1; line-height: 1.5; }
+    .qa-q-right { display: flex; align-items: center; gap: .4rem; flex-shrink: 0; }
+    .qa-toggle { font-size: .7rem; color: var(--text-muted); }
+    .qa-a { padding: .7rem .9rem; font-size: .88rem; border-top: 1px solid var(--border); display: none; line-height: 1.6; }
+    .qa.open .qa-a   { display: block; }
+    .qa.open .qa-toggle::after  { content: '▲'; }
+    .qa-toggle::after { content: '▼'; }
+
+    .analytical { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .85rem; overflow: hidden; }
+    .analytical-head { padding: .65rem .9rem; background: var(--surface-2); border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: .55rem; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .analytical-head:hover { background: var(--border); }
+    .q-num { font-weight: 800; font-size: .82rem; color: var(--accent); flex-shrink: 0; margin-top: .1rem; }
+    .q-title { font-weight: 600; font-size: .88rem; flex: 1; line-height: 1.5; }
+    .analytical-body { padding: 1rem; display: none; }
+    .analytical.open .analytical-body { display: block; }
+    .analytical.open .card-chevron { transform: rotate(0); }
+
+    .steps { display: flex; flex-direction: column; gap: .6rem; }
+    .step { display: flex; gap: .7rem; align-items: flex-start; }
+    .step-num { width: 1.5rem; height: 1.5rem; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .72rem; font-weight: 800; flex-shrink: 0; margin-top: .1rem; }
+    .step-body { flex: 1; font-size: .88rem; line-height: 1.6; }
+
+    .callout { border-radius: .45rem; padding: .6rem .85rem; font-size: .85rem; margin-top: .75rem; line-height: 1.55; }
+    .callout-insight { background: var(--accent-bg); border-left: 3px solid var(--accent); }
+    .callout-insight strong { color: var(--accent); }
+    .callout-warn { background: var(--high-bg); border-left: 3px solid var(--high); }
+    .callout-warn strong { color: var(--high); }
+    .callout-note { background: var(--surface-2); border-left: 3px solid var(--text-muted); }
+    .callout-exam { background: var(--med-bg); border-left: 3px solid var(--med); }
+    .callout-exam strong { color: var(--med); }
+
+    .fig-pair { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: .75rem; }
+    @media (max-width: 600px) { .fig-pair { grid-template-columns: 1fr; } }
+    .fig-side-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .3rem; font-weight: 700; }
+
+    /* EER schematic tree (question figures) */
+    .eer-tree { display: flex; flex-direction: column; align-items: center; gap: .35rem; text-align: center; }
+    .eer-level { display: flex; gap: .7rem; flex-wrap: wrap; justify-content: center; }
+    .eer-level.small .eer-box { font-size: .66rem; min-width: 3.6rem; padding: .3rem .4rem; }
+    .eer-branch-col { display: flex; flex-direction: column; align-items: center; gap: .3rem; }
+    .eer-box { border: 2px solid var(--accent); border-radius: .4rem; padding: .4rem .65rem; background: var(--accent-bg); font-weight: 700; font-size: .76rem; min-width: 5rem; line-height: 1.3; }
+    .eer-box .eer-attrs { display: block; font-weight: 400; font-size: .65rem; color: var(--text-muted); margin-top: .15rem; }
+    .eer-branch { display: flex; flex-direction: column; align-items: center; gap: .15rem; }
+    .eer-stem { width: 2px; height: .55rem; background: var(--text-muted); }
+    .eer-stem.total { width: 5px; background: transparent; border-left: 2px solid var(--text-muted); border-right: 2px solid var(--text-muted); }
+    .eer-stem.uncertain { width: 4px; height: .55rem; background: transparent; border-left: 2px dashed var(--text-muted); }
+    .eer-symbol { width: 1.35rem; height: 1.35rem; border-radius: 50%; border: 2px solid var(--text); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .68rem; background: var(--surface); }
+    .eer-note { font-size: .66rem; color: var(--text-muted); font-style: italic; margin-top: .2rem; }
+
+    /* Relational schema tables (answer figures) */
+    .rel-table { border: 1px solid var(--border); border-radius: .4rem; overflow: hidden; font-size: .72rem; margin-bottom: .5rem; text-align: left; }
+    .rel-table-name { background: var(--surface-2); padding: .25rem .5rem; font-weight: 700; border-bottom: 1px solid var(--border); }
+    .rel-table-cols { display: flex; flex-wrap: wrap; gap: .25rem; padding: .4rem .5rem; }
+    .rel-col { padding: .08rem .35rem; border: 1px solid var(--border); border-radius: .25rem; background: var(--surface); white-space: nowrap; }
+    .rel-col.pk { text-decoration: underline; font-weight: 700; }
+    .rel-fk-note { font-size: .65rem; color: var(--accent); padding: 0 .5rem .35rem; }
+
+    .formula { background: var(--surface-2); border: 1px solid var(--border); border-radius: .5rem; padding: .75rem 1rem; margin-bottom: .75rem; }
+    .formula-name { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .4rem; font-weight: 700; }
+    .formula-display { font-family: 'Fira Code', 'Courier New', monospace; font-size: .95rem; text-align: center; padding: .5rem; color: var(--accent); font-weight: 600; overflow-x: auto; white-space: pre; }
+    .formula-vars { font-size: .82rem; color: var(--text-muted); margin-top: .4rem; }
+
+    .code-block { margin-bottom: .85rem; }
+    .code-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .3rem; font-weight: 700; }
+    pre { background: var(--code-bg); color: var(--code-text); padding: .9rem 1rem; border-radius: .5rem; overflow-x: auto; font-size: .82rem; line-height: 1.6; font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace; }
+    .code-analysis { margin-top: .5rem; font-size: .85rem; padding: .5rem .75rem; background: var(--surface-2); border-radius: .4rem; border-left: 3px solid var(--accent); }
+
+    .figure-wrap { margin-bottom: 1rem; }
+    .legend-box { border: 1px solid var(--border); border-radius: .55rem; padding: 1rem; background: var(--surface-2); }
+    .legend-row { display: flex; align-items: center; gap: .75rem; padding: .4rem 0; border-bottom: 1px dashed var(--border); font-size: .85rem; }
+    .legend-row:last-child { border-bottom: none; }
+    .legend-symbol { width: 2.2rem; height: 2.2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .85rem; flex-shrink: 0; border: 2px solid var(--accent); color: var(--accent); background: var(--accent-bg); }
+    .legend-symbol.line-double { border-radius: 0; width: auto; height: auto; padding: .2rem .5rem; }
+    .figure-caption { font-size: .8rem; text-align: center; color: var(--text-muted); margin-top: .4rem; font-style: italic; }
+
+    .pattern-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .6rem; margin-bottom: .85rem; }
+    .pattern-tile { background: var(--surface-2); border: 1px solid var(--border); border-radius: .5rem; padding: .7rem .85rem; }
+    .pattern-tile-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); margin-bottom: .25rem; }
+    .pattern-freq { font-size: 1.6rem; font-weight: 900; color: var(--accent); line-height: 1.1; }
+    .pattern-desc { font-size: .78rem; color: var(--text-muted); margin-top: .2rem; }
+
+    .probable-list { display: flex; flex-direction: column; }
+    .probable-item { display: flex; gap: .75rem; align-items: flex-start; padding: .75rem 0; border-bottom: 1px solid var(--border); }
+    .probable-item:last-child { border-bottom: none; }
+    .prob-rank { width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: .82rem; flex-shrink: 0; }
+    .rank-1 { background: var(--high-bg); color: var(--high); border: 2px solid var(--high-border); }
+    .rank-2 { background: var(--med-bg);  color: var(--med);  border: 2px solid var(--med-border); }
+    .rank-3 { background: var(--low-bg);  color: var(--low);  border: 2px solid var(--low-border); }
+    .rank-n { background: var(--surface-2); color: var(--text-muted); border: 2px solid var(--border); }
+    .prob-content { flex: 1; }
+    .prob-q { font-size: .9rem; font-weight: 600; line-height: 1.5; }
+    .prob-reason { font-size: .8rem; color: var(--text-muted); margin-top: .2rem; line-height: 1.4; }
+
+    .mnemonic { background: var(--med-bg); border: 1px solid var(--med-border); border-radius: .5rem; padding: .75rem 1rem; margin-bottom: .6rem; }
+    .mnemonic-word { font-weight: 900; color: var(--med); font-size: 1.05rem; margin-bottom: .3rem; }
+    .mnemonic-body { font-size: .88rem; }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: .85rem 0; }
+    .section-intro { font-size: .82rem; color: var(--text-muted); margin-bottom: .85rem; line-height: 1.5; }
+
+    table.mini { width: 100%; border-collapse: collapse; font-size: .82rem; margin: .5rem 0; }
+    table.mini th, table.mini td { border: 1px solid var(--border); padding: .35rem .55rem; text-align: left; }
+    table.mini th { background: var(--surface-2); }
+
+    @media print {
+      .site-header, .site-nav, .theme-btn { display: none !important; }
+      .container { padding: 0; }
+      .card { box-shadow: none; page-break-inside: avoid; border: 1px solid #ccc; }
+      .card-body, .qa-a, .analytical-body { display: block !important; }
+      .card.collapsed .card-body { display: block !important; }
+      .card-scan { background: #fff; color: #000; }
+      .scan-tile { background: #f5f5f5; }
+      .scan-tile-value { color: #000; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      .site-header-inner { padding: .5rem .85rem; }
+      .container { padding: .85rem .65rem; }
+      .card-body { padding: .85rem; }
+      .formula-display { font-size: .82rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div>
+      <div class="header-title">CSE370 — EER, Constraints &amp; Schema Mapping</div>
+      <div class="header-sub">Theory Quiz 2 &nbsp;·&nbsp; Weeks 3–5 &nbsp;·&nbsp; Faculty: NFF</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">☀ / ☾</button>
+  </div>
+</header>
+
+<nav class="site-nav" aria-label="Page sections">
+  <a href="#scan">⚡ Morning Scan</a>
+  <a href="#theory">📖 Theory</a>
+  <a href="#short-q">❓ Short Qs</a>
+  <a href="#analytical">🧮 Analytical</a>
+  <a href="#math">∑ Math</a>
+  <a href="#code">💻 Code</a>
+  <a href="#figures">📊 Figures</a>
+  <a href="#patterns">🎯 Patterns</a>
+  <a href="#probable">🔮 Probable Qs</a>
+  <a href="#mnemonics">🧠 Mnemonics</a>
+</nav>
+
+<main class="container">
+
+  <div class="meta-bar">
+    <div class="meta-pill"><span class="meta-pill-label">Course</span><span class="meta-pill-value">CSE370</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Topic</span><span class="meta-pill-value">EER · Constraints · Schema Mapping</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Exam</span><span class="meta-pill-value">Quiz 2 (Theory)</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Date</span><span class="meta-pill-value">Mon, 2026-07-20</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Weight</span><span class="meta-pill-value">Quiz 10% (best 3/4)</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Built</span><span class="meta-pill-value">2026-07-18</span></div>
+  </div>
+
+  <!-- SECTION 0 — MORNING QUICK SCAN -->
+  <section class="card card-scan" id="scan">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">⚡</span>
+      <span class="card-title" style="color:var(--scan-text)">Morning Quick Scan</span>
+      <span class="card-chevron" style="color:var(--scan-text);opacity:.6">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="scan-grid">
+        <div class="scan-tile tile-high">
+          <div class="scan-tile-label">Must Know Cold</div>
+          <div class="scan-tile-value">d/o (disjoint/overlapping) + single/double line (partial/total) on EER; the 4 relational integrity constraints; the 7 ER→relational steps + Step 8 (8A–8D)</div>
+        </div>
+        <div class="scan-tile tile-warn">
+          <div class="scan-tile-label">Most Likely Tested</div>
+          <div class="scan-tile-value">Constructing/reading an EER diagram with specialization constraints, and mapping an EER diagram to a relational schema</div>
+        </div>
+        <div class="scan-tile">
+          <div class="scan-tile-label">Common Trap</div>
+          <div class="scan-tile-value">Disjointness (d/o) and completeness (single/double line) are two independent axes — mixing them up is the #1 error</div>
+        </div>
+        <div class="scan-tile tile-sig">
+          <div class="scan-tile-label">Faculty Signal</div>
+          <div class="scan-tile-value">Lecture 3 ends with two full worked EER design exercises, one explicitly marked "Try it yourself" — a design/construction question is likely</div>
+        </div>
+      </div>
+      <hr class="scan-divider">
+      <p style="font-size:.82rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Top 3 things to have ready before entering the exam:</p>
+      <ol class="scan-list">
+        <li>The EER notation legend cold: <strong>d</strong> = disjoint (max 1 subclass), <strong>o</strong> = overlapping (can be several), single line = partial, double line = total.</li>
+        <li>The 4 relational integrity constraints (Domain, Key, Entity Integrity, Referential Integrity) and one concrete violation example for each.</li>
+        <li>The Step 8 EER-mapping decision: 8A (multi-table, always works) vs 8B (subclass-only, total specializations) vs 8C (single table + 1 type flag, disjoint) vs 8D (single table + N flags, any case but wasteful for disjoint).</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- SECTION 1 — THEORY -->
+  <section class="card" id="theory">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📖</span>
+      <span class="card-title">Theory</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="concept imp-high">
+        <div class="concept-title">
+          Specialization &amp; Generalization
+          <span class="badge badge-high">HIGH</span>
+        </div>
+        <div class="concept-body">
+          <p><strong>Specialization</strong> is the process of defining a set of subclasses of a superclass, based on some distinguishing characteristic (e.g. Student → Undergrad, Graduate, by degree level). <strong>Generalization</strong> is the reverse: several entity types with common attributes are generalized into a superclass, and the originals become its subclasses (e.g. TheoryRoom + LabRoom → Classroom).</p>
+          <p>The subclass/superclass relationship is also called an <strong>IS-A relationship</strong> (an Undergrad IS-A Student). A subclass inherits <em>all</em> attributes and relationships of its superclass, plus it may define its own <strong>local</strong> attributes/relationships. A superclass can have <em>several independent specializations</em> at once (e.g. Faculty specializes both by contract type {Contractual, Full-time} and by rank {Lecturer, Assistant Prof, ...}).</p>
+          <div class="callout callout-warn">
+            <strong>Common error:</strong> given an EER diagram, you often cannot tell whether it was built via specialization or generalization — both produce the same diagram. Don't assume the direction from the picture alone.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">
+          Constraints on Specialization/Generalization
+          <span class="badge badge-high">HIGH</span>
+        </div>
+        <div class="concept-body">
+          <p>Two <em>independent</em> constraint types apply to every specialization:</p>
+          <ul>
+            <li><strong>Disjointness constraint</strong> (max membership) — <strong>d</strong> = disjoint: an entity belongs to at most 1 subclass in that specialization (e.g. a Vehicle is Car <em>or</em> Truck <em>or</em> Bus, never two). <strong>o</strong> = overlapping: an entity may belong to more than one subclass at once (e.g. a Student can be both StudentTutor and ResearchAssistant).</li>
+            <li><strong>Completeness constraint</strong> (min membership) — <strong>Total</strong> (double line): every superclass entity <em>must</em> belong to at least 1 subclass (e.g. every Student is Undergrad or Graduate). <strong>Partial</strong> (single line): an entity may belong to none of the subclasses (e.g. not every Student is a StudentTutor or ResearchAssistant).</li>
+          </ul>
+          <p>These combine into 4 possibilities: disjoint-total, disjoint-partial, overlapping-total, overlapping-partial.</p>
+          <div class="callout callout-insight">
+            <strong>Why it matters:</strong> the disjoint/overlapping + total/partial combination is exactly what determines which Step-8 mapping option (8A–8D) is valid — see Theory block below and the EER Mapping Options analytical question.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">
+          Relational Integrity Constraints (the 4)
+          <span class="badge badge-high">HIGH</span>
+        </div>
+        <div class="concept-body">
+          <p>Conditions that must hold on every valid relation state, preventing invalid data:</p>
+          <ul>
+            <li><strong>Domain constraint</strong> — every value in a tuple must come from its attribute's domain (data type + optional range/format), or be null if allowed. E.g. Age must be a positive integer &lt; 100.</li>
+            <li><strong>Key constraint</strong> — every value for a key must be unique across all tuples in the relation (no two rows share the same primary/candidate key value).</li>
+            <li><strong>Entity Integrity constraint</strong> — primary key attributes of a relation <em>cannot</em> be null in any tuple. If the PK is composite, none of its component attributes may be null. (Non-key attributes <em>can</em> still be separately constrained NOT NULL, but that's a different rule.)</li>
+            <li><strong>Referential Integrity constraint</strong> — a foreign key value must either (1) match an existing primary key value in the referenced table, or (2) be null — but only if that FK is <em>not itself part of the referencing table's primary key</em>.</li>
+          </ul>
+          <div class="callout callout-warn">
+            <strong>Common error:</strong> Entity Integrity only bans nulls in the <em>primary key</em>, not in every attribute — don't overgeneralize it.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">
+          Superkey, Key, Candidate Key, Primary Key, Foreign Key
+          <span class="badge badge-med">MED</span>
+        </div>
+        <div class="concept-body">
+          <p><strong>Superkey</strong> — any attribute (or set) that has a unique value for every tuple. <strong>Key</strong> — a <em>minimal</em> superkey: removing any attribute from it destroys uniqueness. A relation can have several keys, all called <strong>candidate keys</strong>; one is chosen as the <strong>primary key</strong> (standard practice: smallest/simplest candidate). <strong>Foreign key</strong> — an attribute (or set) in one relation that references the primary key of another (or the same, for recursive) relation.</p>
+          <ul>
+            <li>Example: in Student(ID, Name, Email), both {ID} and {Email} are candidate keys; {ID, Name} is a superkey but not a key (Name is not needed for uniqueness).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">
+          ER → Relational Mapping: Steps 1–7
+          <span class="badge badge-high">HIGH</span>
+        </div>
+        <div class="concept-body">
+          <p>Standard 7-step algorithm to turn an ER diagram into relational tables:</p>
+          <ol>
+            <li><strong>Regular entity types</strong> — one table each; simple attributes become columns, composite attributes contribute their simple components as columns, multivalued and derived attributes are skipped here.</li>
+            <li><strong>Weak entity types</strong> — one table each; add the owner's PK as a foreign key; the combined (owner FK + partial key) becomes the weak entity's PK.</li>
+            <li><strong>Binary N:M relationships</strong> — a new table (cross-referencing approach); add both sides' PKs as FKs, combined = new PK; add any relationship attributes here.</li>
+            <li><strong>Binary 1:N relationships</strong> — foreign-key approach (preferred over cross-referencing — more space efficient): add the "1" side's PK as an FK on the "N" side's table; relationship attributes also go on the "N" side.</li>
+            <li><strong>Binary 1:1 relationships</strong> — 3 options: cross-referencing (as step 3), merged relation (combine into one table — can waste space), or foreign key (add either side's PK as FK to the other — put it on the side with <em>total</em> participation to avoid nulls).</li>
+            <li><strong>Multivalued attributes</strong> — separate table per multivalued attribute; owner's PK as FK + the value itself (both underlined as combined PK). For multivalued-composite attributes, add only the simple components as separate columns.</li>
+            <li><strong>N-ary relationships</strong> — one table; PKs of <em>all</em> connected entities become FKs, combined as PK; plus any relationship attributes.</li>
+          </ol>
+          <p>Recursive relationships map the same way based on their cardinality (N:M → cross-referencing, 1:N → FK approach, 1:1 → either).</p>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">
+          EER → Relational Mapping: Step 8 (Specialization/Generalization)
+          <span class="badge badge-high">HIGH</span>
+        </div>
+        <div class="concept-body">
+          <p>Four options exist for mapping a specialization/generalization to tables:</p>
+          <table class="mini">
+            <tr><th>Option</th><th>Structure</th><th>Applies when</th></tr>
+            <tr><td>8A</td><td>Separate table for superclass + each subclass. Superclass PK is FK (and PK) in every subclass table.</td><td>Always valid — the general-purpose default.</td></tr>
+            <tr><td>8B</td><td>Table only for each subclass (no superclass table); superclass attributes duplicated into each.</td><td>Only if <strong>total</strong> — every superclass member belongs to some subclass. (If partial, non-member data is lost.)</td></tr>
+            <tr><td>8C</td><td>Single merged table + <strong>one</strong> "type" attribute as discriminator.</td><td>Only if <strong>disjoint</strong> — one type flag can't represent overlapping membership.</td></tr>
+            <tr><td>8D</td><td>Single merged table + <strong>N</strong> boolean flag attributes (one per subclass).</td><td>Works for any case, but wastes space for disjoint specializations (only 1 flag is ever true).</td></tr>
+          </table>
+          <div class="callout callout-insight">
+            <strong>Why it matters:</strong> the lecture's worked PERSON→EMPLOYEE/ALUMNUS/STUDENT example uses 8A for the top level but folds STUDENT_ASSISTANT's disjoint sub-specialization (Research/Teaching Assistant) into flags (<code>Ra_flag</code>, <code>Ta_flag</code>) inside the EMPLOYEE table — a mixed real-world design, not a pure textbook case.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">
+          Enforcing Constraints via SQL (ON DELETE / ON UPDATE)
+          <span class="badge badge-med">MED</span>
+        </div>
+        <div class="concept-body">
+          <p>Constraint enforcement in DDL: <code>PRIMARY KEY</code> + <code>NOT NULL</code> stop entity-integrity violations; <code>UNIQUE</code> stops key-constraint violations on non-PK candidate keys; data type + <code>CHECK</code> stop domain violations; <code>FOREIGN KEY ... REFERENCES</code> stops referential-integrity violations on insert.</p>
+          <p>For <strong>DELETE/UPDATE</strong> on a referenced row, the FK declaration's <code>ON DELETE</code> / <code>ON UPDATE</code> clause picks one of 3 behaviors: <strong>Restrict</strong> (block the operation), <strong>Cascade</strong> (propagate the delete/update to referencing rows), <strong>Set Null</strong> (null out the FK — only legal if that FK is not part of the referencing table's own PK).</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 2 — SHORT QUESTIONS -->
+  <section class="card" id="short-q">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">❓</span>
+      <span class="card-title">Short Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="section-intro">Tap a question to reveal the answer. Try to recall first.</p>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What is the difference between specialization and generalization?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">Specialization starts from a superclass and defines subclasses based on a distinguishing characteristic (top-down). Generalization starts from several entity types with shared attributes and merges them into one superclass, with the originals becoming subclasses (bottom-up). Given only the final EER diagram, you generally cannot tell which process produced it.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What do the symbols 'd' and 'o' mean on an EER diagram, and how is that different from single vs. double lines?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">'d' and 'o' encode the <strong>disjointness</strong> constraint: d = disjoint (entity belongs to at most one subclass), o = overlapping (can belong to more than one). Single vs. double connecting lines encode a completely separate constraint, <strong>completeness</strong>: single = partial (an entity may belong to none of the subclasses), double = total (every entity must belong to at least one). The two constraints combine independently — e.g. "overlapping-partial" is a valid combination.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Under what condition can a foreign key column contain NULL?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">Only if that foreign key attribute is <em>not</em> part of the referencing table's own primary key. If it is part of the PK, the Entity Integrity constraint forbids null regardless of what Referential Integrity would otherwise allow.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What's the difference between a superkey and a key (candidate key)?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">A superkey is any attribute set that uniquely identifies each tuple — it may contain redundant attributes. A key is a <em>minimal</em> superkey: every attribute in it is necessary for uniqueness, so removing any one of them breaks uniqueness. Every key is a superkey, but not every superkey is a key.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Why is the foreign-key approach preferred over cross-referencing for 1:N relationships?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">Cross-referencing (making a separate relationship table) works for 1:N but is inefficient — it duplicates the "1" side's key once per related row unnecessarily. The foreign-key approach instead adds a single FK column directly on the "N" side's table, avoiding the extra table and redundant storage.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">When mapping a weak entity type, what makes up its primary key in the relational schema?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">The combination of the owner entity's primary key (added as a foreign key) plus the weak entity's own partial key. Both are underlined together as the combined primary key of the weak entity's table.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">List the four EER-to-relational mapping options (8A–8D) and when each is valid.</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">8A: separate table for superclass + each subclass (always valid). 8B: tables only for subclasses, no superclass table (valid only if total — otherwise non-member data is lost). 8C: one merged table with a single type/discriminator attribute (valid only if disjoint). 8D: one merged table with N boolean flag attributes, one per subclass (valid for any case, but wastes space when disjoint).</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Which constraints can each of INSERT, DELETE, and UPDATE violate?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">INSERT can violate <strong>any of the 4</strong> (domain, key, entity integrity, referential integrity). DELETE can <strong>only</strong> violate referential integrity (deleting a row whose PK is still referenced elsewhere). UPDATE's exposure depends on which attribute is touched: domain constraint always possible; key/entity integrity if a key attribute is updated; referential integrity if a foreign key value or a referenced primary key value is updated.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">In a 1:1 relationship mapped via the foreign key approach, which side should get the FK?</span>
+          <span class="qa-q-right"><span class="badge badge-low">LOW</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">Put the foreign key on the entity table that has <strong>total participation</strong> in the relationship. That guarantees the FK column is never null on that side, avoiding wasted/unnecessary null values.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 3 — ANALYTICAL QUESTIONS -->
+  <section class="card" id="analytical">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧮</span>
+      <span class="card-title">Analytical Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q1</span>
+          <span class="q-title">Student(ID, Name, CGPA) specializes disjoint-total into Undergrad and PostGrad (PostGrad adds NID, major). Map to relational schema using Option 8A, then using Option 8C.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="fig-pair">
+            <div class="fig-side">
+              <div class="fig-side-label">Question — EER Diagram</div>
+              <div class="eer-tree">
+                <div class="eer-box">Student<span class="eer-attrs">ID, Name, CGPA</span></div>
+                <div class="eer-branch"><div class="eer-stem total"></div><div class="eer-symbol">d</div></div>
+                <div class="eer-level">
+                  <div class="eer-box">Undergrad</div>
+                  <div class="eer-box">PostGrad<span class="eer-attrs">NID, major</span></div>
+                </div>
+                <div class="eer-note">double stem = total &nbsp;·&nbsp; "d" = disjoint</div>
+              </div>
+            </div>
+            <div class="fig-side">
+              <div class="fig-side-label">Answer — Option 8A tables</div>
+              <div class="rel-table">
+                <div class="rel-table-name">Student</div>
+                <div class="rel-table-cols"><span class="rel-col pk">ID</span><span class="rel-col">Name</span><span class="rel-col">CGPA</span></div>
+              </div>
+              <div class="rel-table">
+                <div class="rel-table-name">Undergrad</div>
+                <div class="rel-table-cols"><span class="rel-col pk">ID</span></div>
+                <div class="rel-fk-note">ID = FK → Student</div>
+              </div>
+              <div class="rel-table">
+                <div class="rel-table-name">PostGrad</div>
+                <div class="rel-table-cols"><span class="rel-col pk">ID</span><span class="rel-col">NID</span><span class="rel-col">major</span></div>
+                <div class="rel-fk-note">ID = FK → Student</div>
+              </div>
+            </div>
+          </div>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body"><strong>Option 8A (multi-table):</strong> Student(<u>ID</u>, Name, CGPA). Undergrad(<u>ID</u>) with ID as FK→Student. PostGrad(<u>ID</u>, NID, major) with ID as FK→Student.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">Since the specialization is <strong>total</strong>, Option 8B would also be legal here (drop the Student table, push Name/CGPA into both Undergrad and PostGrad) — but the question asks for 8A and 8C specifically.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body"><strong>Option 8C (single table, disjoint ⇒ valid):</strong> Student(<u>ID</u>, Name, CGPA, NID, major, StudentType) — one merged table, StudentType ∈ {Undergrad, PostGrad} as the discriminator. NID/major are null for Undergrad rows.</div>
+            </div>
+          </div>
+          <div class="callout callout-insight">
+            <strong>Key insight:</strong> 8C is only legal because the specialization is disjoint — a single type column cannot express "belongs to both." If it were overlapping, only 8A or 8D would work.
+          </div>
+          <div class="callout callout-exam">
+            <strong>Exam note:</strong> always state <em>why</em> your chosen option is valid (cite the disjoint/overlapping and total/partial constraint) — faculty slides frame each option strictly in terms of these two constraints.
+          </div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q2</span>
+          <span class="q-title">Map the University "PERSON" EER (PERSON →overlapping, total most likely→ EMPLOYEE/ALUMNUS/STUDENT; EMPLOYEE →disjoint-total→ STAFF/FACULTY/STUDENT_ASSISTANT; STUDENT →disjoint-total→ GRADUATE/UNDERGRADUATE; STUDENT_ASSISTANT →disjoint-total→ RESEARCH/TEACHING; STUDENT_ASSISTANT is also a shared subclass of STUDENT) to a relational schema.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="fig-pair">
+            <div class="fig-side">
+              <div class="fig-side-label">Question — EER Diagram (3 levels shown)</div>
+              <div class="eer-tree">
+                <div class="eer-box">PERSON<span class="eer-attrs">Ssn, Name, Sex, Address, Birth_date</span></div>
+                <div class="eer-branch"><div class="eer-stem uncertain"></div><div class="eer-symbol">o</div></div>
+                <div class="eer-level">
+                  <div class="eer-branch-col">
+                    <div class="eer-box">EMPLOYEE<span class="eer-attrs">Salary</span></div>
+                    <div class="eer-branch"><div class="eer-stem total"></div><div class="eer-symbol">d</div></div>
+                    <div class="eer-level small">
+                      <div class="eer-box">STAFF<span class="eer-attrs">Position</span></div>
+                      <div class="eer-box">FACULTY<span class="eer-attrs">Rank</span></div>
+                      <div class="eer-box">STUDENT_<br>ASSISTANT<span class="eer-attrs">Percent_time</span></div>
+                    </div>
+                  </div>
+                  <div class="eer-branch-col">
+                    <div class="eer-box">ALUMNUS<span class="eer-attrs">Degrees(Y,D,M)</span></div>
+                  </div>
+                  <div class="eer-branch-col">
+                    <div class="eer-box">STUDENT<span class="eer-attrs">Major_dept</span></div>
+                    <div class="eer-branch"><div class="eer-stem total"></div><div class="eer-symbol">d</div></div>
+                    <div class="eer-level small">
+                      <div class="eer-box">GRADUATE<span class="eer-attrs">Degree_program</span></div>
+                      <div class="eer-box">UNDERGRAD<span class="eer-attrs">Class</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="eer-note">dashed stem = completeness unconfirmed from source · STUDENT_ASSISTANT is also a shared subclass of STUDENT (lattice link omitted here for readability) · STUDENT_ASSISTANT's own Research/Teaching split omitted, see Theory section</div>
+              </div>
+            </div>
+            <div class="fig-side">
+              <div class="fig-side-label">Answer — relational schema</div>
+              <div class="rel-table">
+                <div class="rel-table-name">PERSON</div>
+                <div class="rel-table-cols"><span class="rel-col pk">Ssn</span><span class="rel-col">Name</span><span class="rel-col">Birth_date</span><span class="rel-col">Sex</span><span class="rel-col">Address</span></div>
+              </div>
+              <div class="rel-table">
+                <div class="rel-table-name">EMPLOYEE</div>
+                <div class="rel-table-cols"><span class="rel-col pk">Ssn</span><span class="rel-col">Salary</span><span class="rel-col">Employee_type</span><span class="rel-col">Position</span><span class="rel-col">Rank</span><span class="rel-col">Percent_time</span><span class="rel-col">Ra_flag</span><span class="rel-col">Ta_flag</span><span class="rel-col">Project</span><span class="rel-col">Course</span></div>
+                <div class="rel-fk-note">Ssn = FK → PERSON</div>
+              </div>
+              <div class="rel-table">
+                <div class="rel-table-name">ALUMNUS</div>
+                <div class="rel-table-cols"><span class="rel-col pk">Ssn</span></div>
+                <div class="rel-fk-note">Ssn = FK → PERSON</div>
+              </div>
+              <div class="rel-table">
+                <div class="rel-table-name">ALUMNUS_DEGREES</div>
+                <div class="rel-table-cols"><span class="rel-col pk">Ssn</span><span class="rel-col pk">Year</span><span class="rel-col">Degree</span><span class="rel-col">Major</span></div>
+                <div class="rel-fk-note">Ssn = FK → ALUMNUS</div>
+              </div>
+              <div class="rel-table">
+                <div class="rel-table-name">STUDENT</div>
+                <div class="rel-table-cols"><span class="rel-col pk">Ssn</span><span class="rel-col">Major_dept</span><span class="rel-col">Grad_flag</span><span class="rel-col">Undergrad_flag</span><span class="rel-col">Degree_program</span><span class="rel-col">Class</span><span class="rel-col">Student_assist_flag</span></div>
+                <div class="rel-fk-note">Ssn = FK → PERSON</div>
+              </div>
+            </div>
+          </div>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">PERSON(<u>Ssn</u>, Name, Birth_date, Sex, Address) — the top-level regular entity (Step 1).</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">EMPLOYEE(<u>Ssn</u>, Salary, Employee_type, Position, Rank, Percent_time, Ra_flag, Ta_flag, Project, Course) — Option 8A gives EMPLOYEE its own table (Ssn FK→PERSON). Its own disjoint-<strong>total</strong> sub-specialization (Staff/Faculty/StudentAssistant — the problem states employees "must belong to only 1 type") is folded in via <strong>Option 8C</strong> (single <code>Employee_type</code> discriminator column, valid because disjoint). StudentAssistant's own disjoint-total Research/Teaching split is folded in separately via <strong>Option 8D</strong> (two flags, <code>Ra_flag</code>/<code>Ta_flag</code>) rather than a second 8C column, since Employee_type is already used as the outer discriminator.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">ALUMNUS(<u>Ssn</u>) + ALUMNUS_DEGREES(<u>Ssn</u>, <u>Year</u>, Degree, Major) — ALUMNUS is 8A (own table, Ssn FK→PERSON); its multivalued composite attribute "Degrees" becomes a separate table per Step 6, with Ssn+Year as the combined key.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body">STUDENT(<u>Ssn</u>, Major_dept, Grad_flag, Undergrad_flag, Degree_program, Class, Student_assist_flag) — STUDENT is 8A at the PERSON level. Its own disjoint-total Graduate/Undergraduate split is folded in via <strong>Option 8D</strong> (Grad_flag/Undergrad_flag). <code>Student_assist_flag</code> is a <em>different</em> EER concept, not a specialization option at all: the problem states "Student Assistant also inherits from Students," meaning STUDENT_ASSISTANT is a <strong>shared subclass</strong> of both EMPLOYEE and STUDENT (a lattice structure, per Lecture 3) — the flag simply marks whether this Ssn's student record also has a matching row in the EMPLOYEE/StudentAssistant branch.</div>
+            </div>
+          </div>
+          <div class="callout callout-insight">
+            <strong>Key insight:</strong> real EER designs mix mapping options freely — the top level (PERSON) uses 8A because PERSON's own specialization is overlapping (8C/8B are never valid for overlapping), while the disjoint <em>inner</em> sub-specializations are absorbed as 8C/8D flags/discriminators to avoid an explosion of tiny tables. Separately, a <strong>shared subclass</strong> (STUDENT_ASSISTANT under both EMPLOYEE and STUDENT) is not a specialization option at all — don't force it into 8A–8D; it just needs a cross-reference flag.
+          </div>
+          <div class="callout callout-warn">
+            <strong>Unverified:</strong> PERSON's own completeness (total vs. partial) is not explicitly stated in the source problem text — "there are only 3 types of persons in the university" suggests total, but re-check the actual slide diagram's line style before relying on this in the exam.
+          </div>
+          <div class="callout callout-exam">
+            <strong>Exam note:</strong> this exact example (PERSON/EMPLOYEE/ALUMNUS/STUDENT) is worked in full on the Lecture 5 slides — expect either this exact scenario or a close variant of it.
+          </div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q3</span>
+          <span class="q-title">Student(ID, Name, CGPA) "joins" Program(PID, Name, totalCredits) — a 1:N relationship (many Students, one Program), with relationship attribute completeCredit. Map using the foreign key approach.</span>
+          <span class="badge badge-med">MED</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">Identify the "1" side (Program) and the "N" side (Student) of the relationship.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">Add Program's PK as a foreign key on the Student table (the "N" side), not the other way around.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">Add the relationship attribute (completeCredit) to the same "N"-side table.</div>
+            </div>
+          </div>
+          <p style="margin-top:.5rem"><strong>Result:</strong> Program(<u>PID</u>, Name, totalCredits). Student(<u>ID</u>, Name, CGPA, PID, completeCredit) — PID is FK→Program.</p>
+          <div class="callout callout-insight">
+            <strong>Key insight:</strong> for 1:N, the FK always goes on the "many" side — putting it on the "1" side would require a multivalued column, which relational tables cannot hold directly.
+          </div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q4</span>
+          <span class="q-title">Given an EMPLOYEE–DEPARTMENT–PROJECT–DEPENDENT ER diagram (EMPLOYEE works_for/manages DEPARTMENT 1:N/1:1; DEPARTMENT controls PROJECT 1:N; EMPLOYEE works_on PROJECT M:N with Hours; EMPLOYEE supervises EMPLOYEE recursively 1:N; DEPENDENT is weak, owned by EMPLOYEE), produce the full relational schema.</span>
+          <span class="badge badge-med">MED</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body"><strong>Step 1 (regular entities):</strong> EMPLOYEE(<u>Ssn</u>, Fname, Minit, Lname, Bdate, Address, Sex, Salary), DEPARTMENT(<u>Dnumber</u>, Dname), PROJECT(<u>Pnumber</u>, Pname, Plocation).</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body"><strong>Step 2 (weak entity):</strong> DEPENDENT(<u>Essn</u>, <u>Dependent_name</u>, Sex, Bdate, Relationship) — Essn is EMPLOYEE's PK as FK, combined with the partial key Dependent_name.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body"><strong>Step 3 (N:M — works_on):</strong> WORKS_ON(<u>Essn</u>, <u>Pno</u>, Hours) — both PKs as combined FK/PK, plus the Hours attribute.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body"><strong>Step 4 (1:N — works_for, controls, recursive supervision):</strong> add Dno (Department FK) to EMPLOYEE; add Dnum (Department FK) to PROJECT; add Super_ssn (EMPLOYEE's own PK, recursive FK) to EMPLOYEE itself.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">5</div>
+              <div class="step-body"><strong>Step 5 (1:1 — manages):</strong> add Mgr_ssn + Mgr_start_date to DEPARTMENT (foreign-key approach, placed on DEPARTMENT since every department has exactly one manager — total participation there).</div>
+            </div>
+            <div class="step">
+              <div class="step-num">6</div>
+              <div class="step-body"><strong>Step 6 (multivalued):</strong> DEPT_LOCATIONS(<u>Dnumber</u>, <u>Dlocation</u>) for DEPARTMENT's multivalued Locations attribute.</div>
+            </div>
+          </div>
+          <div class="callout callout-insight">
+            <strong>Key insight:</strong> this is the canonical COMPANY database schema used throughout the course (and BRACU's own PYQ pool historically) — memorize the shape of it (6 tables: EMPLOYEE, DEPARTMENT, DEPT_LOCATIONS, PROJECT, WORKS_ON, DEPENDENT), since it recurs as a base scenario for constraint/normalization/SQL questions in later exams too.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 4 — MATHEMATICS -->
+  <section class="card" id="math">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">∑</span>
+      <span class="card-title">Mathematics</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="formula">
+        <div class="formula-name">Superkey (formal condition)</div>
+        <div class="formula-display">K is a superkey of R  ⇔
+∀ t1, t2 ∈ r(R), t1 ≠ t2  ⟹  t1[K] ≠ t2[K]</div>
+        <div class="formula-vars">Where: r(R) = the current set of tuples (rows) in relation R; t1[K] = the projection of tuple t1 onto attribute set K.</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Key (minimal superkey)</div>
+        <div class="formula-display">K is a key of R  ⇔
+K is a superkey  AND
+∀ A ∈ K,  (K − {A}) is NOT a superkey</div>
+        <div class="formula-vars">Where: A is any single attribute in K. The second line is the minimality test — every attribute must be pulling its weight.</div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Ex</span>
+          <span class="q-title">Given Student(ID, Name, Email, Phone) where ID and Email are each individually unique, classify {ID}, {ID, Name}, and {Email, Phone}.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">{ID}: unique on its own, and it's a single attribute so it's trivially minimal → it is a <strong>key</strong> (candidate key).</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">{ID, Name}: unique (since ID alone is unique), but removing Name still leaves {ID} unique → Name is redundant → this is a <strong>superkey but not a key</strong>.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">{Email, Phone}: Email alone is already unique, so {Email, Phone} is unique too, but Phone is redundant for uniqueness → also a <strong>superkey but not a key</strong> (the key here is really just {Email}).</div>
+            </div>
+          </div>
+          <div class="callout callout-insight">
+            <strong>Pattern:</strong> any superset of a key is automatically a superkey but never a key (minimality always fails once you add an unnecessary attribute).
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 5 — CODE -->
+  <section class="card" id="code">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">💻</span>
+      <span class="card-title">Code</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="code-block">
+        <div class="code-label">SQL — enforcing all 4 constraints on INSERT (Domain, Key, Entity Integrity, Referential Integrity)</div>
+        <pre><code>CREATE TABLE Student (
+  ID INT,
+  Name VARCHAR(100) NOT NULL,
+  EmailAdd VARCHAR(100) UNIQUE,
+  CGPA DECIMAL(3,2),
+  Dept CHAR(3),
+  PRIMARY KEY (ID),
+  FOREIGN KEY (Dept) REFERENCES Department(DeptID),
+  CHECK (CGPA >= 0.00 AND CGPA <= 4.00)
+);</code></pre>
+        <div class="code-analysis">
+          <code>PRIMARY KEY (ID)</code> enforces both the Key constraint and Entity Integrity (ID can't be null or duplicated). <code>UNIQUE</code> enforces the key constraint on a non-PK candidate key (EmailAdd). <code>CHECK</code> + the declared data type together enforce the Domain constraint. <code>FOREIGN KEY ... REFERENCES</code> enforces Referential Integrity on insert.
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-label">SQL — enforcing Referential Integrity on DELETE/UPDATE with cascade options</div>
+        <pre><code>CREATE TABLE Grades (
+  ID INT,
+  Ccode CHAR(6),
+  Grade VARCHAR(2),
+  PRIMARY KEY (ID, Ccode),
+  FOREIGN KEY (ID) REFERENCES Student(ID)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY (Ccode) REFERENCES Course(Ccode)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE
+);</code></pre>
+        <div class="code-analysis">
+          Deleting a Student row cascades to delete their Grades rows automatically (no orphaned FK). Deleting a Course row referenced by any Grades row is instead <strong>blocked</strong> (RESTRICT). Note: <code>SET NULL</code> is not usable here for either FK, because both ID and Ccode are part of this table's own composite primary key — Entity Integrity would forbid the null.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 6 — FIGURES & DIAGRAMS -->
+  <section class="card" id="figures">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📊</span>
+      <span class="card-title">Figures &amp; Diagrams</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="figure-wrap">
+        <div class="legend-box">
+          <div class="legend-row"><div class="legend-symbol">d</div><div>Disjoint — an entity belongs to <strong>at most one</strong> subclass in this specialization.</div></div>
+          <div class="legend-row"><div class="legend-symbol">o</div><div>Overlapping — an entity <strong>may belong to more than one</strong> subclass in this specialization.</div></div>
+          <div class="legend-row"><div class="legend-symbol line-double">══</div><div>Total (double line) — <strong>every</strong> superclass entity must belong to at least one subclass.</div></div>
+          <div class="legend-row"><div class="legend-symbol line-double">──</div><div>Partial (single line) — a superclass entity <strong>may belong to none</strong> of the subclasses.</div></div>
+        </div>
+        <p class="figure-caption">Fig 1. EER specialization/generalization notation legend — disjointness and completeness are independent axes.</p>
+      </div>
+
+      <div class="figure-wrap">
+        <div class="legend-box">
+          <div class="legend-row"><div>1</div><div>Regular entity types → one table each (simple + composite-component attributes as columns).</div></div>
+          <div class="legend-row"><div>2</div><div>Weak entity types → one table each, owner PK added as FK, combined with partial key = new PK.</div></div>
+          <div class="legend-row"><div>3</div><div>Binary N:M → new cross-reference table, both sides' PKs as combined FK/PK.</div></div>
+          <div class="legend-row"><div>4</div><div>Binary 1:N → FK on the "N" side, referencing the "1" side's PK.</div></div>
+          <div class="legend-row"><div>5</div><div>Binary 1:1 → FK on the side with total participation (or merge, or cross-reference).</div></div>
+          <div class="legend-row"><div>6</div><div>Multivalued attributes → separate table, owner PK + value as combined PK.</div></div>
+          <div class="legend-row"><div>7</div><div>N-ary relationships → new table, all connected PKs as combined FK/PK.</div></div>
+          <div class="legend-row"><div>8</div><div>Specialization/Generalization → choose 8A / 8B / 8C / 8D per the disjoint/overlapping + total/partial constraints.</div></div>
+        </div>
+        <p class="figure-caption">Fig 2. The 8-step ER/EER → relational mapping algorithm, condensed to one line each.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 7 — FACULTY PATTERN ANALYSIS -->
+  <section class="card" id="patterns">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🎯</span>
+      <span class="card-title">Faculty Pattern Analysis</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="callout callout-note">
+        <strong>Source:</strong> Quiz 1 (2026-06-29, Database Introduction/ER/EER) is the only prior theory quiz from this faculty (NFF) — result was still pending as of the last tracking update, and no specific question-by-question pattern was recorded from it.
+        <br><strong>Scope:</strong> Midterm and Final are centrally set at BRACU — any pattern data here would apply only to direct-faculty quizzes/assignments, never to the midterm/final.
+      </div>
+
+      <p><strong>Honest assessment — no confirmed frequency data yet:</strong></p>
+      <ul>
+        <li>Only one theory quiz has occurred under NFF so far, so no reliable "asks X every time" pattern can be claimed yet. Treat any specific prediction below as a slide-content inference, not an observed pattern.</li>
+        <li>Topic overlap: Quiz 1's syllabus (Database Intro, ER, EER) and Quiz 2's syllabus (EER, Constraints, Schema Mapping) share EER — if Quiz 1's actual questions become known before 2026-07-20, update this section.</li>
+        <li>Slide-based signal only: Lecture 3 (EER) ends with two full worked "Applying EER Concepts" design exercises, the second explicitly marked "Try it yourself" with hard constraints (≥1 disjoint-total specialization, ≥5 strong entities, a recursive relationship, a 1:1 relationship, a multivalued-composite attribute) — this is the strongest available signal that a similar constrained EER-design question is likely, but it is inference from slide structure, not a confirmed past-question pattern.</li>
+      </ul>
+
+    </div>
+  </section>
+
+  <!-- SECTION 8 — PROBABLE QUESTIONS -->
+  <section class="card" id="probable">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🔮</span>
+      <span class="card-title">Probable Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="probable-list">
+
+        <div class="probable-item">
+          <div class="prob-rank rank-1">1</div>
+          <div class="prob-content">
+            <div class="prob-q">Construct or interpret an EER diagram, correctly applying d/o and total/partial notation.</div>
+            <div class="prob-reason">Two full worked design exercises close out the EER lecture, one explicitly framed as a "try it yourself" exam-style task with a constraint checklist — strongest structural signal in the deck.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-2">2</div>
+          <div class="prob-content">
+            <div class="prob-q">Map a given EER diagram (with at least one specialization) to a relational schema, justifying the choice among Options 8A–8D.</div>
+            <div class="prob-reason">Lecture 5 devotes its entire second half to this exact skill, with two fully worked examples (Student/Undergrad/PostGrad, and the PERSON/EMPLOYEE/ALUMNUS/STUDENT university schema) — directly testable and central to this quiz's stated syllabus ("schema mapping").</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-3">3</div>
+          <div class="prob-content">
+            <div class="prob-q">Identify which relational integrity constraint (domain/key/entity/referential) a given bad INSERT/DELETE/UPDATE violates.</div>
+            <div class="prob-reason">Lecture 4 structures this as a direct enumeration with worked "violation" examples for all 4 constraints and all 3 operations — a natural short-answer/identification question format.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-n">4</div>
+          <div class="prob-content">
+            <div class="prob-q">Define/distinguish superkey, key, candidate key, primary key, foreign key — possibly with a short SQL constraint-declaration snippet.</div>
+            <div class="prob-reason">Foundational vocabulary explicitly covered before the constraint material; commonly used as an easy warm-up question in faculty-written quizzes generally.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 9 — MNEMONICS & MEMORY AIDS -->
+  <section class="card" id="mnemonics">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧠</span>
+      <span class="card-title">Mnemonics &amp; Memory Aids</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"d for divide, o for overlap"</div>
+        <div class="mnemonic-body">d (disjoint) splits entities into non-overlapping groups — think "d"ivide. o (overlapping) looks like a ring that can hold membership in multiple groups at once.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"Total = Two lines"</div>
+        <div class="mnemonic-body">Double line = Total participation (both start with a doubled sound: "To-tal", "Two"). Single line = Partial, the leftover case.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">DKER</div>
+        <div class="mnemonic-body">The 4 relational integrity constraints in the order the lecture presents them: <strong>D</strong>omain, <strong>K</strong>ey, <strong>E</strong>ntity integrity, <strong>R</strong>eferential integrity.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">Steps 1–7, by logical grouping (not a word mnemonic)</div>
+        <div class="mnemonic-body"><strong>Entities first</strong> (1. Regular → 2. Weak), then <strong>relationships in shrinking cardinality order</strong> (3. N:M → 4. 1:N → 5. 1:1), then <strong>leftover attributes</strong> (6. Multivalued), then <strong>everything connecting 3+ entities</strong> (7. N-ary). The order isn't arbitrary — entities must exist before anything can reference them, and N:M relationships need their own table before you can even ask whether a relationship "degrades" to 1:N or 1:1.</div>
+      </div>
+
+      <div class="callout callout-note">
+        Add your own from class. The best mnemonics are the ones you invented yourself.
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggleCard(header) {
+    header.closest('.card').classList.toggle('collapsed');
+  }
+  function toggleQA(questionEl) {
+    questionEl.closest('.qa').classList.toggle('open');
+  }
+  function toggleAnalytical(header) {
+    header.closest('.analytical').classList.toggle('open');
+    const chev = header.querySelector('.card-chevron');
+    if (chev) chev.style.transform =
+      header.closest('.analytical').classList.contains('open') ? 'rotate(0deg)' : 'rotate(-90deg)';
+  }
+  function toggleTheme() {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('rg-theme', next); } catch(e) {}
+  }
+  (function() {
+    try {
+      const saved = localStorage.getItem('rg-theme');
+      if (saved) document.documentElement.dataset.theme = saved;
+    } catch(e) {}
+  })();
+</script>
+
+</body>
+</html>

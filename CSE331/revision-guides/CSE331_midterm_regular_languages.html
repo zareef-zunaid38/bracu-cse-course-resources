@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE331 — Regular Languages | Mid-Term Revision</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]})">
+  </script>
+
+  <style>
+    :root[data-theme="light"] {
+      --bg:           #f5f6fa;
+      --surface:      #ffffff;
+      --surface-2:    #f0f1f5;
+      --border:       #dde1eb;
+      --text:         #1e2030;
+      --text-muted:   #6b7280;
+      --accent:       #2563eb;
+      --accent-bg:    #eff6ff;
+      --high:         #dc2626;
+      --high-bg:      #fef2f2;
+      --high-border:  #fecaca;
+      --med:          #b45309;
+      --med-bg:       #fffbeb;
+      --med-border:   #fde68a;
+      --low:          #2563eb;
+      --low-bg:       #eff6ff;
+      --low-border:   #bfdbfe;
+      --scan-bg:      #1e2030;
+      --scan-text:    #f8fafc;
+      --scan-surface: #2d3048;
+      --scan-border:  #3d4160;
+      --code-bg:      #1a1b26;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
+      --shadow:       0 2px 8px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.06);
+    }
+    :root[data-theme="dark"] {
+      --bg:           #0d0f18;
+      --surface:      #181b2a;
+      --surface-2:    #212438;
+      --border:       #2e3250;
+      --text:         #e2e8f0;
+      --text-muted:   #94a3b8;
+      --accent:       #60a5fa;
+      --accent-bg:    #1e2d45;
+      --high:         #f87171;
+      --high-bg:      #2d1b1b;
+      --high-border:  #7f1d1d;
+      --med:          #fbbf24;
+      --med-bg:       #2d2310;
+      --med-border:   #78350f;
+      --low:          #60a5fa;
+      --low-bg:       #1e2d45;
+      --low-border:   #1e40af;
+      --scan-bg:      #0d0f18;
+      --scan-text:    #e2e8f0;
+      --scan-surface: #181b2a;
+      --scan-border:  #2e3250;
+      --code-bg:      #0d0f18;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.3);
+      --shadow:       0 2px 8px rgba(0,0,0,.4);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+    p  { margin-bottom: .5rem; font-size: .9rem; }
+    ul, ol { padding-left: 1.3rem; font-size: .9rem; }
+    li { margin-bottom: .3rem; }
+    strong { font-weight: 700; }
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--shadow-sm);
+    }
+    .site-header-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: .6rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+    .header-title { font-size: 1rem; font-weight: 800; letter-spacing: -.01em; }
+    .header-sub { font-size: .78rem; color: var(--text-muted); margin-top: .1rem; }
+    .theme-btn {
+      flex-shrink: 0;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: .3rem .75rem;
+      border-radius: .5rem;
+      cursor: pointer;
+      font-size: .82rem;
+      font-family: inherit;
+      transition: background .15s;
+    }
+    .theme-btn:hover { background: var(--border); }
+    .site-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0 1rem;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .site-nav::-webkit-scrollbar { display: none; }
+    .site-nav a {
+      display: inline-block;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: .78rem;
+      font-weight: 500;
+      padding: .55rem .6rem;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .site-nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .meta-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+    .meta-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .5rem;
+      padding: .35rem .75rem;
+      font-size: .78rem;
+      display: flex;
+      gap: .35rem;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .meta-pill-label { color: var(--text-muted); }
+    .meta-pill-value { font-weight: 700; }
+    .container { max-width: 920px; margin: 0 auto; padding: 1.25rem 1rem; }
+    .scope-note {
+      background: var(--accent-bg);
+      border: 1px solid var(--accent);
+      border-radius: .6rem;
+      padding: .85rem 1rem;
+      font-size: .85rem;
+      margin-bottom: 1rem;
+      line-height: 1.55;
+    }
+    .scope-note strong { color: var(--accent); }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .8rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .card-header {
+      padding: .75rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card-header:hover { background: var(--border); }
+    .card-icon { font-size: 1rem; flex-shrink: 0; }
+    .card-title { font-size: .95rem; font-weight: 700; flex: 1; }
+    .card-chevron { font-size: .75rem; color: var(--text-muted); transition: transform .2s; flex-shrink: 0; }
+    .card.collapsed .card-body  { display: none; }
+    .card.collapsed .card-chevron { transform: rotate(-90deg); }
+    .card-body { padding: 1.1rem; }
+    .card-scan { background: var(--scan-bg); border-color: var(--scan-border); }
+    .card-scan .card-header { background: var(--scan-surface); border-color: var(--scan-border); }
+    .card-scan .card-header:hover { background: var(--scan-border); }
+    .card-scan .card-title { color: var(--scan-text); }
+    .card-scan .card-icon  { color: #fbbf24; }
+    .card-scan .card-chevron { color: var(--scan-text); opacity: .6; }
+    .card-scan .card-body  { background: var(--scan-bg); }
+    .scan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .65rem; margin-bottom: .9rem; }
+    .scan-tile { background: var(--scan-surface); border: 1px solid var(--scan-border); border-radius: .55rem; padding: .75rem .85rem; }
+    .scan-tile-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; color: #94a3b8; margin-bottom: .3rem; }
+    .scan-tile-value { font-size: .85rem; font-weight: 700; color: var(--scan-text); line-height: 1.4; }
+    .scan-tile.tile-high  .scan-tile-label { color: #f87171; }
+    .scan-tile.tile-warn  .scan-tile-label { color: #fbbf24; }
+    .scan-tile.tile-sig   .scan-tile-label { color: #60a5fa; }
+    .scan-divider { border: none; border-top: 1px solid var(--scan-border); margin: .85rem 0; }
+    .scan-list { color: var(--scan-text); font-size: .88rem; }
+    .scan-list li { margin-bottom: .45rem; }
+    .badge {
+      display: inline-block; font-size: .67rem; font-weight: 800; padding: .12rem .5rem;
+      border-radius: 999px; text-transform: uppercase; letter-spacing: .06em; line-height: 1.4; flex-shrink: 0;
+    }
+    .badge-high { background: var(--high-bg); color: var(--high); border: 1px solid var(--high-border); }
+    .badge-med  { background: var(--med-bg);  color: var(--med);  border: 1px solid var(--med-border); }
+    .badge-low  { background: var(--low-bg);  color: var(--low);  border: 1px solid var(--low-border); }
+    .concept { border-left: 3px solid var(--border); padding: .75rem .95rem; margin-bottom: .75rem; background: var(--surface-2); border-radius: 0 .5rem .5rem 0; }
+    .concept.imp-high { border-color: var(--high); }
+    .concept.imp-med  { border-color: var(--med); }
+    .concept.imp-low  { border-color: var(--low); }
+    .concept-title { font-weight: 700; font-size: .92rem; display: flex; align-items: center; gap: .45rem; margin-bottom: .4rem; flex-wrap: wrap; }
+    .concept-body { font-size: .88rem; }
+    .qa { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .65rem; overflow: hidden; }
+    .qa-q { padding: .65rem .9rem; font-weight: 600; font-size: .88rem; cursor: pointer; background: var(--surface-2); display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .qa-q:hover { background: var(--border); }
+    .qa-q-text { flex: 1; line-height: 1.5; }
+    .qa-q-right { display: flex; align-items: center; gap: .4rem; flex-shrink: 0; }
+    .qa-toggle { font-size: .7rem; color: var(--text-muted); }
+    .qa-a { padding: .7rem .9rem; font-size: .88rem; border-top: 1px solid var(--border); display: none; line-height: 1.6; }
+    .qa.open .qa-a   { display: block; }
+    .qa.open .qa-toggle::after  { content: '▲'; }
+    .qa-toggle::after { content: '▼'; }
+    .analytical { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .85rem; overflow: hidden; }
+    .analytical-head { padding: .65rem .9rem; background: var(--surface-2); border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: .55rem; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .analytical-head:hover { background: var(--border); }
+    .q-num { font-weight: 800; font-size: .82rem; color: var(--accent); flex-shrink: 0; margin-top: .1rem; }
+    .q-title { font-weight: 600; font-size: .88rem; flex: 1; line-height: 1.5; }
+    .analytical-body { padding: 1rem; display: none; }
+    .analytical.open .analytical-body { display: block; }
+    .analytical.open .card-chevron { transform: rotate(0); }
+    .steps { display: flex; flex-direction: column; gap: .6rem; }
+    .step { display: flex; gap: .7rem; align-items: flex-start; }
+    .step-num { width: 1.5rem; height: 1.5rem; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .72rem; font-weight: 800; flex-shrink: 0; margin-top: .1rem; }
+    .step-body { flex: 1; font-size: .88rem; line-height: 1.6; }
+    .callout { border-radius: .45rem; padding: .6rem .85rem; font-size: .85rem; margin-top: .75rem; line-height: 1.55; }
+    .callout-insight { background: var(--accent-bg); border-left: 3px solid var(--accent); }
+    .callout-insight strong { color: var(--accent); }
+    .callout-warn { background: var(--high-bg); border-left: 3px solid var(--high); }
+    .callout-warn strong { color: var(--high); }
+    .callout-note { background: var(--surface-2); border-left: 3px solid var(--text-muted); }
+    .callout-exam { background: var(--med-bg); border-left: 3px solid var(--med); }
+    .callout-exam strong { color: var(--med); }
+    .formula { background: var(--surface-2); border: 1px solid var(--border); border-radius: .5rem; padding: .75rem 1rem; margin-bottom: .75rem; }
+    .formula-name { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .4rem; font-weight: 700; }
+    .formula-display { font-family: 'Fira Code', 'Courier New', monospace; font-size: .95rem; text-align: center; padding: .5rem; color: var(--accent); font-weight: 600; overflow-x: auto; white-space: pre-wrap; }
+    .formula-vars { font-size: .82rem; color: var(--text-muted); margin-top: .4rem; }
+    .fig-table { width: 100%; border-collapse: collapse; font-size: .8rem; margin-bottom: .5rem; }
+    .fig-table th, .fig-table td { border: 1px solid var(--border); padding: .4rem .5rem; text-align: center; }
+    .fig-table th { background: var(--surface-2); font-weight: 700; }
+    .fig-table td.accept { background: var(--low-bg); font-weight: 700; }
+    .figure-wrap { margin-bottom: 1.25rem; }
+    .figure-caption { font-size: .8rem; text-align: center; color: var(--text-muted); margin-top: .4rem; font-style: italic; }
+    .pattern-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .6rem; margin-bottom: .85rem; }
+    .pattern-tile { background: var(--surface-2); border: 1px solid var(--border); border-radius: .5rem; padding: .7rem .85rem; }
+    .pattern-tile-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); margin-bottom: .25rem; }
+    .pattern-freq { font-size: 1.6rem; font-weight: 900; color: var(--accent); line-height: 1.1; }
+    .pattern-desc { font-size: .78rem; color: var(--text-muted); margin-top: .2rem; }
+    .probable-list { display: flex; flex-direction: column; }
+    .probable-item { display: flex; gap: .75rem; align-items: flex-start; padding: .75rem 0; border-bottom: 1px solid var(--border); }
+    .probable-item:last-child { border-bottom: none; }
+    .prob-rank { width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: .82rem; flex-shrink: 0; }
+    .rank-1 { background: var(--high-bg); color: var(--high); border: 2px solid var(--high-border); }
+    .rank-2 { background: var(--med-bg);  color: var(--med);  border: 2px solid var(--med-border); }
+    .rank-3 { background: var(--low-bg);  color: var(--low);  border: 2px solid var(--low-border); }
+    .rank-n { background: var(--surface-2); color: var(--text-muted); border: 2px solid var(--border); }
+    .prob-content { flex: 1; }
+    .prob-q { font-size: .9rem; font-weight: 600; line-height: 1.5; }
+    .prob-reason { font-size: .8rem; color: var(--text-muted); margin-top: .2rem; line-height: 1.4; }
+    .mnemonic { background: var(--med-bg); border: 1px solid var(--med-border); border-radius: .5rem; padding: .75rem 1rem; margin-bottom: .6rem; }
+    .mnemonic-word { font-weight: 900; color: var(--med); font-size: 1.05rem; margin-bottom: .3rem; }
+    .mnemonic-body { font-size: .88rem; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: .85rem 0; }
+    .section-intro { font-size: .82rem; color: var(--text-muted); margin-bottom: .85rem; line-height: 1.5; }
+    @media print {
+      .site-header, .site-nav, .theme-btn { display: none !important; }
+      .container { padding: 0; }
+      .card { box-shadow: none; page-break-inside: avoid; border: 1px solid #ccc; }
+      .card-body, .qa-a, .analytical-body { display: block !important; }
+      .card.collapsed .card-body { display: block !important; }
+      .card-scan { background: #fff; color: #000; }
+      .scan-tile { background: #f5f5f5; }
+      .scan-tile-value { color: #000; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      .site-header-inner { padding: .5rem .85rem; }
+      .container { padding: .85rem .65rem; }
+      .card-body { padding: .85rem; }
+      .formula-display { font-size: .82rem; }
+      .fig-table { font-size: .72rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div>
+      <div class="header-title">CSE331 — Regular Languages</div>
+      <div class="header-sub">Mid-Term (Central) &nbsp;·&nbsp; Sec 16, Room 09D-18C &nbsp;·&nbsp; Faculty: TNF</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">☀ / ☾</button>
+  </div>
+</header>
+
+<nav class="site-nav" aria-label="Page sections">
+  <a href="#scan">⚡ Morning Scan</a>
+  <a href="#theory">📖 Theory</a>
+  <a href="#short-q">❓ Short Qs</a>
+  <a href="#analytical">🧮 Analytical</a>
+  <a href="#math">∑ Formulas</a>
+  <a href="#figures">📊 Figures</a>
+  <a href="#patterns">🎯 Patterns</a>
+  <a href="#probable">🔮 Probable Qs</a>
+  <a href="#mnemonics">🧠 Mnemonics</a>
+</nav>
+
+<main class="container">
+
+  <div class="meta-bar">
+    <div class="meta-pill"><span class="meta-pill-label">Course</span><span class="meta-pill-value">CSE331</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Topic</span><span class="meta-pill-value">Regular Languages (full Mid-Term syllabus)</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Exam</span><span class="meta-pill-value">Mid-Term</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Date</span><span class="meta-pill-value">2026-07-28, 4:30–6:00 PM</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Weight</span><span class="meta-pill-value">35%</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Built</span><span class="meta-pill-value">2026-07-28 (updated)</span></div>
+  </div>
+
+  <div class="scope-note">
+    <strong>Confirmed syllabus boundary (TNF announcement, 2026-07-21 + class Q&amp;A 2026-07-24/26):</strong>
+    Alphabets/Strings/Languages · DFAs &amp; Regular Languages · Regular Operations (∪, concat, Kleene star) · Nondeterminism &amp; NFAs · NFA→DFA equivalence (subset construction — <strong>this direction only</strong>) · Closure under the Regular Operations · Regular Expressions · RE≡FA equivalence · RE→NFA · DFA→RE (<strong>state elimination is the only accepted method</strong> — state equations/Arden's Theorem get zero credit on the Mid-Term, unlike the one-time Quiz 2 leniency).
+    <br><br>
+    <strong>Explicitly out of scope, despite sitting in the same "Regular Languages" category in the topic map:</strong> DFA Minimization and the Pumping Lemma / non-regularity proofs. Lecture 10 covered the Pumping Lemma, but it is not on TNF's confirmed Mid-Term list — do not spend tonight's remaining time there. This guide only covers the confirmed list above.
+    <br><br>
+    <strong>Format note (announced in class, not TNF quiz-style — this describes the central exam itself):</strong> ~6 questions. 5 map one-to-one to 5 of the topics above. The 6th is a cluster question spanning all topics — True/False, and if False, write the correct statement.
+  </div>
+
+  <section class="card card-scan" id="scan">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">⚡</span>
+      <span class="card-title" style="color:var(--scan-text)">Morning Quick Scan</span>
+      <span class="card-chevron" style="color:var(--scan-text);opacity:.6">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="scan-grid">
+        <div class="scan-tile tile-high">
+          <div class="scan-tile-label">Must Know Cold</div>
+          <div class="scan-tile-value">GNFA state elimination: 3 preprocessing rules + the elimination formula. This is the class-wide weak spot (Quiz 2 + Assignment 1B both hit hard here).</div>
+        </div>
+        <div class="scan-tile tile-warn">
+          <div class="scan-tile-label">Most Likely Tested</div>
+          <div class="scan-tile-value">DFA/NFA design from a language description, NFA→DFA subset construction, DFA→RE via state elimination — each is a confirmed syllabus item and a natural "one question per topic" fit.</div>
+        </div>
+        <div class="scan-tile">
+          <div class="scan-tile-label">Common Trap</div>
+          <div class="scan-tile-value">State equations / Arden's Theorem for DFA→RE = zero credit. Wrapping an entire regex in a Kleene star when only a sub-part needs it. Pulling in a self-loop from a state that is NOT the one being eliminated. A self-loop on the start state still counts as an incoming edge — Rule 1 applies even then.</div>
+        </div>
+        <div class="scan-tile tile-sig">
+          <div class="scan-tile-label">Faculty Signal</div>
+          <div class="scan-tile-value">Proof questions may appear — answer with a <em>generalized</em> construction, never a specific-example proof. "Writing the correct method to the point is enough" — full formal notation not mandatory.</div>
+        </div>
+      </div>
+      <hr class="scan-divider">
+      <p style="font-size:.82rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Top 3 things to have ready before entering the exam:</p>
+      <ol class="scan-list">
+        <li>State elimination end-to-end on a 3-state DFA, from raw diagram → GNFA preprocessing → full elimination → final RE. Re-derive it once by hand tonight, don't just re-read it.</li>
+        <li>NFA→DFA subset construction: compute ε-closures first, build the NFA transition table, then the reachable-subset DFA table. Only this direction is examinable.</li>
+        <li>The generalized proof sketches for closure under union/concat/Kleene-star and for NFA→DFA equivalence — describe the construction process, not a worked example.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="card" id="theory">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📖</span>
+      <span class="card-title">Theory</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="concept imp-low">
+        <div class="concept-title">Alphabets, Strings, Languages <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p><strong>Alphabet</strong> $\Sigma$: a non-empty, finite set of symbols. <strong>String</strong>: a combination of symbols from one alphabet; $|w|$ = length. $\emptyset$ as a string is invalid — the valid zero-length string is $\varepsilon$ (empty string), $|\varepsilon|=0$. <strong>Language</strong>: the set of strings over $\Sigma$ satisfying some rule.</p>
+          <p><strong>Substring</strong> = consecutive symbols from the string. <strong>Subsequence</strong> = symbols in order but not necessarily consecutive. $w^R$ = reverse of $w$.</p>
+          <div class="callout callout-note"><strong>Cluster-question fodder:</strong> "∅ is a valid string" — False. The valid empty string is ε, not ∅.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">DFA — Deterministic Finite Automaton <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>5-tuple: $(Q, \Sigma, \delta, q_0, F)$ — $Q$ = states, $\Sigma$ = alphabet, $\delta$ = transition function, $q_0$ = start state, $F$ = accepting states.</p>
+          <p><strong>Two defining properties:</strong> (1) every state must show a transition for every symbol in $\Sigma$ (no gaps — use a trap/dead state if needed); (2) from one state on one input, exactly one transition (no branching).</p>
+          <div class="callout callout-warn"><strong>Common error (Assignment 1A, near-universal on Q1c):</strong> forgetting to enforce a "must be preceded by X" condition at the very start of the string — e.g. a string starting directly with the forbidden pattern should be rejected, but a naive DFA built from the middle-of-string logic outward often accepts it.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">NFA — Nondeterministic Finite Automaton <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p><strong>Three defining properties (contrast with DFA):</strong> (1) only required transitions need to be shown; (2) one state + one input symbol can go to multiple states; (3) transitions on empty input ($\varepsilon$) are allowed.</p>
+          <p>NFAs are typically much smaller/cleaner for "contains substring", "third-to-last symbol", and union-type languages — the nondeterminism "guesses" the right branch.</p>
+          <div class="callout callout-insight"><strong>Closure-normalization result:</strong> any NFA can be converted to an equivalent NFA with exactly one accepting state (add a new state, ε-transition every old accepting state into it, demote the old ones). This does <em>not</em> mean NFAs are restricted to one accepting state by definition — multiple accepting states are valid; this is only a normalization/closure construction. Known point of classmate confusion — do not overgeneralize it on a T/F cluster question.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Regular Operations: Union, Concatenation, Kleene Star <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p><strong>Union</strong> $L_1 \cup L_2$, <strong>Concatenation</strong> $L_1 . L_2$, <strong>Kleene Star</strong> $\Sigma^*$ = zero or more repetitions.</p>
+          <p><strong>Cross Product Rule:</strong> to build a DFA for $L_1 \cup L_2$ or $L_1 \cap L_2$ from two component DFAs, take $Q_1 \times Q_2$ as the new state set and carry transitions over componentwise. Accepting states of the union = any pair containing an accepting state from either machine; for intersection, both components of the pair must be accepting.</p>
+          <div class="callout callout-insight"><strong>Worked fact:</strong> intersecting two regular languages can legitimately give $\emptyset$ — e.g. all-0 strings ∩ odd-length all-1 strings share nothing (not even $\varepsilon$, since $\varepsilon$'s length 0 is even).</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Closure Under the Regular Operations <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Regular languages are closed under union, concatenation, and Kleene star — combining two regular languages with any of these operations always yields a regular language. Confirmed proof-of-correctness topics (generalized construction, no specific-example proof accepted):</p>
+          <ul>
+            <li><strong>Union:</strong> DFA cross-product construction, or the multi-path NFA argument (branch via ε into both component NFAs).</li>
+            <li><strong>Concatenation:</strong> ε-transition from every accepting state of $M_1$ into the start state of $M_2$; only $M_2$'s accepting states remain accepting.</li>
+            <li><strong>Kleene Star:</strong> ε-transition from every accepting state back to the start, plus a new start/accept state (or ε-edge to the old start marked accepting) to capture the zero-repetition case ($\varepsilon$).</li>
+          </ul>
+          <div class="callout callout-exam"><strong>Exam note (TNF, 2026-07-24):</strong> "Writing the correct method to the point will be enough" — explain how transitions/start/accepting states are constructed; full formal notation is not mandatory.</div>
+          <div class="callout callout-exam"><strong>Format note (TNF, Discord, 2026-07-27):</strong> concatenation questions are normally expected as an <strong>NFA</strong>. A direct DFA for concatenation is only expected for the one specific pattern given in the assignment — for any other pattern, build the NFA; only convert to a DFA afterward if the question explicitly asks for one.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">NFA→DFA: Subset Construction <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Given an NFA with $n$ states, build an equivalent DFA whose states are subsets of the NFA's states.</p>
+          <ol>
+            <li>Compute the <strong>ε-closure</strong> of every state (the set of states reachable via ε-transitions only, including itself).</li>
+            <li>Start state of the DFA = ε-closure of the NFA's start state.</li>
+            <li>For each reachable subset $S$ and symbol $a$: $\delta_{DFA}(S,a) = \bigcup_{q\in S}\varepsilon\text{-closure}(\delta_{NFA}(q,a))$.</li>
+            <li>A subset-state is <strong>accepting</strong> iff it contains at least one of the NFA's original accepting states.</li>
+            <li>Only build subsets actually reachable from the start — do not enumerate the full power set.</li>
+          </ol>
+          <p><strong>Bound:</strong> max DFA states = $2^n$. Max accepting subset-states = $2^n - 2^{n-k}$ where $k$ = number of NFA accepting states (subsets that miss all $k$ marked states = $2^{n-k}$, so the rest, $2^n-2^{n-k}$, must contain at least one).</p>
+          <div class="callout callout-warn"><strong>Confirmed scope:</strong> only the NFA→DFA direction is examinable this Mid-Term — do not prepare DFA→NFA.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Regular Expressions <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>A combination of symbols and the three regular operations describing exactly the strings in a language. Core identities:</p>
+          <ul>
+            <li>$R\cdot\varepsilon = R$ — ε is the concatenation identity.</li>
+            <li>$R\cdot\emptyset = \emptyset$ — ∅ absorbs under concatenation.</li>
+            <li>$R+\emptyset = R$ — ∅ is the union identity.</li>
+            <li>$R+\varepsilon = R+\varepsilon$ — <strong>does not simplify further in general</strong> (only reduces to $R$ if $\varepsilon \in L(R)$ already).</li>
+          </ul>
+          <div class="callout callout-warn"><strong>Most frequent class-wide mistake (Assignment 1B + Quiz 2 grading feedback):</strong> wrapping the <em>entire</em> expression in a Kleene star when only a sub-part needed it — silently breaks constraints like "guarantee an odd number of 0s after the last 1."</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Equivalence of Regular Expressions and Finite Automata <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Every regular expression has an equivalent FA, and vice versa. Two confirmed constructions:</p>
+          <ul>
+            <li><strong>RE → NFA (Thompson's Construction):</strong> build small NFA fragments for each RE piece (single symbol, union, concatenation, star) and wire them together with ε-transitions. A single-symbol Kleene star ($b^*$) can be drawn either via the full ε-based detour, or as a shortcut: one state entered by a $b$-transition with a self-loop on $b$, usable as both entry and exit (covers zero, one, or more $b$'s from that single state).</li>
+            <li><strong>FA → RE (state elimination / GNFA):</strong> see the dedicated concept below — this is the confirmed, sole accepted method.</li>
+          </ul>
+          <div class="callout callout-exam"><strong>Confirmed acceptable (TNF, Discord, 2026-07-27/28):</strong> the self-loop shortcut for a starred term is fine even when it's only part of a larger expression — e.g. for $b(a{+}c)^*$, draw the one required $b$-edge, then connect via ε into a self-loop-shortcut state for $(a{+}c)^*$ (self-looping on both $a$ and $c$); concatenation is carried by that connecting ε-edge. Also confirmed: $(a{+}b)^+$ may be drawn as $(a{+}b)(a{+}b)^*$ — one required copy followed by the starred remainder.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">DFA → RE via State Elimination (GNFA Method) <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Pipeline: <strong>DFA → NFA → GNFA</strong> (a Generalized NFA — edges can carry a full regex, not just a symbol/ε).</p>
+          <p><strong>Step 1 — reshape into GNFA form:</strong></p>
+          <ol>
+            <li>Start state must have <em>no</em> incoming edges — if it does, add a new start state with a single ε-edge into the old one.</li>
+            <li>Exactly <em>one</em> accepting state — if there are several, add one new accepting state, ε-edge every old accepting state into it, demote the old ones.</li>
+            <li>The accepting state must have <em>no</em> outgoing edges — if it does, demote it and add an ε-edge to a fresh accept state with no outgoing edges.</li>
+          </ol>
+          <p><strong>Step 2 — eliminate states one at a time</strong> (any order, but note it in your answer). Eliminating state $q$: for every incoming state $p$ and outgoing state $r$, replace with</p>
+          <div class="formula">
+            <div class="formula-name">State elimination formula</div>
+            <div class="formula-display">$new\_label(p,r) = old\_label(p,r) \;\cup\; label(p,q)\cdot label(q,q)^*\cdot label(q,r)$</div>
+            <div class="formula-vars">If $q$ has no self-loop, $label(q,q)^* = \varepsilon$ (drops out). Edges not routed through $q$ are carried over unchanged.</div>
+          </div>
+          <p>Stop when only start and accept remain — the label on that final edge is the answer.</p>
+          <div class="callout callout-warn"><strong>Main source of lost marks class-wide (Quiz 2 + Assignment 1B, same error both times):</strong> when eliminating a state, only <em>that</em> state's own self-loop feeds the new transition. Self-loops on states <em>not</em> being eliminated must never be pulled in — only two paths feed each new edge: the direct $(p,r)$ path, and the path routed through $q$.</div>
+          <div class="callout callout-exam"><strong>Method rule (TNF, confirmed 2026-07-26 — overrides the one-time Quiz 2 leniency):</strong> state elimination is the <em>only</em> accepted method. State equations / Arden's Theorem will not be accepted on the Mid-Term, even partially.</div>
+          <div class="callout callout-exam">
+            <strong>Additional rules (TNF, Discord, 2026-07-24 to 2026-07-28):</strong>
+            <ul>
+              <li>A <strong>self-loop on the start state counts as an incoming edge</strong> — Rule 1 still applies even if the only edge into the start state is its own self-loop; a new start state must still be added.</li>
+              <li><strong>Preprocessing doesn't have to happen all upfront.</strong> If the state you need to eliminate next turns out to be the current start or an accepting state, add the new start/accept state at that point instead of upfront. The only hard requirement: by the end, exactly two states remain — the new start and the new accept.</li>
+              <li><strong>If the state being eliminated has no incoming edge or no outgoing edge, delete it outright</strong> — do not apply the elimination formula. No incoming/outgoing edge means no string can ever be accepted through it, so nothing needs to be preserved.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="card" id="short-q">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">❓</span>
+      <span class="card-title">Short Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="section-intro">Tap a question to reveal the answer. Try to recall first.</p>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What are the two defining properties of a DFA, and the three of an NFA?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">DFA: (1) every state shows a transition for every input symbol, (2) exactly one resulting state per (state, symbol) pair. NFA: (1) only required transitions shown, (2) one (state, symbol) pair can go to multiple states, (3) ε-transitions allowed.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What is the ε-closure of a state, and why is it computed before subset construction?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">The set of all states reachable from it using only ε-transitions (including itself). It's needed because after taking a real symbol transition, the DFA state must also include everything reachable "for free" via ε before the next symbol is read — otherwise reachable NFA states get silently dropped.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">If an NFA has n states and k accepting states, what's the max number of DFA states and max number of accepting DFA states after subset construction?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Max total: 2ⁿ (the full power set). Max accepting: 2ⁿ − 2ⁿ⁻ᵏ (all subsets except those that miss every one of the k accepting states). The actual DFA is often smaller since only reachable subsets are kept.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What three conditions must a GNFA satisfy before state elimination can begin?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">(1) Start state has no incoming edges, (2) exactly one accepting state, (3) that accepting state has no outgoing edges — adding new ε-connected start/accept states as needed to enforce this.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">When eliminating state q, which self-loops are allowed to appear in the new formula?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Only q's own self-loop (label(q,q)), starred. Self-loops on any other state must never be folded into the new edge — that's the single most common Mid-Term-relevant error seen on Quiz 2 and Assignment 1 Part B.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Which regex identity does NOT simplify further in general: R·ε, R·∅, R+ε, or R+∅?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">R+ε — stays as R+ε unless ε ∈ L(R) already. Contrast with R+∅=R (∅ is the union identity) and R·ε=R, R·∅=∅ (concatenation identity/absorber).</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">State De Morgan's Law for regular languages.</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Complement of union = intersection of complements: ‾(A∪B) = Ā∩B̄. Complement of intersection = union of complements: ‾(L₁∩L₂) = L̄₁∪L̄₂. Useful for solving "complement of a set-combination" without re-deriving from scratch — reduce to complements you've already found.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Difference between a substring and a subsequence?</span><span class="qa-q-right"><span class="badge badge-low">LOW</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Substring: consecutive symbols from the string. Subsequence: symbols in the same order but not necessarily consecutive.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Express set difference L₁ \ L₂ using intersection and complement.</span><span class="qa-q-right"><span class="badge badge-low">LOW</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">L₁ \ L₂ = L₁ ∩ complement(L₂).</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Does every NFA have to have at most one accepting state?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">No. Multiple accepting states are valid by definition. There's a separate proof that any NFA <em>can be converted</em> to an equivalent one with a single accepting state (via a new ε-joined accept state) — that's a closure/normalization result, not a restriction on NFAs in general. This is a known point of confusion — watch for it on a T/F cluster question.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="card" id="analytical">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧮</span>
+      <span class="card-title">Analytical Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q1</span>
+          <span class="q-title">Convert this NFA to an equivalent DFA using subset construction. NFA: q1 →ε→ q2, q1 →a→ q4, q4 →a→ q2, q4 →b→ q3, q2 →ε,b→ q3, q3 →a→ q3 (self-loop), q3 accepting.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Compute ε-closures first: closure(q1) = {q1,q2,q3} (q1→q2 via ε, q2→q3 via ε). closure(q2) = {q2,q3}. closure(q3) = {q3}. closure(q4) = {q4} (no ε-edges out of q4).</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Build the NFA transition table using these closures: from q1 on 'a' → {q4}; from q2 on 'b' → {q3}; from q3 on 'a' → {q3} (self-loop). q3 is the only original accepting state.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">DFA start state = closure(q1) = {q1,q2,q3} — call it A. Since A contains q3, A is accepting.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">From A on 'a': union of closures of NFA-moves on 'a' from {q1,q2,q3} → q1 moves to q4, q2/q3 have no 'a' move except q3→q3 → result {q3,q4} = state B (accepting, contains q3). From A on 'b': only q2→q3 → {q3} = state C (accepting).</div></div>
+            <div class="step"><div class="step-num">5</div><div class="step-body">From B={q3,q4} on 'a': q3→q3, q4→q2 → {q2,q3} = state D (accepting). From B on 'b': q3 has no b, q4→q3 → {q3} = C.</div></div>
+            <div class="step"><div class="step-num">6</div><div class="step-body">From C={q3} on 'a': {q3}=C. On 'b': ∅ = trap (non-accepting, dead). From D={q2,q3} on 'a': q3→q3 → {q3}=C. On 'b': q2→q3, q3 none → {q3}=C.</div></div>
+            <div class="step"><div class="step-num">7</div><div class="step-body">Final DFA: 5 states {A(start,acc), B(acc), C(acc), D(acc), trap}. Every reachable subset containing q3 is accepting — which is every one of them here except the trap.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> stop as soon as no new subsets appear on either input from any state you've already built — do not enumerate the full 2⁴=16-state power set, only what's reachable.</div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> only NFA→DFA is confirmed examinable. Mark every accepting subset explicitly — TNF's feedback flagged "counted non-accepting subsets as accepting" as the single most common Q3-type error on Assignment 1A.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q2</span>
+          <span class="q-title">Convert this DFA to a regular expression via state elimination. States 1(start),2,3 both 2 and 3 accepting: 1→a→2, 1→b→3, 2→a→1, 2→b→2(self-loop), 3→a→2, 3→b→1.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Preprocess into GNFA:</strong> two accepting states (2, 3) → add new accept state f, ε-edge from 2 to f and from 3 to f, demote 2 and 3. Add new start state 6 with ε-edge into 1 (1 already has no incoming edges, but adding a fresh start is the safe default). GNFA: 6→ε→1, 1→a→2, 1→b→3, 2→a→1, 2→b→2(self), 2→ε→f, 3→a→2, 3→b→1, 3→ε→f.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Eliminate state 2.</strong> Incoming to 2: {1 via a, 3 via a}. Outgoing from 2: {1 via a, f via ε}. Self-loop on 2: b. New edges — (1,1): a·b*·a = ab*a. (1,f): a·b*·ε = ab*. (3,1): old(b) ∪ a·b*·a = b + ab*a. (3,f): old(ε) ∪ a·b*·ε = ε + ab*. The direct 1→b→3 edge is untouched (doesn't route through 2).</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Resulting 3-state GNFA (start, 1, 3, f): 1 self-loop ab*a; 1→f: ab*; 1→3: b (unchanged); 3→1: b+ab*a; 3→f: ε+ab*.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body"><strong>Eliminate state 3.</strong> Incoming to 3: {1 via b}. Outgoing from 3: {1 via b+ab*a, f via ε+ab*}. No self-loop on 3 (label(3,3)*=ε). New edges — (1,1) self-loop: old(ab*a) ∪ b·ε·(b+ab*a) = ab*a + b(b+ab*a). (1,f): old(ab*) ∪ b·ε·(ε+ab*) = ab* + b(ε+ab*).</div></div>
+            <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Eliminate state 1</strong> (last internal state) — collapses directly to a single start→accept edge labeled with the final RE.</div></div>
+          </div>
+          <div class="formula">
+            <div class="formula-name">Final Regular Expression</div>
+            <div class="formula-display">$(ab^*a+b(b+ab^*a))^*\,(ab^*+b(\varepsilon+ab^*))$</div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> notice every combined label at each step is exactly old_label ∪ (path through the eliminated state) — never anything more. Track incoming/outgoing pairs of the state being eliminated methodically; don't try to do it by eyeballing the diagram.</div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> show the GNFA diagram after each elimination step — TNF's Quiz 2 rubric required this explicitly. State the elimination order you chose.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q3</span>
+          <span class="q-title">Prove, in generalized form, that regular languages are closed under concatenation and under Kleene star.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Concatenation:</strong> given NFA $M_1$ for $L_1$ and $M_2$ for $L_2$, add an ε-transition from every accepting state of $M_1$ into the start state of $M_2$. Demote $M_1$'s accepting states to non-accepting; only $M_2$'s original accepting states remain accepting in the combined machine.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Any string accepted by the combined machine must first traverse $M_1$ to reach one of its (now ε-connected) accepting states, then continue through $M_2$ to one of its accepting states — exactly the strings of the form $xy$ with $x\in L_1, y\in L_2$, i.e. $L_1.L_2$.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Kleene star:</strong> given NFA $M$ for $L$, add a new start/accept state $q_0'$ with an ε-edge to $M$'s original start (to allow zero repetitions — accepting $\varepsilon$ directly), and add ε-edges from every one of $M$'s accepting states back to $M$'s original start (to allow repeating).</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">Any string accepted is either ε (via the direct ε-edge) or a concatenation of one-or-more strings each individually in $L$, since each pass through $M$ must end at an accepting state before looping back — exactly $L^*$.</div></div>
+          </div>
+          <div class="callout callout-exam"><strong>Exam note (TNF, confirmed):</strong> a proof by a specific example language is explicitly not accepted — always frame the answer as "given any NFA(s) for the operand language(s), construct ... " in general terms. No need for full formal notation; explaining the construction idea is sufficient.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q4</span>
+          <span class="q-title">Design a DFA: non-empty strings over {0,1} where at most two consecutive 0's are allowed, and any occurrence of "00" must have at least one 1 immediately before it and at least one 1 immediately after it.</span>
+          <span class="badge badge-med">MED</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">This was the single most-missed sub-question on Assignment 1 Part A — treat it as a template for "constraint must hold from position 1" traps, not this exact language.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Design states tracking: how many consecutive 0's seen right now (0/1/2), and whether a 1 has been seen immediately before entering the current 0-run. A string that starts directly with "00" must be rejected — there is no 1 before it.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Sanity-test before finalizing: does the DFA reject 001, 0011, 00 (all missing a leading 1)? Does it accept 1001, 10011?</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">Also verify: no state has zero incoming edges unless it's the start state — a stray state with no logical path in usually means the structure was invented rather than derived from the constraint.</div></div>
+          </div>
+          <div class="callout callout-warn"><strong>Common errors seen on this exact question type (TNF feedback):</strong> wrong transition on 0 from the start states (the "at least one 1 before" condition silently dropped), a disconnected extra state, missing double-circles on accepting states, accepting a string that starts with "00".</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q5</span>
+          <span class="q-title">Write a regular expression for strings over {0,1} that do not contain "111" as a substring.</span>
+          <span class="badge badge-med">MED</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Build the language as repeated "safe blocks," each of which cannot end in enough 1's to combine with the next block into "111": blocks are 0, 10, or 110 — every block ends in a 0, so no block-boundary can ever create three consecutive 1's.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Repeat those blocks zero or more times: $(0 \cup 10 \cup 110)^*$.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Allow the string to end mid-way through a run of 1's, as long as it's still fewer than three: trailing term $(\varepsilon \cup 1 \cup 11)$.</div></div>
+          </div>
+          <div class="formula">
+            <div class="formula-name">Result</div>
+            <div class="formula-display">$(0 \cup 10 \cup 110)^*(\varepsilon \cup 1 \cup 11)$</div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight (generalizes to "doesn't contain 1ⁿ" for any n):</strong> pick block boundaries that always end in 0, so no legal concatenation of blocks can ever create the forbidden run across a boundary — then add a bounded trailing term for the partial run at the very end.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="card" id="math">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">∑</span>
+      <span class="card-title">Formula & Pattern Cheat Sheet</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="formula">
+        <div class="formula-name">Subset Construction Bound</div>
+        <div class="formula-display">$|Q_{DFA}| \le 2^n \qquad |F_{DFA}| \le 2^n - 2^{n-k}$</div>
+        <div class="formula-vars">n = # NFA states, k = # NFA accepting states. Only reachable subsets are actually built.</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">State Elimination Formula</div>
+        <div class="formula-display">$new(p,r) = old(p,r) \cup label(p,q)\cdot label(q,q)^*\cdot label(q,r)$</div>
+        <div class="formula-vars">q = state being eliminated. If q has no self-loop, label(q,q)* = ε.</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Regex Identities</div>
+        <div class="formula-display">$R\cdot\varepsilon = R \qquad R\cdot\emptyset = \emptyset \qquad R+\emptyset = R \qquad R+\varepsilon \ne R \text{ (in general)}$</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">De Morgan's for Regular Languages</div>
+        <div class="formula-display">$\overline{A \cup B} = \bar{A} \cap \bar{B} \qquad \overline{L_1 \cap L_2} = \bar{L_1} \cup \bar{L_2}$</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Length-Based Regex Patterns (Σ = alphabet)</div>
+        <div class="formula-display">even: $(\Sigma\Sigma)^*$   odd: $\Sigma(\Sigma\Sigma)^*$   mult. of 3: $(\Sigma\Sigma\Sigma)^*$   exactly n: $\Sigma^n$   ≥n: $\Sigma^n\Sigma^*$   ≤n: $\varepsilon\cup\Sigma\cup\dots\cup\Sigma^n$</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Count-Based Regex Patterns (over {0,1})</div>
+        <div class="formula-display">exactly 3 zeros: $1^*01^*01^*01^*$    at least 3 zeros: $\Sigma^*0\Sigma^*0\Sigma^*0\Sigma^*$    at most 3 zeros: $1^*\cup1^*01^*\cup1^*01^*01^*\cup1^*01^*01^*01^*$</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Starts/Ends Symmetric Patterns</div>
+        <div class="formula-display">starts &amp; ends same symbol: $0\Sigma^*0 \cup 1\Sigma^*1 \cup 1 \cup 0$    doesn't contain 11: $(0\cup10)^*(1\cup\varepsilon)$    alternating 0/1: $(\varepsilon\cup1)(01)^*(\varepsilon\cup0)$</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="card" id="figures">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📊</span>
+      <span class="card-title">Figures & Reference Tables</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="section-intro">Transition tables in place of hand-drawn diagrams — you'll need to draw the actual state diagram in the exam, so use these to re-derive the shape, not to memorize a picture.</p>
+
+      <div class="figure-wrap">
+        <table class="fig-table">
+          <tr><th>NFA state</th><th>a</th><th>b</th><th>accepting?</th></tr>
+          <tr><td>→q1 (closure {q1,q2,q3})</td><td>{q4}</td><td>∅</td><td>—</td></tr>
+          <tr><td>q2 (closure {q2,q3})</td><td>∅</td><td>{q3}</td><td>—</td></tr>
+          <tr><td>*q3 (closure {q3})</td><td>{q3}</td><td>∅</td><td>yes</td></tr>
+          <tr><td>q4 (closure {q4})</td><td>{q2,q3}</td><td>{q3}</td><td>—</td></tr>
+        </table>
+        <p class="figure-caption">Fig 1a. NFA transition table with ε-closures (source for Analytical Q1).</p>
+      </div>
+
+      <div class="figure-wrap">
+        <table class="fig-table">
+          <tr><th>DFA state</th><th>a</th><th>b</th><th>accepting?</th></tr>
+          <tr><td>*A = {q1,q2,q3} (start)</td><td class="accept">B</td><td class="accept">C</td><td>yes</td></tr>
+          <tr><td>*B = {q3,q4}</td><td class="accept">D</td><td class="accept">C</td><td>yes</td></tr>
+          <tr><td>*C = {q3}</td><td class="accept">C</td><td>trap</td><td>yes</td></tr>
+          <tr><td>*D = {q2,q3}</td><td class="accept">C</td><td class="accept">C</td><td>yes</td></tr>
+          <tr><td>trap = ∅</td><td>trap</td><td>trap</td><td>no</td></tr>
+        </table>
+        <p class="figure-caption">Fig 1b. Resulting DFA after subset construction — every reachable subset containing q3 is accepting.</p>
+      </div>
+
+      <div class="figure-wrap">
+        <table class="fig-table">
+          <tr><th>Step</th><th>Eliminated</th><th>New/updated edges</th></tr>
+          <tr><td>0</td><td>—</td><td>Preprocess: add start 6→ε→1; add accept f; 2→ε→f, 3→ε→f; demote 2,3</td></tr>
+          <tr><td>1</td><td>State 2</td><td>1→1: ab*a · 1→f: ab* · 3→1: b+ab*a · 3→f: ε+ab* · (1→3: b unchanged)</td></tr>
+          <tr><td>2</td><td>State 3</td><td>1→1: ab*a+b(b+ab*a) · 1→f: ab*+b(ε+ab*)</td></tr>
+          <tr><td>3</td><td>State 1</td><td>start→f: (ab*a+b(b+ab*a))* (ab*+b(ε+ab*)) — final RE</td></tr>
+        </table>
+        <p class="figure-caption">Fig 2. State elimination step-by-step (source for Analytical Q2). Re-derive by hand tonight.</p>
+      </div>
+
+      <div class="figure-wrap">
+        <table class="fig-table">
+          <tr><th>RE fragment</th><th>Thompson NFA shape</th></tr>
+          <tr><td>single symbol $a$</td><td>start --a--&gt; accept</td></tr>
+          <tr><td>union $R_1\cup R_2$</td><td>new start ε-splits into $R_1$-NFA and $R_2$-NFA; both accept states ε-merge into one shared accept</td></tr>
+          <tr><td>concatenation $R_1.R_2$</td><td>$R_1$'s accept ε-connects into $R_2$'s start; only $R_2$'s accept remains accepting</td></tr>
+          <tr><td>star $R^*$</td><td>new start/accept with ε to old start (zero case); every old accept ε-loops back to old start (repeat case)</td></tr>
+          <tr><td>single-symbol star $b^*$ shortcut</td><td>one state, entered via a $b$-edge, self-loop on $b$ — same state is entry and exit</td></tr>
+        </table>
+        <p class="figure-caption">Fig 3. Thompson's construction fragment reference.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="card" id="patterns">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🎯</span>
+      <span class="card-title">Faculty Pattern Analysis</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="callout callout-note">
+        <strong>Source:</strong> TNF's Quiz 1, Quiz 2, and Assignment 1 (Parts A &amp; B) — TNF-authored, TNF-graded.
+        <br><strong>Scope:</strong> The Mid-Term itself is <em>centrally set at BRACU</em>, not written by TNF. These patterns are used only as directional signal on which sub-skills the class (including you) struggles with on the <em>same underlying topics</em> — not as a prediction of the central paper's exact questions.
+      </div>
+
+      <div class="pattern-grid">
+        <div class="pattern-tile"><div class="pattern-tile-label">FA→RE state elim. errors</div><div class="pattern-freq">2×</div><div class="pattern-desc">Quiz 2 + Assignment 1B, same root cause both times</div></div>
+        <div class="pattern-tile"><div class="pattern-tile-label">Over-broad Kleene star</div><div class="pattern-freq">2×</div><div class="pattern-desc">Quiz 2 grading note + Assignment 1B Q1, most frequent single error</div></div>
+        <div class="pattern-tile"><div class="pattern-tile-label">DFA constraint-from-start</div><div class="pattern-freq">1×</div><div class="pattern-desc">Assignment 1A Q1(c), near-universal error</div></div>
+        <div class="pattern-tile"><div class="pattern-tile-label">Accepting-state miscount</div><div class="pattern-freq">2×</div><div class="pattern-desc">Assignment 1A Q1(a)/(g)/Q3(b), recurring across sub-questions</div></div>
+      </div>
+
+      <p><strong>Observed tendencies:</strong></p>
+      <ul>
+        <li>Quiz patterns are announced in advance and matched exactly — TNF is transparent about structure, and this transparency extends to explicit Mid-Term scope/method announcements (state elimination only, NFA→DFA direction only).</li>
+        <li>Two parallel question sets (A/B) with identical structure, different parameters — expect the same for any TNF-influenced component, though the Mid-Term itself is central.</li>
+        <li>Partial-credit signals ("at least 5 states", cross-product tables) suggest process is graded, not just the final diagram — show your work at every stage.</li>
+        <li>The same FA→RE mistake (wrong self-loop pulled into an elimination step) recurred identically on both Quiz 2 and Assignment 1B — this is the single highest-value thing to drill before the Mid-Term.</li>
+      </ul>
+
+    </div>
+  </section>
+
+  <section class="card" id="probable">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🔮</span>
+      <span class="card-title">Probable Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="probable-list">
+
+        <div class="probable-item">
+          <div class="prob-rank rank-1">1</div>
+          <div class="prob-content">
+            <div class="prob-q">FA → RE conversion via state elimination, full worked question</div>
+            <div class="prob-reason">Confirmed syllabus item, explicitly the "weakest area class-wide" per TNF's own 2026-07-26 announcement, and the only DFA→RE method now enforced without the earlier quiz leniency — high-stakes and high-signal.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-2">2</div>
+          <div class="prob-content">
+            <div class="prob-q">NFA → DFA subset construction, given an NFA with ε-transitions</div>
+            <div class="prob-reason">Confirmed syllabus item with an explicit direction restriction (only this direction) — restrictions this specific are usually stated because that exact skill will be tested.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-3">3</div>
+          <div class="prob-content">
+            <div class="prob-q">DFA or NFA design from a language description (positional/length/substring constraint)</div>
+            <div class="prob-reason">Largest fraction of marks in every TNF-authored quiz and assignment so far; core confirmed syllabus item ("DFAs and Regular Languages").</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-n">4</div>
+          <div class="prob-content">
+            <div class="prob-q">Generalized closure proof (union, concatenation, Kleene star, or NFA→DFA equivalence)</div>
+            <div class="prob-reason">TNF explicitly confirmed proof-based questions may appear on the Mid-Term, with a generalized-construction answer expected — this fits the "5 questions from 5 topics" format directly.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-n">5</div>
+          <div class="prob-content">
+            <div class="prob-q">Cluster question: True/False across all 5 topics, correct the false statements</div>
+            <div class="prob-reason">Explicitly described in class as the 6th question. Likely draws on identity/definition-level facts (e.g. R+ε simplification, NFA accepting-state count, subset construction direction) rather than construction — the Short Questions section above is the direct prep for this.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="mnemonics">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧠</span>
+      <span class="card-title">Mnemonics & Memory Aids</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"Only q's own loop"</div>
+        <div class="mnemonic-body">State elimination: the new edge formula only ever uses the self-loop of the state being eliminated, never any other state's self-loop. This one line prevents the #1 recurring class-wide error.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"No In, One Out-less Accept"</div>
+        <div class="mnemonic-body">GNFA shape rules: start has No incoming edges; exactly One accepting state; that accept state has no Outgoing edges. (New start/accept states added with ε if the original doesn't already satisfy this.)</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"Reachable, not the whole power set"</div>
+        <div class="mnemonic-body">Subset construction: 2ⁿ is only the ceiling. Build outward from the start's ε-closure and stop once no new subset appears — don't pre-enumerate everything.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"∅ disappears, ε doesn't"</div>
+        <div class="mnemonic-body">Regex identities: R·∅=∅ and R+∅=R (∅ vanishes both ways). But R+ε stays R+ε — ε is NOT automatically absorbed into a union unless it was already in the language.</div>
+      </div>
+
+      <div class="callout callout-note">
+        Add your own from tonight's re-derivation of Q1/Q2 above. The best mnemonics are the ones you invent while re-deriving, not the ones read off a screen.
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggleCard(header) {
+    header.closest('.card').classList.toggle('collapsed');
+  }
+  function toggleQA(questionEl) {
+    questionEl.closest('.qa').classList.toggle('open');
+  }
+  function toggleAnalytical(header) {
+    header.closest('.analytical').classList.toggle('open');
+    const chev = header.querySelector('.card-chevron');
+    if (chev) chev.style.transform =
+      header.closest('.analytical').classList.contains('open') ? 'rotate(0deg)' : 'rotate(-90deg)';
+  }
+  function toggleTheme() {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('rg-theme', next); } catch(e) {}
+  }
+  (function() {
+    try {
+      const saved = localStorage.getItem('rg-theme');
+      if (saved) document.documentElement.dataset.theme = saved;
+    } catch(e) {}
+  })();
+</script>
+
+</body>
+</html>

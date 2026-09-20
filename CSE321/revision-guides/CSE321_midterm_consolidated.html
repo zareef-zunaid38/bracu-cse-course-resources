@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE321 — Midterm Consolidated | Revision</title>
+  <style>
+    :root[data-theme="light"] {
+      --bg:#f5f6fa; --surface:#ffffff; --surface-2:#f0f1f5; --border:#dde1eb;
+      --text:#1e2030; --text-muted:#6b7280; --accent:#2563eb; --accent-bg:#eff6ff;
+      --high:#dc2626; --high-bg:#fef2f2; --high-border:#fecaca;
+      --med:#b45309; --med-bg:#fffbeb; --med-border:#fde68a;
+      --low:#2563eb; --low-bg:#eff6ff; --low-border:#bfdbfe;
+      --scan-bg:#1e2030; --scan-text:#f8fafc; --scan-surface:#2d3048; --scan-border:#3d4160;
+      --code-bg:#1a1b26; --code-text:#c0caf5;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.1);
+      --shadow:0 2px 8px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.06);
+    }
+    :root[data-theme="dark"] {
+      --bg:#0d0f18; --surface:#181b2a; --surface-2:#212438; --border:#2e3250;
+      --text:#e2e8f0; --text-muted:#94a3b8; --accent:#60a5fa; --accent-bg:#1e2d45;
+      --high:#f87171; --high-bg:#2d1b1b; --high-border:#7f1d1d;
+      --med:#fbbf24; --med-bg:#2d2310; --med-border:#78350f;
+      --low:#60a5fa; --low-bg:#1e2d45; --low-border:#1e40af;
+      --scan-bg:#0d0f18; --scan-text:#e2e8f0; --scan-surface:#181b2a; --scan-border:#2e3250;
+      --code-bg:#0d0f18; --code-text:#c0caf5;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.3); --shadow:0 2px 8px rgba(0,0,0,.4);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;font-size:15px}
+    p{margin-bottom:.5rem;font-size:.9rem} ul,ol{padding-left:1.3rem;font-size:.9rem} li{margin-bottom:.3rem} strong{font-weight:700}
+    .site-header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-sm)}
+    .site-header-inner{max-width:920px;margin:0 auto;padding:.6rem 1.25rem;display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
+    .header-title{font-size:1rem;font-weight:800;letter-spacing:-.01em}
+    .header-sub{font-size:.78rem;color:var(--text-muted);margin-top:.1rem}
+    .theme-btn{flex-shrink:0;background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:.3rem .75rem;border-radius:.5rem;cursor:pointer;font-size:.82rem;font-family:inherit}
+    .theme-btn:hover{background:var(--border)}
+    .site-nav{background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 1rem;-ms-overflow-style:none;scrollbar-width:none}
+    .site-nav::-webkit-scrollbar{display:none}
+    .site-nav a{display:inline-block;color:var(--text-muted);text-decoration:none;font-size:.78rem;font-weight:500;padding:.55rem .6rem;border-bottom:2px solid transparent}
+    .site-nav a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+    .meta-bar{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
+    .meta-pill{background:var(--surface);border:1px solid var(--border);border-radius:.5rem;padding:.35rem .75rem;font-size:.78rem;display:flex;gap:.35rem;align-items:center;box-shadow:var(--shadow-sm)}
+    .meta-pill-label{color:var(--text-muted)} .meta-pill-value{font-weight:700}
+    .container{max-width:920px;margin:0 auto;padding:1.25rem 1rem}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:.8rem;margin-bottom:1rem;overflow:hidden;box-shadow:var(--shadow-sm)}
+    .card-header{padding:.75rem 1.1rem;display:flex;align-items:center;gap:.6rem;background:var(--surface-2);border-bottom:1px solid var(--border);cursor:pointer;user-select:none}
+    .card-header:hover{background:var(--border)} .card-icon{font-size:1rem;flex-shrink:0} .card-title{font-size:.95rem;font-weight:700;flex:1}
+    .card-chevron{font-size:.75rem;color:var(--text-muted);transition:transform .2s;flex-shrink:0}
+    .card.collapsed .card-body{display:none} .card.collapsed .card-chevron{transform:rotate(-90deg)} .card-body{padding:1.1rem}
+    .card-scan{background:var(--scan-bg);border-color:var(--scan-border)}
+    .card-scan .card-header{background:var(--scan-surface);border-color:var(--scan-border)}
+    .card-scan .card-header:hover{background:var(--scan-border)} .card-scan .card-title{color:var(--scan-text)}
+    .card-scan .card-icon{color:#fbbf24} .card-scan .card-chevron{color:var(--scan-text);opacity:.6} .card-scan .card-body{background:var(--scan-bg)}
+    .scan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.65rem;margin-bottom:.9rem}
+    .scan-tile{background:var(--scan-surface);border:1px solid var(--scan-border);border-radius:.55rem;padding:.75rem .85rem}
+    .scan-tile-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:#94a3b8;margin-bottom:.3rem}
+    .scan-tile-value{font-size:.88rem;font-weight:700;color:var(--scan-text);line-height:1.4}
+    .scan-tile.tile-high .scan-tile-label{color:#f87171} .scan-tile.tile-warn .scan-tile-label{color:#fbbf24} .scan-tile.tile-sig .scan-tile-label{color:#60a5fa}
+    .scan-divider{border:none;border-top:1px solid var(--scan-border);margin:.85rem 0} .scan-list{color:var(--scan-text);font-size:.88rem} .scan-list li{margin-bottom:.45rem}
+    .badge{display:inline-block;font-size:.67rem;font-weight:800;padding:.12rem .5rem;border-radius:999px;text-transform:uppercase;letter-spacing:.06em;line-height:1.4;flex-shrink:0}
+    .badge-high{background:var(--high-bg);color:var(--high);border:1px solid var(--high-border)}
+    .badge-med{background:var(--med-bg);color:var(--med);border:1px solid var(--med-border)}
+    .badge-low{background:var(--low-bg);color:var(--low);border:1px solid var(--low-border)}
+    .concept{border-left:3px solid var(--border);padding:.75rem .95rem;margin-bottom:.75rem;background:var(--surface-2);border-radius:0 .5rem .5rem 0}
+    .concept.imp-high{border-color:var(--high)} .concept.imp-med{border-color:var(--med)} .concept.imp-low{border-color:var(--low)}
+    .concept-title{font-weight:700;font-size:.92rem;display:flex;align-items:center;gap:.45rem;margin-bottom:.4rem;flex-wrap:wrap} .concept-body{font-size:.88rem}
+    .qa{border:1px solid var(--border);border-radius:.55rem;margin-bottom:.65rem;overflow:hidden}
+    .qa-q{padding:.65rem .9rem;font-weight:600;font-size:.88rem;cursor:pointer;background:var(--surface-2);display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem}
+    .qa-q:hover{background:var(--border)} .qa-q-text{flex:1;line-height:1.5} .qa-q-right{display:flex;align-items:center;gap:.4rem;flex-shrink:0}
+    .qa-toggle{font-size:.7rem;color:var(--text-muted)} .qa-a{padding:.7rem .9rem;font-size:.88rem;border-top:1px solid var(--border);display:none;line-height:1.6}
+    .qa.open .qa-a{display:block} .qa.open .qa-toggle::after{content:'▲'} .qa-toggle::after{content:'▼'}
+    .analytical{border:1px solid var(--border);border-radius:.55rem;margin-bottom:.85rem;overflow:hidden}
+    .analytical-head{padding:.65rem .9rem;background:var(--surface-2);border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:.55rem;cursor:pointer}
+    .analytical-head:hover{background:var(--border)} .q-num{font-weight:800;font-size:.82rem;color:var(--accent);flex-shrink:0;margin-top:.1rem}
+    .q-title{font-weight:600;font-size:.88rem;flex:1;line-height:1.5} .analytical-body{padding:1rem;display:none}
+    .analytical.open .analytical-body{display:block} .analytical.open .card-chevron{transform:rotate(0)}
+    .steps{display:flex;flex-direction:column;gap:.6rem} .step{display:flex;gap:.7rem;align-items:flex-start}
+    .step-num{width:1.5rem;height:1.5rem;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;margin-top:.1rem}
+    .step-body{flex:1;font-size:.88rem;line-height:1.6}
+    .callout{border-radius:.45rem;padding:.6rem .85rem;font-size:.85rem;margin-top:.75rem;line-height:1.55}
+    .callout-insight{background:var(--accent-bg);border-left:3px solid var(--accent)} .callout-insight strong{color:var(--accent)}
+    .callout-warn{background:var(--high-bg);border-left:3px solid var(--high)} .callout-warn strong{color:var(--high)}
+    .callout-note{background:var(--surface-2);border-left:3px solid var(--text-muted)}
+    .callout-exam{background:var(--med-bg);border-left:3px solid var(--med)} .callout-exam strong{color:var(--med)}
+    .formula{background:var(--surface-2);border:1px solid var(--border);border-radius:.5rem;padding:.75rem 1rem;margin-bottom:.75rem}
+    .formula-name{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:.4rem;font-weight:700}
+    .formula-display{font-family:'Fira Code','Courier New',monospace;font-size:1rem;text-align:center;padding:.5rem;color:var(--accent);font-weight:600;overflow-x:auto;white-space:pre}
+    .formula-vars{font-size:.82rem;color:var(--text-muted);margin-top:.4rem}
+    .code-block{margin-bottom:.85rem} .code-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:.3rem;font-weight:700}
+    pre{background:var(--code-bg);color:var(--code-text);padding:.9rem 1rem;border-radius:.5rem;overflow-x:auto;font-size:.82rem;line-height:1.6;font-family:'Fira Code','Cascadia Code','Courier New',monospace}
+    .code-analysis{margin-top:.5rem;font-size:.85rem;padding:.5rem .75rem;background:var(--surface-2);border-radius:.4rem;border-left:3px solid var(--accent)}
+    .figure-wrap{margin-bottom:1rem} .figure-placeholder{border:2px dashed var(--border);border-radius:.55rem;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-muted);font-size:.85rem;text-align:center;padding:1rem;gap:.4rem;white-space:pre;font-family:'Fira Code',monospace}
+    .pattern-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem;margin-bottom:.85rem}
+    .pattern-tile{background:var(--surface-2);border:1px solid var(--border);border-radius:.5rem;padding:.7rem .85rem}
+    .pattern-tile-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:.25rem}
+    .pattern-freq{font-size:1.6rem;font-weight:900;color:var(--accent);line-height:1.1} .pattern-desc{font-size:.78rem;color:var(--text-muted);margin-top:.2rem}
+    .probable-list{display:flex;flex-direction:column} .probable-item{display:flex;gap:.75rem;align-items:flex-start;padding:.75rem 0;border-bottom:1px solid var(--border)}
+    .probable-item:last-child{border-bottom:none}
+    .prob-rank{width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.82rem;flex-shrink:0}
+    .rank-1{background:var(--high-bg);color:var(--high);border:2px solid var(--high-border)}
+    .rank-2{background:var(--med-bg);color:var(--med);border:2px solid var(--med-border)}
+    .rank-3{background:var(--low-bg);color:var(--low);border:2px solid var(--low-border)}
+    .rank-n{background:var(--surface-2);color:var(--text-muted);border:2px solid var(--border)}
+    .prob-content{flex:1} .prob-q{font-size:.9rem;font-weight:600;line-height:1.5} .prob-reason{font-size:.8rem;color:var(--text-muted);margin-top:.2rem;line-height:1.4}
+    .mnemonic{background:var(--med-bg);border:1px solid var(--med-border);border-radius:.5rem;padding:.75rem 1rem;margin-bottom:.6rem}
+    .mnemonic-word{font-weight:900;color:var(--med);font-size:1.05rem;margin-bottom:.3rem} .mnemonic-body{font-size:.88rem}
+    .divider{border:none;border-top:1px solid var(--border);margin:.85rem 0}
+    .tag{background:var(--surface-2);border:1px solid var(--border);font-size:.73rem;padding:.1rem .5rem;border-radius:999px;color:var(--text-muted);display:inline-block;margin:.1rem}
+    .section-intro{font-size:.82rem;color:var(--text-muted);margin-bottom:.85rem;line-height:1.5}
+    .mod-divider{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:1.1rem 0 .6rem;padding-bottom:.3rem;border-bottom:2px solid var(--accent-bg)}
+    .mod-divider:first-child{margin-top:0}
+    @media print{.site-header,.site-nav,.theme-btn{display:none!important}.container{padding:0}.card{box-shadow:none;page-break-inside:avoid;border:1px solid #ccc}.card-body,.qa-a,.analytical-body{display:block!important}.card.collapsed .card-body{display:block!important}.card-scan{background:#fff;color:#000}.scan-tile{background:#f5f5f5}.scan-tile-value{color:#000}}
+    @media (max-width:480px){body{font-size:14px}.site-header-inner{padding:.5rem .85rem}.container{padding:.85rem .65rem}.card-body{padding:.85rem}.formula-display{font-size:.88rem}}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div>
+      <div class="header-title">CSE321 — Midterm Consolidated</div>
+      <div class="header-sub">Topics 1–19: Process · Threads · CPU Scheduling · Synchronization &nbsp;·&nbsp; Central (BRACU)</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">☀ / ☾</button>
+  </div>
+</header>
+
+<nav class="site-nav" aria-label="Page sections">
+  <a href="#scan">⚡ Morning Scan</a>
+  <a href="#theory">📖 Theory</a>
+  <a href="#short-q">❓ Short Qs</a>
+  <a href="#analytical">🧮 Analytical</a>
+  <a href="#math">∑ Math</a>
+  <a href="#code">💻 Code</a>
+  <a href="#figures">📊 Figures</a>
+  <a href="#patterns">🎯 Exam Patterns</a>
+  <a href="#probable">🔮 Probable Qs</a>
+  <a href="#mnemonics">🧠 Mnemonics</a>
+</nav>
+
+<main class="container">
+
+  <div class="meta-bar">
+    <div class="meta-pill"><span class="meta-pill-label">Course</span><span class="meta-pill-value">CSE321</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Topic</span><span class="meta-pill-value">Topics 1–19</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Exam</span><span class="meta-pill-value">Midterm</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Date</span><span class="meta-pill-value">2026-07-30</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Weight</span><span class="meta-pill-value">25%</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Built</span><span class="meta-pill-value">2026-07-29</span></div>
+  </div>
+
+  <!-- MORNING SCAN -->
+  <section class="card card-scan" id="scan">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">⚡</span><span class="card-title" style="color:var(--scan-text)">Morning Quick Scan</span>
+      <span class="card-chevron" style="color:var(--scan-text);opacity:.6">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="scan-grid">
+        <div class="scan-tile tile-high">
+          <div class="scan-tile-label">Must Know Cold</div>
+          <div class="scan-tile-value">fork() output trace (with wait/zombie/orphan) — in 13/13 past sittings</div>
+        </div>
+        <div class="scan-tile tile-warn">
+          <div class="scan-tile-label">Most Likely Tested</div>
+          <div class="scan-tile-value">MLFQ Gantt chart (4/4 sittings since Sp25) + a synchronization scenario question</div>
+        </div>
+        <div class="scan-tile">
+          <div class="scan-tile-label">Common Trap</div>
+          <div class="scan-tile-value">Priority number convention (lower=higher varies by question); RR quantum too small/large mistakes; wait(empty) before wait(mutex) ordering</div>
+        </div>
+        <div class="scan-tile tile-sig">
+          <div class="scan-tile-label">Central-Exam Signal</div>
+          <div class="scan-tile-value">Named-scenario wrapping since 2024 — same mechanics, story dressing. Set A/B always structurally identical.</div>
+        </div>
+      </div>
+      <hr class="scan-divider">
+      <p style="font-size:.82rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Top things to have ready before entering the exam:</p>
+      <ol class="scan-list">
+        <li>Trace 2–3 nested fork() problems by hand, including zombie/orphan identification (new since Su25)</li>
+        <li>Do one full MLFQ Gantt chart from scratch — remember slides use per-I/O promotion, not just periodic boost</li>
+        <li>Write out Bounded Buffer semaphore code cold (mutex/empty/full ordering — empty/full wait BEFORE mutex wait)</li>
+        <li>TAS and CAS function bodies from memory, plus what each returns and why CAS enables lock-free structures</li>
+        <li>PCB fields (all 6 categories, including CPU scheduling info) and the 4 deadlock conditions</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- THEORY -->
+  <section class="card" id="theory">
+    <div class="card-header" onclick="toggleCard(this)"><span class="card-icon">📖</span><span class="card-title">Theory</span><span class="card-chevron">▼</span></div>
+    <div class="card-body">
+
+      <div class="mod-divider">Module 1 — Process</div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Dual Mode Operation & System Calls <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Mode bit: user mode (restricted) vs kernel mode (full access). A trap switches user→kernel so the OS can safely perform privileged work. System calls are the interface for this — know the 6 categories (Process Control, File Manipulation, Device Manipulation, Info Maintenance, Communication, Protection) with a Windows/Linux example each.</p>
+          <div class="callout callout-warn"><strong>Gap patched:</strong> this whole block was missing from the original notes — slide-confirmed, ~6 slides of content. Newly added tonight.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">PCB & Process States <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>5 states: new, ready, running, waiting, terminated. PCB has 6 field categories — don't forget "CPU scheduling info" (priorities, queue pointers), the category most often dropped.</p>
+          <div class="callout callout-exam"><strong>Exam note:</strong> "What is saved during a context switch" = CPU registers + program counter, the CPU-state portion of the PCB.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">fork() / exec() / wait() — Zombie & Orphan <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>fork() returns 0 in child, child's PID in parent, -1 on error. Zombie = child exited, parent hasn't called wait(). Orphan = parent terminated first, child reparented to init.</p>
+          <div class="callout callout-warn"><strong>Trending since Su25:</strong> zombie/orphan identification appeared in 3 of the last 4–5 sittings — a newer emphasis, don't underweight it relative to older PYQs.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">IPC: Shared Memory vs Message Passing <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>Shared memory = fast, no kernel per-op, manual sync required. Message passing = slower (kernel-mediated), automatic sync. Naming/synchronization/buffering variants are textbook-only, not slide-covered — lower priority than the core comparison.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">Pipes & Sockets <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body"><p>Ordinary pipe = unidirectional, parent-child only. Named pipe (FIFO) = bidirectional, any processes, persistent. Not found anywhere in the slide deck — textbook-only, lowest priority in this module if time is short.</p></div>
+      </div>
+
+      <div class="mod-divider">Module 2 — Threads</div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Concurrency vs Parallelism <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Concurrency = multiple tasks make progress (possibly interleaved on one core). Parallelism = literally simultaneous, requires multiple cores. Data parallelism (same op, split data) vs task parallelism (different independent tasks).</p>
+          <div class="callout callout-warn"><strong>Gap patched:</strong> entire Multicore Programming section was missing — newly added, slide-confirmed.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Threading Models: Many-to-One / One-to-One / Many-to-Many <span class="badge badge-high">MED</span></div>
+        <div class="concept-body">
+          <p>One-to-one (Linux/Windows default) allows true parallelism, blocking doesn't affect other threads, but costs one kernel thread per user thread. Many-to-one is fast but one blocking call stalls everything. Was a 2023–24 exam fixture, now less common but still in scope.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Thread Pools & Implicit Threading <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>5 implicit-threading methods: Thread Pools, Fork-Join, OpenMP, GCD, Intel TBB (Fork-Join was missing from original notes — patched). Pools avoid per-request thread-creation overhead with a bounded, reusable set of workers.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Threading Issues <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>fork() in multithreaded programs: duplicate-all-threads vs duplicate-calling-thread-only (Linux default is the latter). Signal routing: synchronous→faulting thread, asynchronous→any unblocked thread. Cancellation: deferred (safe, default) vs asynchronous (unsafe). Thread-specific data (patched — was missing) is the 5th issue on the slide's list.</p>
+        </div>
+      </div>
+
+      <div class="mod-divider">Module 3 — CPU Scheduling</div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">TAT / WT / RT Formulas <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>TAT = CT − AT. WT = TAT − BT. RT = first CPU time − AT. Know these cold — every Gantt-chart question needs them.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">MLFQ — Two Competing Rule Sets <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>OSTEP's 5 rules (periodic priority boost after time S) vs. the slide's own worked examples, which promote a process <strong>one queue level after each I/O operation</strong> instead. Both appear in course material — read the question carefully for which mechanism it specifies.</p>
+          <div class="callout callout-warn"><strong>Slide's own inconsistency:</strong> textbook 3-queue example says Q2=FCFS, but the professor's worked "Problem 1/2" use Q2=Round Robin(q=8). If a question doesn't specify, don't assume — follow what the question states.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">FCFS / SJF / SRTF <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>FCFS: convoy effect. SJF non-preemptive vs SRTF (preemptive) — SRTF optimal for min avg WT. SJF is a special case of Priority Scheduling where priority = predicted burst time (inverse).</p>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Priority Scheduling & Round Robin <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>Priority: internal factors (time limits, memory, open files, I/O:CPU ratio) vs external (importance, funds, department). Starvation → fixed by aging. RR: quantum tuning (80% of bursts should finish within q), max wait bound = (n−1)×q — patched, was missing.</p>
+        </div>
+      </div>
+
+      <div class="mod-divider">Module 4 — Synchronization & Deadlock</div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Critical Section — 3 Requirements <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Mutual Exclusion, Progress, Bounded Waiting. Disabling interrupts (single-processor only, patched — was missing) is the simplest hardware CS solution but doesn't scale to multiprocessors.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">TAS & CAS <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>TAS always writes true unconditionally. CAS only writes if current value matches expected — enables lock-free structures. Both are hardware-atomic. Sp26 (most recent PYQ) tested CAS-based reasoning specifically, not raw semaphore code — a likely direction for tomorrow.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Semaphores — wait()/signal(), Low-Level Implementation <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Binary (0/1, mutex-equivalent) vs counting (pool of N resources). Non-busy-wait implementation uses a waiting list + block()/wakeup() — patched, was missing. Starvation can occur if the waiting list is serviced LIFO instead of FIFO (patched, quotable slide fact).</p>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Classical Problems — Bounded Buffer, Readers-Writers, Dining Philosophers <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Bounded Buffer: wait(empty)/wait(full) BEFORE wait(mutex) — reversing causes deadlock. The "lost wakeup" motivating example (patched, was missing) is why semaphores replace naive sleep()/wakeup(). Readers-Writers: read_count logic, first-reader locks writers out. Dining Philosophers: naive solution deadlocks (all pick up left simultaneously); fixes = N−1 seats, asymmetric ordering, or all-or-nothing acquisition.</p>
+          <div class="callout callout-note">Slides name semaphores <code>mutex/countFull/countEmpty</code>; textbook-style notes use <code>mutex/full/empty</code> — same logic, different names.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Deadlock — 4 Conditions <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>Mutual Exclusion, Hold and Wait, No Preemption, Circular Wait — all 4 must hold simultaneously. RAG (cycle + single-instance = guaranteed deadlock) is textbook-only, not slide-covered, and had zero appearances across 13 past midterm sittings — know it well enough not to lose an easy mark, but it's the lowest-priority item in this module.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SHORT QUESTIONS -->
+  <section class="card" id="short-q">
+    <div class="card-header" onclick="toggleCard(this)"><span class="card-icon">❓</span><span class="card-title">Short Questions</span><span class="card-chevron">▼</span></div>
+    <div class="card-body">
+      <p class="section-intro">Tap a question to reveal the answer. Try to recall first.</p>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What's the difference between a zombie and an orphan process?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Zombie: child has terminated but the parent hasn't called wait() yet, so the PCB/process-table entry lingers. Orphan: parent terminated before the child did; the child is re-parented to init, which periodically calls wait() to clean up its zombies.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why does disabling interrupts work as a CS solution on a single processor but not on a multiprocessor?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Disabling interrupts prevents a context switch on that one core, so no other process can run there during the CS. On a multiprocessor, other cores keep running and can still enter their own CS on the same shared data — disabling interrupts only affects the local core.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why must wait(empty) happen before wait(mutex) in the Bounded Buffer producer?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">If mutex is acquired first and the buffer turns out to be full, the producer would block while holding mutex — permanently locking the consumer out of the buffer it needs to free a slot. Deadlock. Checking empty first ensures the producer only takes mutex when it can actually make progress.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What does Compare-and-Swap (CAS) do that Test-and-Set (TAS) cannot?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">TAS unconditionally writes true regardless of the prior value. CAS only writes the new value if the current value matches an expected value — this conditional check enables lock-free data structures (atomic counters, lock-free queues) where multiple threads can retry without ever blocking.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why does a very small Round Robin quantum hurt performance?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Context switch overhead is pure waste — no useful work happens during a switch. A tiny quantum means the CPU spends more time switching between processes than executing them, degenerating throughput even though responsiveness looks high.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What's the difference between the many-to-one and one-to-one threading models?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Many-to-one maps many user threads to a single kernel thread — fast to create, but one blocking syscall stalls the whole process and no true parallelism is possible. One-to-one (Linux/Windows default) maps each user thread to its own kernel thread — true parallelism, no full-process blocking, but higher creation overhead.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What's the difference between concurrency and parallelism?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Concurrency means multiple tasks are making progress, possibly by interleaving on a single core — no multi-core requirement. Parallelism means tasks run at the literal same instant, which requires multiple cores.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why is aging used with priority scheduling?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Pure priority scheduling risks starving low-priority processes if high-priority ones keep arriving. Aging gradually increases the priority of a waiting process over time, guaranteeing it eventually becomes highest-priority and runs.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What are the 4 necessary conditions for deadlock?</span><span class="qa-q-right"><span class="badge badge-low">LOW</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Mutual Exclusion (resource non-shareable), Hold and Wait (holding one resource while waiting for another), No Preemption (resources only released voluntarily), Circular Wait (a cycle of processes each waiting on the next). All four must hold simultaneously for deadlock.</div></div>
+
+    </div>
+  </section>
+
+  <!-- ANALYTICAL -->
+  <section class="card" id="analytical">
+    <div class="card-header" onclick="toggleCard(this)"><span class="card-icon">🧮</span><span class="card-title">Analytical Questions</span><span class="card-chevron">▼</span></div>
+    <div class="card-body">
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)"><span class="q-num">Q1</span><span class="q-title">fork() trace: predict output and process count for a nested fork() program with printf() calls</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span></div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Draw a tree: root = original process. Each fork() call adds a branch — one node continues as parent (fork returns child PID), one new node is the child (fork returns 0).</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">For N sequential fork() calls with no conditionals, total processes = 2^N (including the original). Track which lines each process actually executes based on its position in the tree — a process only runs code AFTER the fork() call that created it, forward.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">If wait() is present, check for zombies (child exited, no wait() called before parent also exits) or orphans (parent exits before child, child reparented to init).</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">Count printf() executions by walking the tree — every node that reaches a printf() line in its execution path prints once.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> Draw the tree first, always. Trying to trace fork() output linearly in your head is the #1 source of errors under exam pressure.</div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> appeared in all 13 previous sittings — the single most reliable question on this exam. Recent sittings wrap this in a named scenario (client-server, rover, app) — the underlying fork() logic is unchanged.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)"><span class="q-num">Q2</span><span class="q-title">MLFQ Gantt chart: given a process table and queue/quantum setup, compute the schedule and TAT/WT/RT</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span></div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Identify the queue structure the question specifies (number of queues, quantum per queue, and — critically — whether the bottom queue is FCFS or Round Robin; don't assume, read the question).</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">New processes enter the top queue. Run each at that level's quantum. If it finishes within quantum, done. If it uses the full quantum, demote one level.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Check the promotion rule specified: OSTEP-style periodic boost after time S (all processes reset to top queue), OR the slide's per-I/O-operation promotion (one level up each time a process does I/O). These give different schedules — use whichever the question implies.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">Build the Gantt chart step by step, tracking each process's remaining burst and current queue level at every scheduling decision point.</div></div>
+            <div class="step"><div class="step-num">5</div><div class="step-body">Compute CT for each process from the chart, then TAT = CT−AT, WT = TAT−BT, RT = first-CPU-time−AT.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> MLFQ questions fail most often from queue-rule ambiguity, not arithmetic. Nail down which promotion/demotion rule applies before drawing anything.</div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> every sitting since Spring 2025 (4/4) has used MLFQ specifically, not plain RR/SRTF/Priority — this is a real difficulty escalation from earlier years' PYQs.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)"><span class="q-num">Q3</span><span class="q-title">Semaphore scenario: map a real-world description (parking lot / restaurant / bank vault) onto counting semaphore / mutex mechanics</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span></div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Identify the resource pool size (N spots/tables/slots) → this is the initial value of a counting semaphore.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Identify what needs mutual exclusion (e.g. updating a shared counter of available spots) → this needs a separate binary mutex protecting that specific variable.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Write wait() at the point where a process wants to acquire a resource; signal() where it releases one.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">If asked to "find the bug": check for wrong wait/signal ordering (causing deadlock), a missing wait/signal (causing race condition or resource leak), or a semaphore that should be counting but is written as binary (or vice versa).</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> the recent PYQ era (2024 onward) never asks for the 3 classical problems by name — it wraps the identical mechanics in a scenario. Recognize the underlying pattern regardless of the story.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)"><span class="q-num">Q4</span><span class="q-title">Resource Allocation Graph: given process/resource assignment and request edges, determine if deadlock exists</span><span class="badge badge-low">LOW</span><span class="card-chevron">▼</span></div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Draw all assignment edges (R→P, resource currently held by process) and request edges (P→R, process wants that resource).</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Trace for a cycle. No cycle = no deadlock, guaranteed.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">If a cycle exists: check whether every resource type in the cycle has exactly one instance. If yes, deadlock is guaranteed. If any resource type in the cycle has multiple instances, deadlock is only possible, not certain — another process might still release a needed instance.</div></div>
+          </div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> zero appearances across all 13 previous midterm sittings reviewed, and not present in the slide deck (textbook-only). Know the rule well enough for an easy mark if it does appear, but it's the lowest-priority analytical type on this exam.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MATH -->
+  <section class="card" id="math">
+    <div class="card-header" onclick="toggleCard(this)"><span class="card-icon">∑</span><span class="card-title">Mathematics</span><span class="card-chevron">▼</span></div>
+    <div class="card-body">
+      <div class="formula"><div class="formula-name">Turnaround / Waiting / Response Time</div>
+        <div class="formula-display">TAT = CT − AT
+WT  = TAT − BT
+RT  = First CPU time − AT</div>
+        <div class="formula-vars">CT = completion time, AT = arrival time, BT = burst time</div></div>
+
+      <div class="formula"><div class="formula-name">Round Robin Max Wait Bound</div>
+        <div class="formula-display">Max wait ≤ (n − 1) × q</div>
+        <div class="formula-vars">n = number of processes, q = time quantum. Slide-confirmed, quick sanity check for RR questions.</div></div>
+
+      <div class="formula"><div class="formula-name">SJF Burst Time Estimation (Exponential Average)</div>
+        <div class="formula-display">τ(n+1) = α·t(n) + (1−α)·τ(n)</div>
+        <div class="formula-vars">t(n) = actual n-th burst, τ(n) = previous prediction, α = weight (typically 0.5)</div></div>
+
+      <div class="formula"><div class="formula-name">Averages</div>
+        <div class="formula-display">Avg TAT = Σ TAT / n
+Avg WT  = Σ WT / n</div>
+        <div class="formula-vars">n = number of processes in the batch</div></div>
+    </div>
+  </section>
+
+  <!-- CODE -->
+  <section class="card" id="code">
+    <div class="card-header" onclick="toggleCard(this)"><span class="card-icon">💻</span><span class="card-title">Code</span><span class="card-chevron">▼</span></div>
+    <div class="card-body">
+
+      <div class="code-block"><div class="code-label">C — Test-and-Set spinlock</div>
+        <pre><code>boolean test_and_set(boolean *target) {
+    boolean rv = *target;
+    *target = true;
+    return rv;
+}
+
+// usage:
+while (test_and_set(&amp;lock)) ;   // spin
+// --- CRITICAL SECTION ---
+lock = false;                    // release</code></pre>
+        <div class="code-analysis">TAS always writes true regardless of prior value. Returns the OLD value — if it was false, you just acquired the lock (and set it true); if it was true, you spin.</div></div>
+
+      <div class="code-block"><div class="code-label">C — Compare-and-Swap spinlock</div>
+        <pre><code>int compare_and_swap(int *value, int expected, int new_value) {
+    int temp = *value;
+    if (*value == expected)
+        *value = new_value;
+    return temp;
+}
+
+// usage:
+while (compare_and_swap(&amp;lock, 0, 1) != 0) ;  // spin
+// --- CRITICAL SECTION ---
+lock = 0;                                       // release</code></pre>
+        <div class="code-analysis">Only writes if current value matches "expected" — this conditional write is what enables lock-free structures. Sp26 PYQ tested CAS-based reasoning directly — practice tracing a CAS-guarded increment across two threads.</div></div>
+
+      <div class="code-block"><div class="code-label">C — Bounded Buffer (Producer-Consumer) with semaphores</div>
+        <pre><code>// mutex=1, empty=N, full=0
+// PRODUCER:
+do {
+    produce item;
+    wait(empty);
+    wait(mutex);
+    add item to buffer;
+    signal(mutex);
+    signal(full);
+} while (true);
+
+// CONSUMER:
+do {
+    wait(full);
+    wait(mutex);
+    remove item from buffer;
+    signal(mutex);
+    signal(empty);
+    consume item;
+} while (true);</code></pre>
+        <div class="code-analysis">Critical ordering: wait(empty)/wait(full) BEFORE wait(mutex) in both. Reversing causes deadlock — the most common "find the bug" trap on this pattern.</div></div>
+
+      <div class="code-block"><div class="code-label">C — Readers-Writers</div>
+        <pre><code>// WRITER:
+wait(rw_mutex);
+  [write data]
+signal(rw_mutex);
+
+// READER:
+wait(mutex);
+  read_count++;
+  if (read_count == 1) wait(rw_mutex);
+signal(mutex);
+  [read data]
+wait(mutex);
+  read_count--;
+  if (read_count == 0) signal(rw_mutex);
+signal(mutex);</code></pre>
+        <div class="code-analysis">First reader locks out writers (wait(rw_mutex)); last reader unlocks (signal(rw_mutex)). Writers can starve if readers keep arriving — this is the "first readers-writers problem."</div></div>
+
+    </div>
+  </section>
+
+  <!-- FIGURES -->
+  <section class="card" id="figures">
+    <div class="card-header" onclick="toggleCard(this)"><span class="card-icon">📊</span><span class="card-title">Figures & Diagrams</span><span class="card-chevron">▼</span></div>
+    <div class="card-body">
+      <div class="figure-wrap"><div class="figure-placeholder">  [NEW] --admitted--> [READY] --dispatch--> [RUNNING]
+                    ^                              |
+                    | I/O or event done    interrupt|  I/O or event wait
+                    |                              v
+                    +-------------------------- [WAITING]
+
+  [RUNNING] --exit--> [TERMINATED]</div>
+        <p class="figure-caption">Fig 1. Process state diagram — 5 states and all transitions.</p></div>
+
+      <div class="figure-wrap"><div class="figure-placeholder">Request edge:    Pi ────────► Rj
+Assignment edge: Pi ◄──────── Rj
+
+Cycle + single-instance resources = deadlock guaranteed
+Cycle + multi-instance resources  = deadlock only possible</div>
+        <p class="figure-caption">Fig 2. Resource Allocation Graph notation (textbook-only, low priority — see Q4).</p></div>
+    </div>
+  </section>
+
+  <!-- EXAM PATTERNS (relabeled — centrally created exam, not faculty) -->
+  <section class="card" id="patterns">
+    <div class="card-header" onclick="toggleCard(this)"><span class="card-icon">🎯</span><span class="card-title">Central Exam Pattern Analysis</span><span class="card-chevron">▼</span></div>
+    <div class="card-body">
+      <div class="callout callout-note">
+        <strong>Source:</strong> All available midterm PYQs, Spring 2022 – Spring 2026 (13 sittings, 20 sets).
+        <br><strong>Scope:</strong> This midterm is centrally created by the BRACU question committee, not NTR — these are the committee's habits across years, not this semester's faculty style. Full analysis in <span class="tag">CSE321_midterm_probable_questions.md</span> in this repo.
+      </div>
+
+      <div class="pattern-grid">
+        <div class="pattern-tile"><div class="pattern-tile-label">fork() trace</div><div class="pattern-freq">13/13</div><div class="pattern-desc">Every sitting, no exception</div></div>
+        <div class="pattern-tile"><div class="pattern-tile-label">Gantt-chart calc</div><div class="pattern-freq">13/13</div><div class="pattern-desc">Every sitting, no exception</div></div>
+        <div class="pattern-tile"><div class="pattern-tile-label">MLFQ specifically</div><div class="pattern-freq">4/4</div><div class="pattern-desc">Every sitting since Sp25</div></div>
+        <div class="pattern-tile"><div class="pattern-tile-label">Sync scenario Q</div><div class="pattern-freq">4/4</div><div class="pattern-desc">Every sitting since Sp25</div></div>
+        <div class="pattern-tile"><div class="pattern-tile-label">Zombie/orphan</div><div class="pattern-freq">3/5</div><div class="pattern-desc">New since Su25</div></div>
+        <div class="pattern-tile"><div class="pattern-tile-label">RAG / deadlock</div><div class="pattern-freq">0/13</div><div class="pattern-desc">Never appeared — lowest priority</div></div>
+      </div>
+
+      <p><strong>Observed tendencies:</strong></p>
+      <ul>
+        <li>Synchronization was absent from the midterm 2022–2023 (0%), entered scope Sp24, then has been standard every sitting since Sp25 — don't under-revise it because older PYQs lack it.</li>
+        <li>Question style shifted from direct textbook phrasing (2022–23) to named-scenario wrapping (2024+) — same mechanics, different framing.</li>
+        <li>Set A and Set B are always structurally parallel — same slots, same marks, only numbers/names swapped. Practicing one set directly practices the paired set.</li>
+        <li>Duration has stabilized at 90 minutes for the last 4 sittings, up from 70 min in 2022. Full marks fluctuate (25 or 30) with no fixed rule.</li>
+        <li>Amdahl's Law and the many-to-one/one-to-one/many-to-many comparison were fixtures through 2024 but haven't appeared since — possibly retired, don't over-invest relative to current fixtures.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- PROBABLE QUESTIONS -->
+  <section class="card" id="probable">
+    <div class="card-header" onclick="toggleCard(this)"><span class="card-icon">🔮</span><span class="card-title">Probable Questions</span><span class="card-chevron">▼</span></div>
+    <div class="card-body">
+      <div class="probable-list">
+        <div class="probable-item"><div class="prob-rank rank-1">1</div><div class="prob-content"><div class="prob-q">fork() multi-branch output trace, likely with wait() and zombie/orphan identification</div><div class="prob-reason">Appeared in all 13 sittings reviewed — the single most reliable fixture on this exam.</div></div></div>
+        <div class="probable-item"><div class="prob-rank rank-1">1</div><div class="prob-content"><div class="prob-q">MLFQ Gantt chart — avg waiting/turnaround/response time</div><div class="prob-reason">Also appeared in all 13 sittings; specifically MLFQ (not plain RR/SRTF/Priority) in all 4 sittings since Spring 2025.</div></div></div>
+        <div class="probable-item"><div class="prob-rank rank-2">2</div><div class="prob-content"><div class="prob-q">Synchronization real-world scenario mapped to semaphore/mutex mechanics</div><div class="prob-reason">Standard in 4/4 of the most recent sittings, after being absent 2022–2023.</div></div></div>
+        <div class="probable-item"><div class="prob-rank rank-2">2</div><div class="prob-content"><div class="prob-q">TAS/CAS "find the bug" or CAS-based concurrent-increment reasoning</div><div class="prob-reason">Matches the most recent (Sp26) format, which moved away from raw semaphore code toward CAS reasoning and MCQs.</div></div></div>
+        <div class="probable-item"><div class="prob-rank rank-3">3</div><div class="prob-content"><div class="prob-q">IPC method selection — shared memory vs message passing, storage-vs-speed tradeoff</div><div class="prob-reason">Present in 3 of the last 4 sittings; also directly matches your Quiz 1 IPC scenario question.</div></div></div>
+        <div class="probable-item"><div class="prob-rank rank-3">3</div><div class="prob-content"><div class="prob-q">Process/thread creation counting from mixed fork() + pthread_create() code</div><div class="prob-reason">Recurring "how many processes/threads exist" arithmetic style seen in Sp25/Su25.</div></div></div>
+        <div class="probable-item"><div class="prob-rank rank-n">4</div><div class="prob-content"><div class="prob-q">Priority scheduling starvation + aging; thread pool vs dynamic creation tradeoff</div><div class="prob-reason">Moderate probability — recurring but not universal across recent sittings.</div></div></div>
+        <div class="probable-item"><div class="prob-rank rank-n">5</div><div class="prob-content"><div class="prob-q">Resource Allocation Graph / deadlock conditions</div><div class="prob-reason">Zero precedent across 13 sittings and not slide-covered — lowest priority, but still syllabus-legal, know the basics for an easy mark if it appears.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MNEMONICS -->
+  <section class="card" id="mnemonics">
+    <div class="card-header" onclick="toggleCard(this)"><span class="card-icon">🧠</span><span class="card-title">Mnemonics & Memory Aids</span><span class="card-chevron">▼</span></div>
+    <div class="card-body">
+      <div class="mnemonic"><div class="mnemonic-word">"MHNC" — Deadlock Conditions</div><div class="mnemonic-body">Mutual exclusion, Hold and wait, No preemption, Circular wait. All 4 must hold together.</div></div>
+      <div class="mnemonic"><div class="mnemonic-word">"empty/full before mutex"</div><div class="mnemonic-body">In Bounded Buffer, always wait() on the counting semaphore (empty/full) before the binary mutex — protects against deadlocking while holding mutex.</div></div>
+      <div class="mnemonic"><div class="mnemonic-word">"CAS checks, TAS just takes"</div><div class="mnemonic-body">CAS only writes if the current value matches what you expected (conditional) — TAS writes true no matter what (unconditional).</div></div>
+      <div class="mnemonic"><div class="mnemonic-word">PCB = "PC-SMIA"</div><div class="mnemonic-body">Process state, Program Counter, CPU registers, Scheduling info, Memory-mgmt info, I/O status, Accounting info — 6 categories (7 items, Program Counter and CPU registers are often grouped together).</div></div>
+      <div class="callout callout-note">Add your own from tonight's review — the mnemonics you build yourself under exam pressure stick best.</div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggleCard(header){header.closest('.card').classList.toggle('collapsed')}
+  function toggleQA(q){q.closest('.qa').classList.toggle('open')}
+  function toggleAnalytical(header){
+    header.closest('.analytical').classList.toggle('open');
+    const chev = header.querySelector('.card-chevron');
+    if (chev) chev.style.transform = header.closest('.analytical').classList.contains('open') ? 'rotate(0deg)' : 'rotate(-90deg)';
+  }
+  function toggleTheme(){
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('rg-theme', next); } catch(e) {}
+  }
+  (function(){ try { const saved = localStorage.getItem('rg-theme'); if (saved) document.documentElement.dataset.theme = saved; } catch(e) {} })();
+</script>
+
+</body>
+</html>

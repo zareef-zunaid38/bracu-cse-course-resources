@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE370 — Final Revision (Topics 19–24)</title>
+
+  <style>
+    :root[data-theme="light"] {
+      --bg:           #f5f6fa;
+      --surface:      #ffffff;
+      --surface-2:    #f0f1f5;
+      --border:       #dde1eb;
+      --text:         #1e2030;
+      --text-muted:   #6b7280;
+      --accent:       #2563eb;
+      --accent-bg:    #eff6ff;
+      --high:         #dc2626;
+      --high-bg:      #fef2f2;
+      --high-border:  #fecaca;
+      --med:          #b45309;
+      --med-bg:       #fffbeb;
+      --med-border:   #fde68a;
+      --low:          #2563eb;
+      --low-bg:       #eff6ff;
+      --low-border:   #bfdbfe;
+      --scan-bg:      #1e2030;
+      --scan-text:    #f8fafc;
+      --scan-surface: #2d3048;
+      --scan-border:  #3d4160;
+      --code-bg:      #1a1b26;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
+      --shadow:       0 2px 8px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.06);
+    }
+    :root:not([data-theme="light"]) {
+      --bg:           #0d0f18;
+      --surface:      #181b2a;
+      --surface-2:    #212438;
+      --border:       #2e3250;
+      --text:         #e2e8f0;
+      --text-muted:   #94a3b8;
+      --accent:       #60a5fa;
+      --accent-bg:    #1e2d45;
+      --high:         #f87171;
+      --high-bg:      #2d1b1b;
+      --high-border:  #7f1d1d;
+      --med:          #fbbf24;
+      --med-bg:       #2d2310;
+      --med-border:   #78350f;
+      --low:          #60a5fa;
+      --low-bg:       #1e2d45;
+      --low-border:   #1e40af;
+      --scan-bg:      #0d0f18;
+      --scan-text:    #e2e8f0;
+      --scan-surface: #181b2a;
+      --scan-border:  #2e3250;
+      --code-bg:      #0d0f18;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.3);
+      --shadow:       0 2px 8px rgba(0,0,0,.4);
+    }
+    :root[data-theme="dark"] {
+      --bg:           #0d0f18;
+      --surface:      #181b2a;
+      --surface-2:    #212438;
+      --border:       #2e3250;
+      --text:         #e2e8f0;
+      --text-muted:   #94a3b8;
+      --accent:       #60a5fa;
+      --accent-bg:    #1e2d45;
+      --high:         #f87171;
+      --high-bg:      #2d1b1b;
+      --high-border:  #7f1d1d;
+      --med:          #fbbf24;
+      --med-bg:       #2d2310;
+      --med-border:   #78350f;
+      --low:          #60a5fa;
+      --low-bg:       #1e2d45;
+      --low-border:   #1e40af;
+      --scan-bg:      #0d0f18;
+      --scan-text:    #e2e8f0;
+      --scan-surface: #181b2a;
+      --scan-border:  #2e3250;
+      --code-bg:      #0d0f18;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.3);
+      --shadow:       0 2px 8px rgba(0,0,0,.4);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+    p  { margin-bottom: .5rem; font-size: .9rem; }
+    ul, ol { padding-left: 1.3rem; font-size: .9rem; }
+    li { margin-bottom: .3rem; }
+    strong { font-weight: 700; }
+    table { border-collapse: collapse; width: 100%; font-size: .82rem; margin-bottom: .75rem; }
+    th, td { border: 1px solid var(--border); padding: .4rem .55rem; text-align: left; vertical-align: top; }
+    th { background: var(--surface-2); font-weight: 700; }
+
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--shadow-sm);
+    }
+    .site-header-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: .6rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+    .header-title { font-size: 1rem; font-weight: 800; letter-spacing: -.01em; }
+    .header-sub { font-size: .78rem; color: var(--text-muted); margin-top: .1rem; }
+    .theme-btn {
+      flex-shrink: 0;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: .3rem .75rem;
+      border-radius: .5rem;
+      cursor: pointer;
+      font-size: .82rem;
+      font-family: inherit;
+      transition: background .15s;
+    }
+    .theme-btn:hover { background: var(--border); }
+
+    .site-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0 1rem;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .site-nav::-webkit-scrollbar { display: none; }
+    .site-nav a {
+      display: inline-block;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: .78rem;
+      font-weight: 500;
+      padding: .55rem .6rem;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .site-nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .meta-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
+    .meta-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .5rem;
+      padding: .35rem .75rem;
+      font-size: .78rem;
+      display: flex;
+      gap: .35rem;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .meta-pill-label { color: var(--text-muted); }
+    .meta-pill-value { font-weight: 700; }
+
+    .container { max-width: 920px; margin: 0 auto; padding: 1.25rem 1rem; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .8rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .card-header {
+      padding: .75rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card-header:hover { background: var(--border); }
+    .card-icon { font-size: 1rem; flex-shrink: 0; }
+    .card-title { font-size: .95rem; font-weight: 700; flex: 1; }
+    .card-chevron { font-size: .75rem; color: var(--text-muted); transition: transform .2s; flex-shrink: 0; }
+    .card.collapsed .card-body  { display: none; }
+    .card.collapsed .card-chevron { transform: rotate(-90deg); }
+    .card-body { padding: 1.1rem; }
+
+    .group-heading {
+      font-size: .72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--accent);
+      margin: 1.1rem 0 .55rem;
+      padding-bottom: .3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .group-heading:first-child { margin-top: 0; }
+
+    .card-scan { background: var(--scan-bg); border-color: var(--scan-border); }
+    .card-scan .card-header { background: var(--scan-surface); border-color: var(--scan-border); }
+    .card-scan .card-header:hover { background: var(--scan-border); }
+    .card-scan .card-title { color: var(--scan-text); }
+    .card-scan .card-icon  { color: #fbbf24; }
+    .card-scan .card-chevron { color: var(--scan-text); opacity: .6; }
+    .card-scan .card-body  { background: var(--scan-bg); }
+    .scan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .65rem; margin-bottom: .9rem; }
+    .scan-tile { background: var(--scan-surface); border: 1px solid var(--scan-border); border-radius: .55rem; padding: .75rem .85rem; }
+    .scan-tile-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; color: #94a3b8; margin-bottom: .3rem; }
+    .scan-tile-value { font-size: .85rem; font-weight: 700; color: var(--scan-text); line-height: 1.4; }
+    .scan-tile.tile-high  .scan-tile-label { color: #f87171; }
+    .scan-tile.tile-warn  .scan-tile-label { color: #fbbf24; }
+    .scan-tile.tile-sig   .scan-tile-label { color: #60a5fa; }
+    .scan-divider { border: none; border-top: 1px solid var(--scan-border); margin: .85rem 0; }
+    .scan-list { color: var(--scan-text); font-size: .88rem; }
+    .scan-list li { margin-bottom: .45rem; }
+
+    .badge {
+      display: inline-block;
+      font-size: .67rem;
+      font-weight: 800;
+      padding: .12rem .5rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      line-height: 1.4;
+      flex-shrink: 0;
+    }
+    .badge-high { background: var(--high-bg); color: var(--high); border: 1px solid var(--high-border); }
+    .badge-med  { background: var(--med-bg);  color: var(--med);  border: 1px solid var(--med-border); }
+    .badge-low  { background: var(--low-bg);  color: var(--low);  border: 1px solid var(--low-border); }
+
+    .concept {
+      border-left: 3px solid var(--border);
+      padding: .75rem .95rem;
+      margin-bottom: .75rem;
+      background: var(--surface-2);
+      border-radius: 0 .5rem .5rem 0;
+    }
+    .concept.imp-high { border-color: var(--high); }
+    .concept.imp-med  { border-color: var(--med); }
+    .concept.imp-low  { border-color: var(--low); }
+    .concept-title { font-weight: 700; font-size: .92rem; display: flex; align-items: center; gap: .45rem; margin-bottom: .4rem; flex-wrap: wrap; }
+    .concept-body { font-size: .88rem; }
+
+    .qa { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .65rem; overflow: hidden; }
+    .qa-q { padding: .65rem .9rem; font-weight: 600; font-size: .88rem; cursor: pointer; background: var(--surface-2); display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .qa-q:hover { background: var(--border); }
+    .qa-q-text { flex: 1; line-height: 1.5; }
+    .qa-q-right { display: flex; align-items: center; gap: .4rem; flex-shrink: 0; }
+    .qa-toggle { font-size: .7rem; color: var(--text-muted); }
+    .qa-a { padding: .7rem .9rem; font-size: .88rem; border-top: 1px solid var(--border); display: none; line-height: 1.6; }
+    .qa.open .qa-a   { display: block; }
+    .qa.open .qa-toggle::after  { content: '▲'; }
+    .qa-toggle::after { content: '▼'; }
+
+    .analytical { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .85rem; overflow: hidden; }
+    .analytical-head { padding: .65rem .9rem; background: var(--surface-2); border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: .55rem; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .analytical-head:hover { background: var(--border); }
+    .q-num { font-weight: 800; font-size: .82rem; color: var(--accent); flex-shrink: 0; margin-top: .1rem; }
+    .q-title { font-weight: 600; font-size: .88rem; flex: 1; line-height: 1.5; }
+    .analytical-body { padding: 1rem; display: none; }
+    .analytical.open .analytical-body { display: block; }
+    .analytical.open .card-chevron { transform: rotate(0); }
+
+    .steps { display: flex; flex-direction: column; gap: .6rem; }
+    .step { display: flex; gap: .7rem; align-items: flex-start; }
+    .step-num { width: 1.5rem; height: 1.5rem; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .72rem; font-weight: 800; flex-shrink: 0; margin-top: .1rem; }
+    .step-body { flex: 1; font-size: .88rem; line-height: 1.6; }
+
+    .callout { border-radius: .45rem; padding: .6rem .85rem; font-size: .85rem; margin-top: .75rem; line-height: 1.55; }
+    .callout-insight { background: var(--accent-bg); border-left: 3px solid var(--accent); }
+    .callout-insight strong { color: var(--accent); }
+    .callout-warn { background: var(--high-bg); border-left: 3px solid var(--high); }
+    .callout-warn strong { color: var(--high); }
+    .callout-note { background: var(--surface-2); border-left: 3px solid var(--text-muted); }
+    .callout-exam { background: var(--med-bg); border-left: 3px solid var(--med); }
+    .callout-exam strong { color: var(--med); }
+
+    .formula { background: var(--surface-2); border: 1px solid var(--border); border-radius: .5rem; padding: .75rem 1rem; margin-bottom: .75rem; }
+    .formula-name { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .4rem; font-weight: 700; }
+    .formula-display { font-family: 'Fira Code', 'Courier New', monospace; font-size: .95rem; text-align: center; padding: .5rem; color: var(--accent); font-weight: 600; overflow-x: auto; white-space: pre; }
+    .formula-vars { font-size: .82rem; color: var(--text-muted); margin-top: .4rem; }
+
+    .code-block { margin-bottom: .85rem; }
+    .code-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .3rem; font-weight: 700; }
+    pre { background: var(--code-bg); color: var(--code-text); padding: .9rem 1rem; border-radius: .5rem; overflow-x: auto; font-size: .8rem; line-height: 1.6; font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace; }
+    .code-analysis { margin-top: .5rem; font-size: .85rem; padding: .5rem .75rem; background: var(--surface-2); border-radius: .4rem; border-left: 3px solid var(--accent); }
+
+    .figure-wrap { margin-bottom: 1rem; }
+    .figure-caption { font-size: .8rem; text-align: center; color: var(--text-muted); margin-top: .4rem; font-style: italic; }
+
+    .pattern-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .6rem; margin-bottom: .85rem; }
+    .pattern-tile { background: var(--surface-2); border: 1px solid var(--border); border-radius: .5rem; padding: .7rem .85rem; }
+    .pattern-tile-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); margin-bottom: .25rem; }
+    .pattern-freq { font-size: 1.4rem; font-weight: 900; color: var(--accent); line-height: 1.1; }
+    .pattern-desc { font-size: .78rem; color: var(--text-muted); margin-top: .2rem; }
+
+    .probable-list { display: flex; flex-direction: column; }
+    .probable-item { display: flex; gap: .75rem; align-items: flex-start; padding: .75rem 0; border-bottom: 1px solid var(--border); }
+    .probable-item:last-child { border-bottom: none; }
+    .prob-rank { width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: .82rem; flex-shrink: 0; }
+    .rank-1 { background: var(--high-bg); color: var(--high); border: 2px solid var(--high-border); }
+    .rank-2 { background: var(--med-bg);  color: var(--med);  border: 2px solid var(--med-border); }
+    .rank-3 { background: var(--low-bg);  color: var(--low);  border: 2px solid var(--low-border); }
+    .rank-n { background: var(--surface-2); color: var(--text-muted); border: 2px solid var(--border); }
+    .prob-content { flex: 1; }
+    .prob-q { font-size: .9rem; font-weight: 600; line-height: 1.5; }
+    .prob-reason { font-size: .8rem; color: var(--text-muted); margin-top: .2rem; line-height: 1.4; }
+
+    .mnemonic { background: var(--med-bg); border: 1px solid var(--med-border); border-radius: .5rem; padding: .75rem 1rem; margin-bottom: .6rem; }
+    .mnemonic-word { font-weight: 900; color: var(--med); font-size: 1.05rem; margin-bottom: .3rem; }
+    .mnemonic-body { font-size: .88rem; }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: .85rem 0; }
+    .tag { background: var(--surface-2); border: 1px solid var(--border); font-size: .73rem; padding: .1rem .5rem; border-radius: 999px; color: var(--text-muted); display: inline-block; margin: .1rem; }
+    .section-intro { font-size: .82rem; color: var(--text-muted); margin-bottom: .85rem; line-height: 1.5; }
+
+    @media print {
+      .site-header, .site-nav, .theme-btn { display: none !important; }
+      .container { padding: 0; }
+      .card { box-shadow: none; page-break-inside: avoid; border: 1px solid #ccc; }
+      .card-body, .qa-a, .analytical-body { display: block !important; }
+      .card.collapsed .card-body { display: block !important; }
+      .card-scan { background: #fff; color: #000; }
+      .scan-tile { background: #f5f5f5; }
+      .scan-tile-value { color: #000; }
+    }
+
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      .site-header-inner { padding: .5rem .85rem; }
+      .container { padding: .85rem .65rem; }
+      .card-body { padding: .85rem; }
+      .formula-display { font-size: .8rem; }
+      table { font-size: .74rem; }
+      th, td { padding: .3rem .4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div>
+      <div class="header-title">CSE370 — Final Revision</div>
+      <div class="header-sub">Storage/Indexing · Query Processing · Transactions · Concurrency &nbsp;·&nbsp; Faculty: NFF (central exam)</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">☀ / ☾</button>
+  </div>
+</header>
+
+<nav class="site-nav" aria-label="Page sections">
+  <a href="#scan">⚡ Morning Scan</a>
+  <a href="#theory">📖 Theory</a>
+  <a href="#short-q">❓ Short Qs</a>
+  <a href="#analytical">🧮 Analytical</a>
+  <a href="#math">∑ Math</a>
+  <a href="#code">💻 RA / Code</a>
+  <a href="#figures">📊 Figures</a>
+  <a href="#patterns">🎯 Patterns</a>
+  <a href="#probable">🔮 Probable Qs</a>
+  <a href="#mnemonics">🧠 Mnemonics</a>
+</nav>
+
+<main class="container">
+
+  <div class="meta-bar">
+    <div class="meta-pill"><span class="meta-pill-label">Course</span><span class="meta-pill-value">CSE370</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Topics</span><span class="meta-pill-value">19–24</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Exam</span><span class="meta-pill-value">Final (+ Quiz 2 Makeup)</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Date</span><span class="meta-pill-value">2026-09-16</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Weight</span><span class="meta-pill-value">30%</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Built</span><span class="meta-pill-value">2026-09-12</span></div>
+  </div>
+
+  <div class="callout callout-note" style="margin-bottom:1.25rem">
+    <strong>Scope note:</strong> Working Final syllabus is <strong>Topics 19–24 only</strong> — Storage &amp; File Organization, Indexing, B+ Trees, Query Processing/Optimization, Transactions, Concurrency Control. Confirmed by the user 2026-09-06, not yet by an official central announcement. SQL (Topics 3–9) is <strong>lab-only</strong>, not on this central Final. 4NF/5NF (Topic 18) was never covered and is <strong>not in scope</strong>. The Quiz 2 Makeup (also 2026-09-16) covers this same Final syllabus, so this guide serves both.
+    <br><strong>No PYQs exist for CSE370</strong> (confirmed 2026-09-05) — this guide is built entirely from lecture slides + practice sheets + the two most recent quizzes (which sampled this same syllabus, though written by NFF, not the central committee that sets the Final).
+  </div>
+
+  <!-- SECTION 0 — MORNING QUICK SCAN -->
+  <section class="card card-scan" id="scan">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">⚡</span>
+      <span class="card-title" style="color:var(--scan-text)">Morning Quick Scan</span>
+      <span class="card-chevron" style="color:var(--scan-text);opacity:.6">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="scan-grid">
+        <div class="scan-tile tile-high">
+          <div class="scan-tile-label">Must Know Cold</div>
+          <div class="scan-tile-value">B+ tree insertion (leaf copies key up, internal moves it) + deletion's 5 cases; the UNDO/REDO rule: commit record present → REDO, absent → UNDO.</div>
+        </div>
+        <div class="scan-tile tile-warn">
+          <div class="scan-tile-label">Most Likely Tested</div>
+          <div class="scan-tile-value">A B+ tree insertion/deletion trace (Quiz 3 shape) and a concurrency-scenario identify-the-problem question (Quiz 4 shape) — both syllabus areas are the richest in worked examples.</div>
+        </div>
+        <div class="scan-tile">
+          <div class="scan-tile-label">Common Trap</div>
+          <div class="scan-tile-value">Non-Repeatable Read (value changes) vs. Phantom Read (row set changes). "Primary index" ≠ "index on the primary key" — it means physically sorted by that key.</div>
+        </div>
+        <div class="scan-tile tile-sig">
+          <div class="scan-tile-label">Signal</div>
+          <div class="scan-tile-value">Final is centrally set — no NFF-style signal applies to it directly. But Quiz 3/4 sampled this exact syllabus, so their question shapes are the best available proxy.</div>
+        </div>
+      </div>
+      <hr class="scan-divider">
+      <p style="font-size:.82rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Top things to have ready before entering the exam:</p>
+      <ol class="scan-list">
+        <li>Do one B+ tree insertion trace by hand (order 3 or 4) including at least one root split, and one deletion trace touching a borrow (Case 2) and a merge (Case 3/4).</li>
+        <li>Recite the four ACID properties + which subsystem enforces each, then apply the UNDO/REDO rule to a short log by hand.</li>
+        <li>Name all 5 concurrency problems from a one-line description, and place them correctly on the isolation-level table (which levels prevent which).</li>
+        <li>Trace a 2PL growing/shrinking example and identify the lock point; state Wait-Die vs. Wound-Wait correctly.</li>
+        <li>Walk through the algebraic-optimization procedure (cascade → push down → reorder joins → convert to ⋈ → push projections) on one multi-join query.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- SECTION 1 — THEORY -->
+  <section class="card" id="theory">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📖</span>
+      <span class="card-title">Theory</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="group-heading">Storage &amp; Indexing — Topics 19–21</div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Heap vs. Sorted File Organization <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p><strong>Heap (unordered):</strong> records anywhere there's free space. Insert = fast append; search = full linear scan; delete = mark free, may need reorganization.</p>
+          <p><strong>Sorted (ordered):</strong> records kept in physical order by an attribute. Search can binary-search (fast); insert/delete is expensive (shifting to maintain order).</p>
+          <div class="callout callout-warn"><strong>Common error:</strong> assuming a heap file allows binary search — it doesn't; binary search needs physical order.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Primary vs. Secondary Index <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <table>
+            <tr><th></th><th>Primary (Clustering)</th><th>Secondary (Non-clustering)</th></tr>
+            <tr><td>Table ordering</td><td>Physically sorted by this key</td><td>Not sorted by this key</td></tr>
+            <tr><td>Count per table</td><td>Exactly 1</td><td>Can be many</td></tr>
+            <tr><td>Usually built on</td><td>PK — but not always</td><td>Any frequently-queried attribute</td></tr>
+          </table>
+          <div class="callout callout-warn"><strong>Common trap:</strong> "Primary index" ≠ "index on the primary key." It means the index whose key the table is physically sorted by.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Dense vs. Sparse Index <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p><strong>Dense:</strong> every search-key value has an entry — works for primary or secondary indexes.</p>
+          <p><strong>Sparse:</strong> only some values have entries; jump to nearest entry, scan forward — <strong>primary indexes only</strong>, since it depends on physical sort order.</p>
+          <div class="callout callout-insight"><strong>Why:</strong> sparse can't work on a secondary key — an unsorted table gives no "forward" to scan.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Multilevel Indexing → B+ Tree <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>A dense index too large for memory gets a hierarchy: one dense inner index on disk (points to records) + sparse outer index(es) in memory on top. This exact idea — sparse on top, dense at bottom — is what a B+ tree formalizes.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">B+ Tree Structure &amp; Order Rules <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Balanced multi-level tree. Root/internal nodes = sparse outer index; leaves = dense inner index, linked for sequential scans. Guarantees <strong>logarithmic</strong> search/insert/delete regardless of data order.</p>
+          <p><strong>Ordering invariant:</strong> for a key in a node, left subtree values &lt; key ≤ right subtree values.</p>
+          <table>
+            <tr><th></th><th>Max</th><th>Min</th></tr>
+            <tr><td>Children</td><td>Root/internal: n · Leaf: 0</td><td>Root: 2 (if not also a leaf) · Internal: ⌈n/2⌉</td></tr>
+            <tr><td>Keys</td><td>n − 1</td><td>Root: 1 · Leaf/Internal: ⌈n/2⌉ − 1</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">B+ Tree Insertion <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <ol>
+            <li>Walk down to the correct leaf.</li>
+            <li>Room? Insert in sorted order — done.</li>
+            <li>Full? Split in half: lowest key of new right node sent up to parent.</li>
+            <li>Parent full too? Split it the same way, propagate; if root splits, tree height increases.</li>
+          </ol>
+          <div class="callout callout-warn"><strong>Key distinction:</strong> a <strong>leaf</strong> split <em>copies</em> the separator key up (it stays in the right leaf). A <strong>non-leaf</strong> split <em>moves</em> it up only — no duplicate left behind.</div>
+          <p style="margin-top:.5rem">Odd order n biases splits left or right by one extra value — pick one convention and hold it for the whole tree.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">B+ Tree Deletion — 5 Cases <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <table>
+            <tr><th>Case</th><th>Condition</th><th>Action</th></tr>
+            <tr><td>1</td><td>Leaf &gt; min keys</td><td>Just remove (1b: also in internal node → replace with lowest value from right-most subtree)</td></tr>
+            <tr><td>2</td><td>Leaf = min, sibling &gt; min</td><td>Borrow through parent (2a left / 2b right)</td></tr>
+            <tr><td>3</td><td>Leaf = min, sibling = min, parent &gt; min</td><td>Merge with sibling, remove parent key</td></tr>
+            <tr><td>4</td><td>Parent also = min</td><td>Merge as Case 3, deficiency propagates up (4a borrow / 4b merge one level up)</td></tr>
+            <tr><td>5</td><td>Propagates to root</td><td>Merge to root; if root key deleted, replace with lowest value from right-most subtree first — tree height shrinks</td></tr>
+          </table>
+          <div class="callout callout-exam"><strong>Rule to not forget:</strong> any deleted key that's also copied in an internal node must be <em>replaced</em> with the lowest value from its right-most subtree — never left blank.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">Hashing (secondary structure) <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p>Buckets assigned by a hash function on the search key. Overflow (shared key values, or uneven distribution) handled by <strong>forward/overflow chaining</strong> only. Best case O(1), worst case degrades to full scan — no guaranteed bound, unlike B+ trees.</p>
+        </div>
+      </div>
+
+      <div class="group-heading">Query Processing &amp; Optimization — Topic 22</div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">4-Step Processing Pipeline <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <ol>
+            <li><strong>Query Compilation</strong> — SQL → relational algebra expression</li>
+            <li><strong>Query Optimization</strong> — modify RA + choose execution strategy</li>
+            <li><strong>Code Generation</strong> — glue together RA building-block implementations</li>
+            <li><strong>Query Execution</strong> — run generated code, return result</li>
+          </ol>
+          <div class="callout callout-note">"Optimization" is misleading — the result is improved, not guaranteed mathematically optimal.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Pipelining &amp; Materialization <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>Operations stream one tuple at a time — low buffering, better throughput. <strong>Joins break this</strong>: at least one branch must be fully buffered (materialized) to match against the other's stream; high volume forces it to disk.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Algorithm Strategies Per Operation <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <table>
+            <tr><th>Operation</th><th>Strategies</th></tr>
+            <tr><td>Selection (single attr)</td><td>Table scan (linear/binary-if-sorted) or index-based search (preferred)</td></tr>
+            <tr><td>Selection (range, tree index)</td><td>Index seek then index scan</td></tr>
+            <tr><td>Selection (AND)</td><td>In practice: chain of single-attribute selections (best reorder/push-down flexibility)</td></tr>
+            <tr><td>Join</td><td>Nested-loop, merge join (sorts + materializes both), hash join</td></tr>
+            <tr><td>Index-based join</td><td>Only if both relations index the join attribute — intersect index node values</td></tr>
+            <tr><td>Projection</td><td>Only ONE strategy: iterative strip-as-you-go</td></tr>
+            <tr><td>Aggregate</td><td>Split-Apply-Combine; split stage pipelined via running group function</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Heuristic Algebraic Optimization Rules <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <table>
+            <tr><td>Cascade of σ</td><td>σ<sub>c1 AND c2</sub>(R) ≡ σ<sub>c1</sub>(σ<sub>c2</sub>(R))</td></tr>
+            <tr><td>Commutativity of σ</td><td>σ<sub>c1</sub>(σ<sub>c2</sub>(R)) ≡ σ<sub>c2</sub>(σ<sub>c1</sub>(R))</td></tr>
+            <tr><td>Cascade of π</td><td>only the last projection matters</td></tr>
+            <tr><td>Commuting σ with π</td><td>allowed if σ only uses attributes already projected</td></tr>
+            <tr><td>Commutativity of ⋈, ×</td><td>R ⋈<sub>c</sub> S ≡ S ⋈<sub>c</sub> R</td></tr>
+            <tr><td>Commuting σ with ⋈</td><td>allowed if c uses only one side's attributes</td></tr>
+            <tr><td>(σ,×) → ⋈</td><td>σ<sub>c</sub>(R × S) ≡ R ⋈<sub>c</sub> S, when c is exactly the join condition</td></tr>
+          </table>
+          <p><strong>Application procedure:</strong> cascade → push selects/projects down to the leaves → order most-restrictive select first → convert (σ,×) into ⋈ → group sub-trees for single-algorithm execution.</p>
+          <div class="callout callout-warn"><strong>Careful:</strong> pushing a selection down (which relation needs it) and reordering which join happens first are two <em>separate</em> transformations — easy to conflate, and a step that only does the first hasn't finished the optimization.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Cost-Based Optimization <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p><strong>Database catalog:</strong> per-relation metadata (size, record count, block count, index structure, selectivity, etc.). <strong>Histograms:</strong> without one, optimizer assumes uniform distribution — often wrong. <strong>Cost function:</strong> weighted sum of disk access, buffer use, computation, communication — candidates evaluated against catalog+histogram data. Search space is exponential, so dynamic programming + pruning is used, not exhaustive search.</p>
+        </div>
+      </div>
+
+      <div class="group-heading">Transactions — Topic 23</div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">ACID Properties <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <table>
+            <tr><th>Property</th><th>Requirement</th><th>Enforced by</th></tr>
+            <tr><td>Atomicity</td><td>All or nothing</td><td>Recovery subsystem</td></tr>
+            <tr><td>Consistency</td><td>Valid state → valid state (before/after only)</td><td>Application/constraint logic</td></tr>
+            <tr><td>Isolation</td><td>No visibility of uncommitted work</td><td>Concurrency control subsystem</td></tr>
+            <tr><td>Durability</td><td>Committed changes survive failures</td><td>Recovery subsystem</td></tr>
+          </table>
+          <div class="callout callout-exam"><strong>Exam framing rule:</strong> Atomicity + Durability → recovery-system concern; Isolation → concurrency-control concern; Consistency → application-logic/constraint concern.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Transaction States <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>Active → Partially committed → Committed → Terminated (success path), or Active/Partially committed → Failed → Terminated (failure path). A failed transaction may be legitimately resubmitted as a brand-new transaction.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">Causes of Transaction Failure <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p>System crash · transaction/system error (overflow, bad params, bug) · locally-detected error (business rule, e.g. insufficient balance) · concurrency-control enforcement (serializability/deadlock) · disk failure · physical catastrophe.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Log-Based Recovery — UNDO/REDO <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Log records: <code>&lt;Ti start&gt;</code>, <code>&lt;Ti, X, old, new&gt;</code>, <code>&lt;Ti commit&gt;</code>.</p>
+          <div class="callout callout-exam"><strong>The rule:</strong> <code>&lt;Ti commit&gt;</code> present → <strong>REDO</strong> Ti (replay to guarantee durability). Absent → <strong>UNDO</strong> Ti (roll back, since nothing is durable).</div>
+          <p style="margin-top:.5rem">undo(Ti): walk log backward from Ti's last record, restore old values. redo(Ti): walk log forward from Ti's first record, re-apply new values.</p>
+        </div>
+      </div>
+
+      <div class="group-heading">Concurrency Control — Topic 24</div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">The 5 Concurrency Problems <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <table>
+            <tr><th>Problem</th><th>What happens</th></tr>
+            <tr><td>Lost Update</td><td>Both read before either writes; one write overwrites the other</td></tr>
+            <tr><td>Temporary Update / Dirty Read</td><td>Read an uncommitted value; writer later rolls back</td></tr>
+            <tr><td>Incorrect Summary</td><td>Aggregate spans a concurrent partial update</td></tr>
+            <tr><td>Non-Repeatable Read</td><td>Same row, re-read, different <em>value</em></td></tr>
+            <tr><td>Phantom Read</td><td>Same query, re-run, different <em>row set</em></td></tr>
+          </table>
+          <div class="callout callout-warn"><strong>Distinction to nail:</strong> Non-Repeatable Read = value change on the same row. Phantom Read = row-set change on the same query.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">SQL Isolation Levels <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <table>
+            <tr><th>Level</th><th>Dirty Read</th><th>Non-Repeatable</th><th>Phantom</th></tr>
+            <tr><td>Serializable</td><td>Prevents</td><td>Prevents</td><td>Prevents</td></tr>
+            <tr><td>Repeatable Read</td><td>Prevents</td><td>Prevents</td><td>Allows</td></tr>
+            <tr><td>Read Committed</td><td>Prevents</td><td>Allows</td><td>Allows</td></tr>
+            <tr><td>Read Uncommitted</td><td>Allows</td><td>Allows</td><td>Allows</td></tr>
+          </table>
+          <div class="callout callout-warn"><strong>Caveat easy to miss:</strong> Lost Update and Incorrect Summary aren't on this table at all. Only Serializable prevents them by forcing full serial behavior; anything below it needs extra locking/application discipline.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Two-Phase Locking (2PL) <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p><strong>Growing:</strong> acquire locks only, no release. <strong>Shrinking:</strong> starts at first release, only release from then on. <strong>Lock point</strong> = moment of final lock acquired.</p>
+          <table>
+            <tr><th>S</th><th>X</th></tr>
+            <tr><td>Compatible</td><td>Incompatible</td></tr>
+          </table>
+          <table>
+            <tr><th>Variant</th><th>Rule</th></tr>
+            <tr><td>Strict 2PL</td><td>X-locks held to commit/abort; S can release earlier — no cascading rollback</td></tr>
+            <tr><td>Rigorous 2PL</td><td>All locks (S+X) held to commit — stronger than strict</td></tr>
+            <tr><td>Conservative 2PL</td><td>All locks acquired upfront — deadlock-free, low concurrency</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Deadlock — Conditions &amp; Handling <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p><strong>Necessary conditions (all 3):</strong> Hold-and-Wait, No Preemption, Circular Wait.</p>
+          <p><strong>Strategies:</strong> Avoidance (fixed lock order, finer granularity) · Detection (Wait-For Graph, cycle = deadlock) · Prevention (Wait-Die / Wound-Wait by timestamp) · Recovery (pick lowest-cost victim, rollback) · Timeout (simple, can misfire/starve).</p>
+          <table>
+            <tr><th>Scheme</th><th>Preemptive?</th><th>Rule</th></tr>
+            <tr><td>Wait-Die</td><td>No</td><td>Older waits for younger; younger requesting older's resource aborts+restarts</td></tr>
+            <tr><td>Wound-Wait</td><td>Yes</td><td>Older force-aborts younger holding what it needs; younger waits for older</td></tr>
+          </table>
+          <div class="callout callout-note">Aborted/restarted transactions keep their <strong>original timestamp</strong> — prevents starvation.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">MVCC <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p>Keeps multiple versions so readers/writers don't block. <strong>Timestamp-ordering:</strong> rollback a read/write that would violate the timestamp ordering of prior reads/writes.</p>
+          <div class="callout callout-warn"><strong>MV2PL with Certify Locks is OUT OF SCOPE</strong> (confirmed 2026-09-13) — the official Final Notice caps Lecture 9 at Pages 1–28; MV2PL is page 29 of the 30-page deck. Timestamp-ordering (pages 26–28) is the only MVCC technique in scope.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">Graph-Based Protocol / Tree Protocol <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p>Fixed access order (acyclic graph) instead of growing/shrinking. Conflict-serializable, deadlock-free, but access order must be fixed in advance and cascading rollback is still possible.</p>
+          <div class="callout callout-warn"><strong>Tree Protocol rule:</strong> X-locks only; every lock after the first must be on a <em>child</em> of an item already locked by that transaction — must hold the parent specifically, not just any ancestor.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 2 — SHORT QUESTIONS -->
+  <section class="card" id="short-q">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">❓</span>
+      <span class="card-title">Short Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="section-intro">Tap a question to reveal the answer. Try to recall first.</p>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What's the main tradeoff between a heap file and a sorted file?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div><div class="qa-a">Heap: fast append, but search needs a full linear scan. Sorted: search can binary-search, but insert/delete is expensive since order must be maintained.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What is the defining property of a primary index?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div><div class="qa-a">The table is physically sorted by that index's search key — usually but not necessarily the primary key.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why can a sparse index only be built on a primary index?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div><div class="qa-a">Sparse indexes rely on scanning forward from the nearest indexed entry — only works if the table is physically sorted by that key, which is exactly what "primary" means.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">In a B+ tree of order n, what's the max keys per node and min keys in a leaf/internal node?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div><div class="qa-a">Max = n − 1. Min (leaf/internal) = ⌈n/2⌉ − 1. Root min keys = 1.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">When a leaf splits during insertion, what happens to the separator key sent to the parent — and how does that differ from a non-leaf split?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div><div class="qa-a">Leaf split: the key is copied — it stays in the new right leaf too. Non-leaf split: the key is moved up only, no duplicate left in either child.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">During B+ tree deletion, when a deleted key also appears as a copy in an internal node, what must replace that copy?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div><div class="qa-a">The lowest value from that key's right-most subtree — never just an empty removal.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What is the only overflow-handling method for hash indexing marked suitable for DB use, and why does overflow happen at all?</span><span class="qa-q-right"><span class="badge badge-low">LOW</span><span class="qa-toggle"></span></span></div><div class="qa-a">Forward/overflow chaining. Overflow happens because multiple records can share a key value, or the hash function distributes keys unevenly.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why does a join operation break query pipelining?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div><div class="qa-a">At least one branch must be fully buffered (materialized) to be matched against the other side's incoming stream — forced to disk if volume is too high.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What is the one strategy for implementing Projection, and why is it the only one?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div><div class="qa-a">Iterative, strip-as-you-go — unwanted attributes are removed immediately per tuple, never batched first (would add buffering overhead). Unlike selection/join, no alternative exists.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why does a DBMS keep histograms in addition to the catalog?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div><div class="qa-a">Without one, the optimizer must assume a uniform value distribution — often wrong. A histogram gives the true distribution, so selectivity estimates (and hence join order/selection choices) are accurate.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What are the four ACID properties and which subsystem enforces each?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div><div class="qa-a">Atomicity (recovery — all-or-nothing), Consistency (application logic — valid state to valid state), Isolation (concurrency control — no interference), Durability (recovery — committed persists).</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">How do you decide UNDO vs. REDO for a transaction after a crash?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div><div class="qa-a">Check for &lt;Ti commit&gt; in the log. Present → REDO. Absent → UNDO.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">A double-booking scenario (two users booking the last seat concurrently) violates which ACID property, and why not Durability?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div><div class="qa-a">Isolation — the transactions must not both proceed unaware of each other. Not Durability because nothing committed is lost afterward; the problem occurs during concurrent execution, before either commits.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What's the difference between Lost Update and Temporary Update (Dirty Read)?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div><div class="qa-a">Lost Update: both read before either writes, so one write silently overwrites the other. Temporary Update: a transaction reads another's uncommitted value, and that writer later rolls back.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Which isolation level prevents Dirty Read and Non-Repeatable Read but still allows Phantom Read?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div><div class="qa-a">Repeatable Read. Only Serializable prevents all three.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Do isolation levels below Serializable guarantee prevention of Lost Update / Incorrect Summary?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div><div class="qa-a">No — those two aren't on the standard three-phenomena table at all; preventing them below Serializable needs extra locking/application discipline.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">In 2PL, what is the "lock point"?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div><div class="qa-a">The moment a transaction acquires its final lock — the boundary between growing (acquire only) and shrinking (release only) phases.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What's the key difference between Wait-Die and Wound-Wait?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div><div class="qa-a">Wait-Die (non-preemptive): younger transaction aborts itself rather than block an older one. Wound-Wait (preemptive): older transaction force-aborts a younger one holding what it needs.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What are the three necessary conditions for deadlock?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div><div class="qa-a">Hold-and-Wait, No Preemption, Circular Wait.</div></div>
+
+      <div class="qa"><div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">In the Tree Protocol, what rule governs which item a transaction can lock next?</span><span class="qa-q-right"><span class="badge badge-low">LOW</span><span class="qa-toggle"></span></span></div><div class="qa-a">X-locks only; every lock after the first must be on a child of an item the transaction already holds — it must specifically hold that child's parent, not just any ancestor.</div></div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 3 — ANALYTICAL QUESTIONS -->
+  <section class="card" id="analytical">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧮</span>
+      <span class="card-title">Analytical Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q1</span>
+          <span class="q-title">Insert 4, 10, 7, 12, 1, 5, 2, 25, 15, 9, 18, 20 into a B+ tree of order n = 4. Trace every split.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">4, 10, 7 → single leaf [4,7,10] (max 3 keys, no split yet).</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Insert 12 → leaf full, splits: root [10], leaves [4,7] | [10,12].</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Insert 1 → fits: [1,4,7] | [10,12].</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">Insert 5 → left full, splits: root [5,10], leaves [1,4] | [5,7] | [10,12].</div></div>
+            <div class="step"><div class="step-num">5</div><div class="step-body">Insert 2, 25 → both fit: [1,2,4] | [5,7] | [10,12,25].</div></div>
+            <div class="step"><div class="step-num">6</div><div class="step-body">Insert 15 → right leaf full, splits: root [5,10,15], leaves [1,2,4] | [5,7] | [10,12] | [15,25].</div></div>
+            <div class="step"><div class="step-num">7</div><div class="step-body">Insert 9, 18 → both fit: [1,2,4] | [5,7,9] | [10,12] | [15,18,25].</div></div>
+            <div class="step"><div class="step-num">8</div><div class="step-body">Insert 20 → rightmost leaf full and splits, AND the root (now full at [5,10,15]) splits too → height grows to 2: new root [15], left subtree root [5,10] (4 leaves), right subtree root [20] (leaves [15,18] | [20,25]).</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> most splits stay leaf-only; step 8 is the case worth practicing — a leaf split cascades into a root split, increasing tree height. That's exactly where the leaf-copies-up vs. internal-moves-up distinction matters.</div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> this is the exact question shape Quiz 3 used (order-3 tree, 8 values, draw state after each insertion). Practice with a fresh sequence, not just this memorized one.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q2</span>
+          <span class="q-title">B+ tree deletion: walk a key through a borrow (Case 2) and then a merge (Case 3) scenario.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Target leaf is at exactly min keys (⌈n/2⌉ − 1). Check its immediate sibling first.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Sibling has more than min → <strong>Case 2, borrow</strong>: the borrowed key moves through the parent (highest of left sibling moves up if borrowing left; lowest of right sibling moves up if borrowing right).</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">If instead the sibling is also at min, but the parent has more than min → <strong>Case 3, merge</strong>: merge target leaf with its sibling into one node, then remove the now-redundant separator key from the parent.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">If the deleted key was also copied in an internal node anywhere in this process, replace that copy with the lowest value from its right-most subtree — do not delete it outright.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> Cases 2 vs. 3 hinge entirely on whether the <em>sibling</em> has spare keys. Case 4/5 only trigger when the deficiency can't be absorbed at the leaf level and must propagate to the parent (4) or all the way to the root (5).</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q3</span>
+          <span class="q-title">Given the log — &lt;T1 start&gt;, &lt;T1,A,500,600&gt;, &lt;T1 commit&gt;, &lt;T2 start&gt;, &lt;T2,B,1000,1200&gt;, &lt;T3 start&gt;, &lt;T3,C,700,800&gt;, &lt;T3 commit&gt;, then a system crash — find the final values of A, B, C.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Scan the log per transaction for &lt;Ti commit&gt;.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">T1 has &lt;T1 commit&gt; → REDO → A = 600 (new value stands).</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">T2 has no commit record → UNDO → B = 1000 (old value restored).</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">T3 has &lt;T3 commit&gt; → REDO → C = 800 (new value stands).</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> commit record present → new value stands (redo to guarantee it); commit record absent → old value stands (undo whatever partial writes happened). Works identically whether the case is pure-UNDO, pure-REDO, or mixed.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q4</span>
+          <span class="q-title">Optimize: SELECT Lname FROM Employee, Project, Works_On WHERE Pname='Aquarius' AND Pnumber=Pno AND Essn=Ssn AND Bdate&gt;'1957-12-31'.</span>
+          <span class="badge badge-med">MED</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Start: one big conjunctive σ over a Cartesian product chain of all three relations.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Cascade + push down: split the AND into 4 conditions, push each above only the single relation it needs (Bdate above Employee, Pname above Project); Pnumber=Pno and Essn=Ssn stay as join conditions.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Reorder joins: compute the smaller/more-filtered Project⋈Works_On (via Pnumber=Pno) first, then join that result to the Bdate-filtered Employee via Essn=Ssn.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">Convert remaining (σ,×) pairs into actual ⋈ operators.</div></div>
+            <div class="step"><div class="step-num">5</div><div class="step-body">Push projections down too — carry only the columns later joins actually need, not full rows.</div></div>
+          </div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> steps 2 and 3 are the pair examiners most often test as if they were one step. Pushing a selection down (step 2) tells you *where* a filter sits; reordering joins (step 3) is a separate decision about *which join happens first*.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q5</span>
+          <span class="q-title">T1: Lock-X(A), Read(A), Write(A), Lock-S(B), Read(B), Unlock(A), Unlock(B). Meanwhile T2 tries Read(A) while T1 still holds it uncommitted. What happens, and where is T1's lock point?</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">T1's lock point is at Lock-S(B) — its final lock acquisition, right before it starts unlocking.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">T2's Read(A) happens while T1 still holds an uncommitted X-lock on A → this is a <strong>dirty read</strong>.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">T2 must roll back. Once T1 releases A, T2 (or any other transaction) can legitimately Lock-X(A) and proceed.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> any read of an item another transaction currently holds under an uncommitted X-lock is a dirty read, full stop — the exam-relevant skill is spotting which reads in a trace fall before vs. after the writer's unlock step.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q6</span>
+          <span class="q-title">T1 holds Account A and wants B; T2 holds Account B and wants A. Build the Wait-For Graph and determine whether this is a deadlock.</span>
+          <span class="badge badge-med">MED</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Draw an edge T1 → T2 (T1 waits on a resource T2 holds).</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Draw an edge T2 → T1 (T2 waits on a resource T1 holds).</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">A cycle exists (T1 → T2 → T1) → deadlock confirmed.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> this generalizes directly to N transactions — an edge exists wherever one transaction blocks on a resource another holds, and any cycle anywhere in the graph (no minimum length beyond 2) is sufficient to declare deadlock.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q7</span>
+          <span class="q-title">Teller (T1) reads Customer X's balance ($150), deducts $100 (uncommitted, now $50). Auditor (T2) re-reads and sees $50. T1 rolls back (balance reverts to $150). T2 inserts new Customer Y ($80) and re-runs its "balance &lt; $100" report, now seeing Y. Identify both problems, the shared violated property, the prevention, and the recovery technique.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">T2 reading T1's uncommitted $50 → <strong>Dirty Read (Temporary Update)</strong>.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">T2's report query returning a new row (Customer Y) on re-run → <strong>Phantom Read</strong>.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Both trace back to a violation of <strong>Isolation</strong>.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">Prevention: run at <strong>Serializable</strong> isolation, so the transactions behave as if sequential.</div></div>
+            <div class="step"><div class="step-num">5</div><div class="step-body">Recovery technique needed for T1's rollback: an <strong>undo log</strong> — it retains the old value ($150), exactly what's needed to revert the uncommitted deduction.</div></div>
+          </div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> this is the exact scenario shape Quiz 4 used (a multi-part concurrency scenario). The reported weak point was live scenario→named-problem recognition under time pressure, not the underlying concept — drill naming the problem fast from a one-line description.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 4 — MATHEMATICS -->
+  <section class="card" id="math">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">∑</span>
+      <span class="card-title">Mathematics</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="formula">
+        <div class="formula-name">B+ Tree — Max/Min Keys and Children (order n)</div>
+        <div class="formula-display">Max keys = n − 1        Max children = n (root/internal)
+Min keys (leaf/internal) = ⌈n/2⌉ − 1     Min keys (root) = 1
+Min children (internal) = ⌈n/2⌉          Min children (root) = 2*</div>
+        <div class="formula-vars">n = order (max children an internal/root node can have). *Root minimum children of 2 applies only once the root is no longer also a leaf (tree has grown past a single node).</div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Ex</span>
+          <span class="q-title">Worked: for order n = 4, compute max keys, min keys (leaf/internal), and min children (internal).</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Max keys = n − 1 = 4 − 1 = 3.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Min keys (leaf/internal) = ⌈n/2⌉ − 1 = ⌈2⌉ − 1 = 2 − 1 = 1.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Min children (internal) = ⌈n/2⌉ = ⌈2⌉ = 2.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Pattern:</strong> this matches Q1's trace above — every leaf held between 1 and 3 keys before splitting at 4, confirming the max/min bounds hold throughout.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Ex</span>
+          <span class="q-title">Worked: for order n = 3 (Quiz 3's actual order), compute the same bounds.</span>
+          <span class="badge badge-med">MED</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Max keys = n − 1 = 3 − 1 = 2.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Min keys (leaf/internal) = ⌈n/2⌉ − 1 = ⌈1.5⌉ − 1 = 2 − 1 = 1.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Min children (internal) = ⌈n/2⌉ = ⌈1.5⌉ = 2.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Pattern:</strong> order 3 splits far more often than order 4 (max 2 keys per leaf vs. 3) — expect more, smaller splits when practicing at this order.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 5 — RELATIONAL ALGEBRA (Code) -->
+  <section class="card" id="code">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">💻</span>
+      <span class="card-title">Relational Algebra (Query Optimization)</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="section-intro">SQL itself (Topics 3–9) is lab-only and not on this Final. Relational algebra shows up here only as the notation query-optimization questions are answered in.</p>
+
+      <div class="code-block">
+        <div class="code-label">RA — single-table optimization (push selection, project early)</div>
+        <pre><code>-- Query: SELECT Fname, Lname, Ssn FROM EMPLOYEE
+--        WHERE address='Merul Badda' AND Salary&gt;50000
+
+E1 = π_Fname,Lname,Ssn,Address,Salary (EMPLOYEE)
+E2 = σ_Salary&gt;50000 ( σ_Address='Merul Badda' (E1) )
+E3 = π_Fname,Lname,Ssn (E2)</code></pre>
+        <div class="code-analysis">Even a single-table query benefits from an early projection to a <em>superset</em> of needed columns before filtering, then a final projection down to exactly the SELECT list.</div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-label">RA — multi-join optimization pattern</div>
+        <pre><code>-- Pattern for a 3-way join (Department ⋈ Project ⋈ Employee),
+-- one selection condition per relation:
+
+E1 = σ_cond1 ( π_neededCols (Relation1) )
+E2 = σ_cond2 ( π_neededCols (Relation2) )
+E3 = σ_cond3 ( π_neededCols (Relation3) )
+
+Result = π_finalCols ( (E1 ⋈ E2) ⋈ E3 )</code></pre>
+        <div class="code-analysis">Every selection and projection resolved at the leaf level <em>before</em> any join — generalizes the single-table pattern to any number of joined relations.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 6 — FIGURES -->
+  <section class="card" id="figures">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📊</span>
+      <span class="card-title">Figures &amp; Diagrams</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="figure-wrap">
+        <pre>            [        15        ]
+           /                    \
+     [   5, 10   ]            [   20   ]
+    /     |      \            /        \
+[1,2,4] [5,7,9] [10,12]   [15,18]    [20,25]</pre>
+        <p class="figure-caption">Fig 1. B+ tree after Q1's full insertion trace (order 4) — height 2, root split on the last insertion.</p>
+      </div>
+
+      <div class="figure-wrap">
+        <pre>Active ──(End txn)──▶ Partially Committed ──(Commit)──▶ Committed ──▶ Terminated
+  │                          │
+  └────────(Abort)──────▶ Failed ──▶ Terminated</pre>
+        <p class="figure-caption">Fig 2. Transaction state diagram — success path (top) vs. failure path (bottom).</p>
+      </div>
+
+      <div class="figure-wrap">
+        <pre>   ┌────▶ T2 ────┐
+   │             │
+   └──── T1 ◀────┘
+
+T1 holds A, waits for B (held by T2)
+T2 holds B, waits for A (held by T1)
+Cycle T1→T2→T1  ⇒  DEADLOCK</pre>
+        <p class="figure-caption">Fig 3. Wait-For Graph — a 2-transaction cycle confirming deadlock (Q6).</p>
+      </div>
+
+      <div class="figure-wrap">
+        <pre>Growing phase          Lock point          Shrinking phase
+(acquire only)  ───────────▲───────────▶  (release only)
+Lock-X(A), Lock-S(B)    final lock       Unlock(A), Unlock(B)</pre>
+        <p class="figure-caption">Fig 4. 2PL growing/shrinking phases relative to the lock point (Q5).</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 7 — PATTERNS -->
+  <section class="card" id="patterns">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🎯</span>
+      <span class="card-title">Assessment Pattern Analysis</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="callout callout-warn">
+        <strong>Scope caveat:</strong> the CSE370 <strong>Final is centrally set (BRACU question committee)</strong>, not written by NFF — confirmed in <code>cse370_exam_notes.md</code>. Nothing below should be read as "the Final will look like this." It is included because Quiz 3 and Quiz 4 are the only assessments that have actually sampled this exact Topics-19–24 syllabus so far, and their question <em>shapes</em> (not their central-exam probability) are the best structural signal available in the absence of any CSE370 PYQs.
+      </div>
+
+      <div class="pattern-grid">
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Quiz 3 (Indexing)</div>
+          <div class="pattern-freq">2Q / 10 marks</div>
+          <div class="pattern-desc">Q1 (8 marks): B+ tree insertion trace, draw state after each step. Q2 (2 marks): index search/lookup on the same tree.</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Quiz 4 (Transactions/Concurrency)</div>
+          <div class="pattern-freq">1 scenario / 5 sub-Qs</div>
+          <div class="pattern-desc">One concurrency scenario, then: name the problem, name the ACID property, how to prevent it, a recovery-technique question, and a standalone conceptual sub-question (2PL phases).</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Midterm structural precedent</div>
+          <div class="pattern-freq">5 mandatory Qs</div>
+          <div class="pattern-desc">Central exams at BRACU (per the Midterm) run 5 mandatory questions spanning distinct sub-areas — unconfirmed whether the Final repeats this shape, but it's the only central-exam precedent this course has.</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Self-assessed weak point (Q1, Quiz 4)</div>
+          <div class="pattern-freq">1 miss</div>
+          <div class="pattern-desc">Failed to identify "Dirty Read" live from a scenario under time pressure, despite correctly reconstructing it same-day — a recognition-speed gap, not a conceptual one.</div>
+        </div>
+      </div>
+
+      <p><strong>Observed tendencies (from Quiz 3/4 only, not Final-predictive on their own):</strong></p>
+      <ul>
+        <li>B+ tree questions ask for a full step-by-step trace (draw state after each insertion), not just a final tree.</li>
+        <li>Concurrency questions are scenario-based: a short vignette, then several short sub-questions built around it (name the problem → name the property → prevention → recovery).</li>
+        <li>"Explain"-type questions (per Midterm's tip, likely to carry over) only need 1–2 lines — do not over-write these on a central exam.</li>
+      </ul>
+
+    </div>
+  </section>
+
+  <!-- SECTION 8 — PROBABLE QUESTIONS -->
+  <section class="card" id="probable">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🔮</span>
+      <span class="card-title">Probable Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-note">No PYQs exist for CSE370 (confirmed 2026-09-05). This ranking is inferred from topic centrality, worked-example density in the source material, and Quiz 3/4's question shapes on this exact syllabus — <strong>not</strong> from any actual past Final paper. Treat it as a study-priority order, not a prediction with the confidence a real PYQ analysis would carry.</div>
+      <div class="probable-list">
+
+        <div class="probable-item">
+          <div class="prob-rank rank-1">1</div>
+          <div class="prob-content">
+            <div class="prob-q">B+ tree insertion and/or deletion trace (given order n and a value sequence, draw the tree after each step)</div>
+            <div class="prob-reason">Richest topic in worked examples across both the slides and practice sheet; already the exact Quiz 3 question shape on this same syllabus; a natural high-mark analytical question for a central exam.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-2">2</div>
+          <div class="prob-content">
+            <div class="prob-q">A concurrency scenario: identify the problem, the violated ACID property, and how to prevent it</div>
+            <div class="prob-reason">Exact Quiz 4 shape on the same syllabus; naturally combines Topic 23 (ACID) and Topic 24 (concurrency problems/isolation) into one question, matching how the two topics share a single lecture deck.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-3">3</div>
+          <div class="prob-content">
+            <div class="prob-q">Log-based recovery: given a log with a mid-sequence crash, determine UNDO/REDO per transaction and final values</div>
+            <div class="prob-reason">Self-contained, mechanically gradable (a clean right/wrong answer per transaction), and the practice sheet provides three distinct case shapes (pure-UNDO, pure-REDO, mixed) — a natural exam-question template.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-n">4</div>
+          <div class="prob-content">
+            <div class="prob-q">Algebraic query-tree optimization on a multi-join query (cascade → push down → reorder → convert to ⋈ → push projections)</div>
+            <div class="prob-reason">The single fully-worked multi-step example in the source slides; testable as a step-by-step transformation question, similar in structure to the practice sheet's Q1/Q2.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-n">5</div>
+          <div class="prob-content">
+            <div class="prob-q">Short conceptual/definitional questions: primary vs. secondary index, dense vs. sparse, 2PL phases, Wait-Die vs. Wound-Wait</div>
+            <div class="prob-reason">Matches the Midterm's confirmed pattern of including at least one pure theory/conceptual question among its 5 mandatory questions; these pairs are also this scope's most commonly confused distinctions.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 9 — MNEMONICS -->
+  <section class="card" id="mnemonics">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧠</span>
+      <span class="card-title">Mnemonics &amp; Memory Aids</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">ACID → who fixes it</div>
+        <div class="mnemonic-body">A + D → Recovery ("crash-related"). I → Concurrency Control ("crowd-related"). C → Application logic (nobody else's job).</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">Commit? Redo. No commit? Undo.</div>
+        <div class="mnemonic-body">The entire UNDO/REDO decision in six words — check the log for &lt;Ti commit&gt;, nothing else matters.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"Die is giving up, Wound is attacking"</div>
+        <div class="mnemonic-body">Wait-<strong>Die</strong>: the younger transaction gives up (aborts itself) rather than make an older one wait. Wound-Wait: the older transaction actively wounds (force-aborts) the younger one.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">Value vs. Set</div>
+        <div class="mnemonic-body">Non-Repeatable Read = a <strong>value</strong> changed. Phantom Read = the <strong>row set</strong> changed. Same trigger (re-read/re-run), different casualty.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">Grow first, give later</div>
+        <div class="mnemonic-body">2PL: acquire everything you need before you release anything. The instant you release your first lock, you can never acquire another.</div>
+      </div>
+
+      <div class="callout callout-note">
+        Add your own from class. The best mnemonics are the ones you invented yourself.
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggleCard(header) {
+    header.closest('.card').classList.toggle('collapsed');
+  }
+
+  function toggleQA(questionEl) {
+    questionEl.closest('.qa').classList.toggle('open');
+  }
+
+  function toggleAnalytical(header) {
+    header.closest('.analytical').classList.toggle('open');
+    const chev = header.querySelector('.card-chevron');
+    if (chev) chev.style.transform =
+      header.closest('.analytical').classList.contains('open') ? 'rotate(0deg)' : 'rotate(-90deg)';
+  }
+
+  function toggleTheme() {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('rg-theme', next); } catch(e) {}
+  }
+
+  (function() {
+    try {
+      const saved = localStorage.getItem('rg-theme');
+      if (saved) document.documentElement.dataset.theme = saved;
+    } catch(e) {}
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE321 — CPU Scheduling | Revision</title>
+
+  <style>
+    /* ===== THEME VARIABLES ===== */
+    :root[data-theme="light"] {
+      --bg:           #f5f6fa;
+      --surface:      #ffffff;
+      --surface-2:    #f0f1f5;
+      --border:       #dde1eb;
+      --text:         #1e2030;
+      --text-muted:   #6b7280;
+      --accent:       #2563eb;
+      --accent-bg:    #eff6ff;
+      --high:         #dc2626;
+      --high-bg:      #fef2f2;
+      --high-border:  #fecaca;
+      --med:          #b45309;
+      --med-bg:       #fffbeb;
+      --med-border:   #fde68a;
+      --low:          #2563eb;
+      --low-bg:       #eff6ff;
+      --low-border:   #bfdbfe;
+      --scan-bg:      #1e2030;
+      --scan-text:    #f8fafc;
+      --scan-surface: #2d3048;
+      --scan-border:  #3d4160;
+      --code-bg:      #1a1b26;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
+      --shadow:       0 2px 8px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.06);
+    }
+    :root[data-theme="dark"] {
+      --bg:           #0d0f18;
+      --surface:      #181b2a;
+      --surface-2:    #212438;
+      --border:       #2e3250;
+      --text:         #e2e8f0;
+      --text-muted:   #94a3b8;
+      --accent:       #60a5fa;
+      --accent-bg:    #1e2d45;
+      --high:         #f87171;
+      --high-bg:      #2d1b1b;
+      --high-border:  #7f1d1d;
+      --med:          #fbbf24;
+      --med-bg:       #2d2310;
+      --med-border:   #78350f;
+      --low:          #60a5fa;
+      --low-bg:       #1e2d45;
+      --low-border:   #1e40af;
+      --scan-bg:      #0d0f18;
+      --scan-text:    #e2e8f0;
+      --scan-surface: #181b2a;
+      --scan-border:  #2e3250;
+      --code-bg:      #0d0f18;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.3);
+      --shadow:       0 2px 8px rgba(0,0,0,.4);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+    p  { margin-bottom: .5rem; font-size: .9rem; }
+    ul, ol { padding-left: 1.3rem; font-size: .9rem; }
+    li { margin-bottom: .3rem; }
+    strong { font-weight: 700; }
+
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--shadow-sm);
+    }
+    .site-header-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: .6rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+    .header-title { font-size: 1rem; font-weight: 800; letter-spacing: -.01em; }
+    .header-sub { font-size: .78rem; color: var(--text-muted); margin-top: .1rem; }
+    .theme-btn {
+      flex-shrink: 0;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: .3rem .75rem;
+      border-radius: .5rem;
+      cursor: pointer;
+      font-size: .82rem;
+      font-family: inherit;
+      transition: background .15s;
+    }
+    .theme-btn:hover { background: var(--border); }
+
+    .site-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0 1rem;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .site-nav::-webkit-scrollbar { display: none; }
+    .site-nav a {
+      display: inline-block;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: .78rem;
+      font-weight: 500;
+      padding: .55rem .6rem;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .site-nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .meta-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
+    .meta-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .5rem;
+      padding: .35rem .75rem;
+      font-size: .78rem;
+      display: flex;
+      gap: .35rem;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .meta-pill-label { color: var(--text-muted); }
+    .meta-pill-value { font-weight: 700; }
+
+    .container { max-width: 920px; margin: 0 auto; padding: 1.25rem 1rem; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .8rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .card-header {
+      padding: .75rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card-header:hover { background: var(--border); }
+    .card-icon { font-size: 1rem; flex-shrink: 0; }
+    .card-title { font-size: .95rem; font-weight: 700; flex: 1; }
+    .card-chevron { font-size: .75rem; color: var(--text-muted); transition: transform .2s; flex-shrink: 0; }
+    .card.collapsed .card-body  { display: none; }
+    .card.collapsed .card-chevron { transform: rotate(-90deg); }
+    .card-body { padding: 1.1rem; }
+
+    .card-scan { background: var(--scan-bg); border-color: var(--scan-border); }
+    .card-scan .card-header { background: var(--scan-surface); border-color: var(--scan-border); }
+    .card-scan .card-header:hover { background: var(--scan-border); }
+    .card-scan .card-title { color: var(--scan-text); }
+    .card-scan .card-icon  { color: #fbbf24; }
+    .card-scan .card-chevron { color: var(--scan-text); opacity: .6; }
+    .card-scan .card-body  { background: var(--scan-bg); }
+    .scan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: .65rem;
+      margin-bottom: .9rem;
+    }
+    .scan-tile { background: var(--scan-surface); border: 1px solid var(--scan-border); border-radius: .55rem; padding: .75rem .85rem; }
+    .scan-tile-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; color: #94a3b8; margin-bottom: .3rem; }
+    .scan-tile-value { font-size: .88rem; font-weight: 700; color: var(--scan-text); line-height: 1.4; }
+    .scan-tile.tile-high  .scan-tile-label { color: #f87171; }
+    .scan-tile.tile-warn  .scan-tile-label { color: #fbbf24; }
+    .scan-tile.tile-sig   .scan-tile-label { color: #60a5fa; }
+    .scan-divider { border: none; border-top: 1px solid var(--scan-border); margin: .85rem 0; }
+    .scan-list { color: var(--scan-text); font-size: .88rem; }
+    .scan-list li { margin-bottom: .45rem; }
+
+    .badge {
+      display: inline-block;
+      font-size: .67rem;
+      font-weight: 800;
+      padding: .12rem .5rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      line-height: 1.4;
+      flex-shrink: 0;
+    }
+    .badge-high { background: var(--high-bg); color: var(--high); border: 1px solid var(--high-border); }
+    .badge-med  { background: var(--med-bg);  color: var(--med);  border: 1px solid var(--med-border); }
+    .badge-low  { background: var(--low-bg);  color: var(--low);  border: 1px solid var(--low-border); }
+
+    .concept {
+      border-left: 3px solid var(--border);
+      padding: .75rem .95rem;
+      margin-bottom: .75rem;
+      background: var(--surface-2);
+      border-radius: 0 .5rem .5rem 0;
+    }
+    .concept.imp-high { border-color: var(--high); }
+    .concept.imp-med  { border-color: var(--med); }
+    .concept.imp-low  { border-color: var(--low); }
+    .concept-title { font-weight: 700; font-size: .92rem; display: flex; align-items: center; gap: .45rem; margin-bottom: .4rem; flex-wrap: wrap; }
+    .concept-body { font-size: .88rem; }
+
+    .qa { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .65rem; overflow: hidden; }
+    .qa-q {
+      padding: .65rem .9rem;
+      font-weight: 600;
+      font-size: .88rem;
+      cursor: pointer;
+      background: var(--surface-2);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: .5rem;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .qa-q:hover { background: var(--border); }
+    .qa-q-text { flex: 1; line-height: 1.5; }
+    .qa-q-right { display: flex; align-items: center; gap: .4rem; flex-shrink: 0; }
+    .qa-toggle { font-size: .7rem; color: var(--text-muted); }
+    .qa-a { padding: .7rem .9rem; font-size: .88rem; border-top: 1px solid var(--border); display: none; line-height: 1.6; }
+    .qa.open .qa-a   { display: block; }
+    .qa.open .qa-toggle::after  { content: '▲'; }
+    .qa-toggle::after { content: '▼'; }
+
+    .analytical { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .85rem; overflow: hidden; }
+    .analytical-head {
+      padding: .65rem .9rem;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: .55rem;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .analytical-head:hover { background: var(--border); }
+    .q-num { font-weight: 800; font-size: .82rem; color: var(--accent); flex-shrink: 0; margin-top: .1rem; }
+    .q-title { font-weight: 600; font-size: .88rem; flex: 1; line-height: 1.5; }
+    .analytical-body { padding: 1rem; display: none; }
+    .analytical.open .analytical-body { display: block; }
+    .analytical.open .card-chevron { transform: rotate(0); }
+
+    .steps { display: flex; flex-direction: column; gap: .6rem; }
+    .step { display: flex; gap: .7rem; align-items: flex-start; }
+    .step-num {
+      width: 1.5rem; height: 1.5rem; background: var(--accent); color: #fff;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; font-weight: 800; flex-shrink: 0; margin-top: .1rem;
+    }
+    .step-body { flex: 1; font-size: .88rem; line-height: 1.6; }
+
+    .callout { border-radius: .45rem; padding: .6rem .85rem; font-size: .85rem; margin-top: .75rem; line-height: 1.55; }
+    .callout-insight { background: var(--accent-bg); border-left: 3px solid var(--accent); }
+    .callout-insight strong { color: var(--accent); }
+    .callout-warn { background: var(--high-bg); border-left: 3px solid var(--high); }
+    .callout-warn strong { color: var(--high); }
+    .callout-note { background: var(--surface-2); border-left: 3px solid var(--text-muted); }
+    .callout-exam { background: var(--med-bg); border-left: 3px solid var(--med); }
+    .callout-exam strong { color: var(--med); }
+
+    .gantt {
+      font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+      font-size: .78rem;
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: .75rem .9rem;
+      border-radius: .5rem;
+      overflow-x: auto;
+      white-space: pre;
+      margin-top: .6rem;
+    }
+
+    .formula {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: .5rem;
+      padding: .75rem 1rem;
+      margin-bottom: .75rem;
+    }
+    .formula-name { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .4rem; font-weight: 700; }
+    .formula-display {
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 1rem;
+      text-align: center;
+      padding: .5rem;
+      color: var(--accent);
+      font-weight: 600;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .formula-vars { font-size: .82rem; color: var(--text-muted); margin-top: .4rem; }
+
+    .code-block { margin-bottom: .85rem; }
+    .code-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .3rem; font-weight: 700; }
+    pre {
+      background: var(--code-bg); color: var(--code-text); padding: .9rem 1rem; border-radius: .5rem;
+      overflow-x: auto; font-size: .82rem; line-height: 1.6; font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+    }
+    .code-analysis { margin-top: .5rem; font-size: .85rem; padding: .5rem .75rem; background: var(--surface-2); border-radius: .4rem; border-left: 3px solid var(--accent); }
+
+    .figure-wrap { margin-bottom: 1rem; }
+    .figure-caption { font-size: .8rem; text-align: center; color: var(--text-muted); margin-top: .4rem; font-style: italic; }
+
+    .pattern-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .6rem; margin-bottom: .85rem; }
+    .pattern-tile { background: var(--surface-2); border: 1px solid var(--border); border-radius: .5rem; padding: .7rem .85rem; }
+    .pattern-tile-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); margin-bottom: .25rem; }
+    .pattern-freq { font-size: 1.6rem; font-weight: 900; color: var(--accent); line-height: 1.1; }
+    .pattern-desc { font-size: .78rem; color: var(--text-muted); margin-top: .2rem; }
+
+    .probable-list { display: flex; flex-direction: column; }
+    .probable-item { display: flex; gap: .75rem; align-items: flex-start; padding: .75rem 0; border-bottom: 1px solid var(--border); }
+    .probable-item:last-child { border-bottom: none; }
+    .prob-rank { width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: .82rem; flex-shrink: 0; }
+    .rank-1 { background: var(--high-bg); color: var(--high); border: 2px solid var(--high-border); }
+    .rank-2 { background: var(--med-bg);  color: var(--med);  border: 2px solid var(--med-border); }
+    .rank-3 { background: var(--low-bg);  color: var(--low);  border: 2px solid var(--low-border); }
+    .rank-n { background: var(--surface-2); color: var(--text-muted); border: 2px solid var(--border); }
+    .prob-content { flex: 1; }
+    .prob-q { font-size: .9rem; font-weight: 600; line-height: 1.5; }
+    .prob-reason { font-size: .8rem; color: var(--text-muted); margin-top: .2rem; line-height: 1.4; }
+
+    .mnemonic { background: var(--med-bg); border: 1px solid var(--med-border); border-radius: .5rem; padding: .75rem 1rem; margin-bottom: .6rem; }
+    .mnemonic-word { font-weight: 900; color: var(--med); font-size: 1.05rem; margin-bottom: .3rem; }
+    .mnemonic-body { font-size: .88rem; }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: .85rem 0; }
+    .section-intro { font-size: .82rem; color: var(--text-muted); margin-bottom: .85rem; line-height: 1.5; }
+
+    @media print {
+      .site-header, .site-nav, .theme-btn { display: none !important; }
+      .container { padding: 0; }
+      .card { box-shadow: none; page-break-inside: avoid; border: 1px solid #ccc; }
+      .card-body, .qa-a, .analytical-body { display: block !important; }
+      .card.collapsed .card-body { display: block !important; }
+      .card-scan { background: #fff; color: #000; }
+      .scan-tile { background: #f5f5f5; }
+      .scan-tile-value { color: #000; }
+    }
+
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      .site-header-inner { padding: .5rem .85rem; }
+      .container { padding: .85rem .65rem; }
+      .card-body { padding: .85rem; }
+      .formula-display { font-size: .88rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div>
+      <div class="header-title">CSE321 — CPU Scheduling</div>
+      <div class="header-sub">Theory Quiz 2 &nbsp;·&nbsp; Module 3 (Topics 11–14) &nbsp;·&nbsp; Faculty: NTR</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">☀ / ☾</button>
+  </div>
+</header>
+
+<nav class="site-nav" aria-label="Page sections">
+  <a href="#scan">⚡ Morning Scan</a>
+  <a href="#theory">📖 Theory</a>
+  <a href="#short-q">❓ Short Qs</a>
+  <a href="#analytical">🧮 Analytical</a>
+  <a href="#math">∑ Math</a>
+  <a href="#code">💻 Code</a>
+  <a href="#figures">📊 Figures</a>
+  <a href="#patterns">🎯 Patterns</a>
+  <a href="#probable">🔮 Probable Qs</a>
+  <a href="#mnemonics">🧠 Mnemonics</a>
+</nav>
+
+<main class="container">
+
+  <div class="meta-bar">
+    <div class="meta-pill"><span class="meta-pill-label">Course</span><span class="meta-pill-value">CSE321</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Topic</span><span class="meta-pill-value">CPU Scheduling</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Exam</span><span class="meta-pill-value">Theory Quiz 2</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Date</span><span class="meta-pill-value">2026-07-22 · During class</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Weight</span><span class="meta-pill-value">Part of Quiz 10% (best 3 of 4)</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Built</span><span class="meta-pill-value">2026-07-18</span></div>
+  </div>
+
+  <!-- SECTION 0 — MORNING QUICK SCAN -->
+  <section class="card card-scan" id="scan">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">⚡</span>
+      <span class="card-title" style="color:var(--scan-text)">Morning Quick Scan</span>
+      <span class="card-chevron" style="color:var(--scan-text);opacity:.6">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="scan-grid">
+        <div class="scan-tile tile-high">
+          <div class="scan-tile-label">Must Know Cold</div>
+          <div class="scan-tile-value">Gantt chart construction + TAT/WT/RT formulas for FCFS, SJF, SRTF, Priority, RR, and MLFQ. You will not have time to derive these from first principles.</div>
+        </div>
+        <div class="scan-tile tile-warn">
+          <div class="scan-tile-label">Most Likely Tested</div>
+          <div class="scan-tile-value">Given an AT/BT process table, draw the Gantt chart and compute avg TAT/WT — almost certainly SRTF or RR, the two with the trickiest execution logic.</div>
+        </div>
+        <div class="scan-tile">
+          <div class="scan-tile-label">Common Trap</div>
+          <div class="scan-tile-value">SJF (non-preemptive) vs SRTF (preemptive): only SRTF re-evaluates on every new arrival. And for RR, Response Time ≠ Waiting Time — RT is the FIRST CPU slice only.</div>
+        </div>
+        <div class="scan-tile tile-sig">
+          <div class="scan-tile-label">Faculty Signal</div>
+          <div class="scan-tile-value">Quiz 1 (NTR) = one heavy analytical trace + 2 short written-answer + 1 scenario Q, no MCQ. Expect a Gantt-trace analog to the fork() trace, plus a "which algorithm fits this scenario" question.</div>
+        </div>
+      </div>
+      <hr class="scan-divider">
+      <p style="font-size:.82rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Top 3 things to have ready before entering the quiz:</p>
+      <ol class="scan-list">
+        <li>TAT = CT − AT, WT = TAT − BT, RT = first CPU time − AT. Say them out loud once before you sit down.</li>
+        <li>Hand-draw one Gantt chart each for SRTF, Priority, and RR under time pressure — these are the three that actually require live decision-making mid-trace, not just sorting.</li>
+        <li>Be able to state, in one sentence each: what starvation is and how aging fixes it; and the difference between MLQ and MLFQ.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- SECTION 1 — THEORY -->
+  <section class="card" id="theory">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📖</span>
+      <span class="card-title">Theory</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="concept imp-low">
+        <div class="concept-title">CPU–I/O Burst Cycle &amp; Process Types<span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p>Processes alternate between a <strong>CPU burst</strong> (computing) and an <strong>I/O burst</strong> (waiting on I/O), repeating until a final CPU burst ends in termination.</p>
+          <ul>
+            <li><strong>CPU-bound:</strong> few, long CPU bursts (e.g. scientific computing)</li>
+            <li><strong>I/O-bound:</strong> many, short CPU bursts (e.g. interactive programs, databases)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Scheduling Criteria &amp; Core Formulas<span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Five criteria: CPU utilization (max), throughput (max), turnaround time (min), waiting time (min), response time (min).</p>
+          <div class="callout callout-insight">
+            <strong>Why it matters:</strong> Every analytical question reduces to computing these three: TAT = CT − AT, WT = TAT − BT, RT = first CPU time − AT. Get the formula order wrong and every downstream number is wrong.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">When Does Scheduling Occur? Preemptive vs Non-preemptive<span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>Four trigger points: (1) running→waiting, (2) running→ready, (3) waiting→ready, (4) terminates.</p>
+          <ul>
+            <li>Scheduling only at (1) and (4) → <strong>non-preemptive</strong></li>
+            <li>Scheduling at all four → <strong>preemptive</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">FCFS — First Come First Served<span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>Serves processes strictly in arrival order. Non-preemptive.</p>
+          <div class="callout callout-warn">
+            <strong>Convoy effect:</strong> one long process at the front makes every short process behind it wait excessively — average waiting time balloons even though nothing is "wrong" with the algorithm's logic.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">SJF vs SRTF<span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p><strong>Non-preemptive SJF:</strong> once started, a process runs to completion; the shortest burst is only picked at scheduling decision points.</p>
+          <p><strong>SRTF (preemptive SJF):</strong> on every new arrival, compare its burst to the current process's <em>remaining</em> time — preempt if shorter.</p>
+          <div class="callout callout-warn">
+            <strong>Common error:</strong> treating SJF and SRTF as interchangeable. SJF never interrupts a running process; SRTF re-checks on every arrival. SRTF is provably optimal for average WT, but risks starving long jobs.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Priority Scheduling &amp; Aging<span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>CPU goes to the highest-priority process. Can be preemptive or non-preemptive. Convention (lower number = higher priority, or the reverse) varies — always check what the question states.</p>
+          <div class="callout callout-warn">
+            <strong>Starvation:</strong> low-priority processes may never run if higher-priority ones keep arriving. <strong>Fix — Aging:</strong> gradually increase the priority of processes the longer they wait.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Round Robin (RR)<span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Preemptive. Each process gets a fixed time quantum q; if unfinished, it goes to the back of a circular ready queue.</p>
+          <ul>
+            <li>q very large → degenerates to FCFS</li>
+            <li>q very small → high responsiveness, but excessive context-switch overhead</li>
+            <li>Rule of thumb: q large enough that ~80% of CPU bursts finish within one quantum</li>
+          </ul>
+          <div class="callout callout-warn">
+            <strong>Response Time ≠ Waiting Time here:</strong> RT is measured only at the FIRST CPU allocation. A process can wait again after that first slice, but RT is already fixed. This distinction does not exist for non-preemptive algorithms (there, RT = WT).
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">MLQ vs MLFQ — and the 5 MLFQ Rules<span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p><strong>MLQ:</strong> multiple queues, each with its own algorithm; processes are <em>permanently</em> assigned to one queue by type. Risk: starvation of low-priority queues without time slicing.</p>
+          <p><strong>MLFQ:</strong> processes can <em>move between queues</em> based on observed behavior — CPU-heavy jobs get demoted, short/I-O-bound jobs stay high.</p>
+          <table style="width:100%;font-size:.85rem;border-collapse:collapse;margin-top:.4rem">
+            <tr><td style="padding:.2rem 0"><strong>Rule 1</strong></td><td>Priority(A) &gt; Priority(B) → A runs</td></tr>
+            <tr><td style="padding:.2rem 0"><strong>Rule 2</strong></td><td>Priority(A) = Priority(B) → Round Robin between them</td></tr>
+            <tr><td style="padding:.2rem 0"><strong>Rule 3</strong></td><td>New job enters at the highest priority queue</td></tr>
+            <tr><td style="padding:.2rem 0"><strong>Rule 4</strong></td><td>Using up the full time allotment at a level → demoted (regardless of how many times it yielded)</td></tr>
+            <tr><td style="padding:.2rem 0"><strong>Rule 5</strong></td><td>After period S, boost ALL jobs back to the top queue (prevents starvation of demoted CPU-bound jobs)</td></tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 2 — SHORT QUESTIONS -->
+  <section class="card" id="short-q">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">❓</span>
+      <span class="card-title">Short Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="section-intro">Tap a question to reveal the answer. Try to recall first — this mirrors Quiz 1's short written-answer format.</p>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What is the convoy effect, and which algorithm suffers from it?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">FCFS. A long process at the head of the queue forces every shorter process behind it to wait far longer than its own burst time would suggest, driving average waiting time up even though each process is served fairly in arrival order.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Why is SRTF considered optimal, and what is its main drawback?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">SRTF minimizes average waiting time because it always runs whichever process will finish soonest, including preempting mid-execution when a shorter job arrives. Drawback: it requires knowing burst times in advance (usually estimated, not known), and long processes can starve if short ones keep arriving.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What is starvation in priority scheduling, and how does aging fix it?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">Low-priority processes may never get the CPU if higher-priority processes keep arriving. Aging gradually raises the priority of a process the longer it waits, guaranteeing it eventually becomes the highest priority and runs.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">How does the Round Robin time quantum affect performance at each extreme?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">Very large q → RR degenerates into FCFS (most processes finish inside one quantum). Very small q → high responsiveness but excessive context-switch overhead dominates useful work. Rule of thumb: pick q so roughly 80% of CPU bursts complete within one quantum.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Differentiate Multilevel Queue (MLQ) from Multilevel Feedback Queue (MLFQ).</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">MLQ assigns each process permanently to one queue by type, with fixed priority or time-sliced scheduling between queues. MLFQ lets processes move between queues based on observed behavior — CPU-bound jobs get demoted, I/O-bound/short jobs stay near the top — which is more adaptive but more complex and starvation-prone without a priority boost.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Why is Priority Boost (MLFQ Rule 5) needed?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">Without it, a CPU-bound job that gets demoted stays permanently at the bottom queue and can starve if higher queues never empty. Periodically boosting every job back to the top queue guarantees it eventually gets scheduled again.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Is Response Time equal to Waiting Time in Round Robin? Why or why not?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">No. Response Time is fixed at the moment of the FIRST CPU allocation only. A process can be preempted and wait again afterward, which keeps adding to its total Waiting Time — but that later waiting doesn't change RT. For non-preemptive algorithms, RT = WT because there's only ever one CPU allocation.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Which of the four scheduling trigger points make an algorithm preemptive vs non-preemptive?</span>
+          <span class="qa-q-right"><span class="badge badge-low">LOW</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">Scheduling only at "running→waiting" and "terminates" → non-preemptive (cooperative). Scheduling at all four points, including "running→ready" (timer interrupt) and "waiting→ready" (I/O done), → preemptive.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 3 — ANALYTICAL QUESTIONS -->
+  <section class="card" id="analytical">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧮</span>
+      <span class="card-title">Analytical Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="section-intro">Full worked Gantt-chart traces, one per algorithm. This is the highest-value question type based on Quiz 1's format.</p>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q1</span>
+          <span class="q-title">FCFS — P1(AT0,BT24), P2(AT1,BT3), P3(AT2,BT3). Draw the Gantt chart and compute avg TAT/WT.</span>
+          <span class="badge badge-med">MED</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Order strictly by arrival time: P1, P2, P3.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Run each to completion in that order: P1 finishes at 24, P2 at 27, P3 at 30.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">CT − AT = TAT; TAT − BT = WT for each process, then average.</div></div>
+          </div>
+          <div class="gantt">Gantt: [P1─────0..24][P2─24..27][P3─27..30]
+
+Process | AT | BT | CT | TAT | WT
+P1      | 0  | 24 | 24 | 24  | 0
+P2      | 1  | 3  | 27 | 26  | 23
+P3      | 2  | 3  | 30 | 28  | 25
+Avg TAT = 26, Avg WT = 16</div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> P1's long burst is why P2/P3's waiting times are so disproportionate to their own burst — this is the convoy effect made concrete.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q2</span>
+          <span class="q-title">Non-preemptive SJF — P1(0,7), P2(2,4), P3(4,1), P4(5,4). Draw the Gantt chart and compute avg TAT/WT.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">At t=0, only P1 has arrived → must run P1 (no choice yet). Runs to completion at t=7.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">At t=7, P2(4), P3(1), P4(4) are all in the queue → pick shortest burst: P3.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">At t=8, P2(4) and P4(4) tie → break the tie with FCFS (P2 arrived first) → run P2, then P4.</div></div>
+          </div>
+          <div class="gantt">Gantt: [P1─0..7][P3─7..8][P2─8..12][P4─12..16]
+
+Process | AT | BT | CT | TAT | WT
+P1      | 0  | 7  | 7  | 7   | 0
+P2      | 2  | 4  | 12 | 10  | 6
+P3      | 4  | 1  | 8  | 4   | 3
+P4      | 5  | 4  | 16 | 11  | 7
+Avg TAT = 8, Avg WT = 4</div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> the tie-break rule (FCFS among equal bursts) is an easy point to lose if you pick arbitrarily instead of by arrival order — state the tie-break explicitly in your answer.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q3</span>
+          <span class="q-title">SRTF (preemptive SJF) — same processes as Q2: P1(0,7), P2(2,4), P3(4,1), P4(5,4). Trace it.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">t=0: P1 starts, 7 remaining.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">t=2: P2 arrives (BT=4). P1 has 5 remaining. 4 &lt; 5 → preempt P1, run P2.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">t=4: P3 arrives (BT=1). P2 has 2 remaining. 1 &lt; 2 → preempt P2, run P3.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">t=5: P3 finishes; P4 arrives (BT=4) at the same instant. Compare all remaining: P1=5, P2=2, P4=4 → pick P2 (still shortest remaining).</div></div>
+            <div class="step"><div class="step-num">5</div><div class="step-body">t=7: P2 finishes. Compare P1=5, P4=4 → pick P4. t=11: P4 finishes → run P1 to completion at t=16.</div></div>
+          </div>
+          <div class="gantt">Gantt: [P1─0..2][P2─2..4][P3─4..5][P2─5..7][P4─7..11][P1─11..16]
+
+Process | AT | BT | CT | TAT | WT
+P1      | 0  | 7  | 16 | 16  | 9
+P2      | 2  | 4  | 7  | 5   | 1
+P3      | 4  | 1  | 5  | 1   | 0
+P4      | 5  | 4  | 11 | 6   | 2
+Avg TAT = 7, Avg WT = 3</div>
+          <div class="callout callout-warn"><strong>Common error:</strong> forgetting to re-evaluate at every new arrival, including comparing against the process that just finished at the same timestamp (t=5 here has two events at once — a P3 completion and a P4 arrival). Missing that double-event is the single most likely place to lose marks on this question type.</div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> notice P1 — the process with the longest burst — ends up running last despite starting first. This is exactly the starvation risk SRTF carries.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q4</span>
+          <span class="q-title">Non-preemptive Priority — P1(BT10,Pr3), P2(BT1,Pr1), P3(BT2,Pr4), P4(BT1,Pr5), P5(BT5,Pr2), all arrive at t=0, lower number = higher priority.</span>
+          <span class="badge badge-med">MED</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">All arrive together, so just sort by priority number ascending: P2(1) → P5(2) → P1(3) → P3(4) → P4(5).</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Run each to completion in that order and accumulate completion times.</div></div>
+          </div>
+          <div class="gantt">Gantt: [P2─0..1][P5─1..6][P1─6..16][P3─16..18][P4─18..19]
+
+Process | BT | CT | TAT | WT
+P2      | 1  | 1  | 1   | 0
+P5      | 5  | 6  | 6   | 1
+P1      | 10 | 16 | 16  | 6
+P3      | 2  | 18 | 18  | 16
+P4      | 1  | 19 | 19  | 18
+Avg TAT = 12, Avg WT = 8.2</div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> always check the question's priority convention first — "lower number = higher priority" and "higher number = higher priority" are both used, and this table's order flips completely if you assume the wrong one.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q5</span>
+          <span class="q-title">Round Robin (q=4) — P1(0,24), P2(0,3), P3(0,3). Trace it and compute RT as well as TAT/WT.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Queue order at t=0: P1, P2, P3 (all arrived together, FCFS order into the circular queue).</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">P1 runs its full quantum (4ms), goes to back of queue with 20 remaining. P2 runs 3ms and finishes (burst &lt; q). P3 runs 3ms and finishes.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Only P1 remains — it now just runs its remaining 20ms in 4ms chunks with no one else to rotate with, finishing at t=30.</div></div>
+          </div>
+          <div class="gantt">Gantt: [P1─0..4][P2─4..7][P3─7..10][P1─10..14][P1─14..18][P1─18..22][P1─22..26][P1─26..30]
+
+Process | AT | BT | CT | TAT | WT   | RT
+P1      | 0  | 24 | 30 | 30  | 6    | 0
+P2      | 0  | 3  | 7  | 7   | 4    | 4
+P3      | 0  | 3  | 10 | 10  | 7    | 7
+Avg TAT=15.67, Avg WT=5.67, Avg RT=3.67</div>
+          <div class="callout callout-warn"><strong>Exam note:</strong> RT is the FIRST CPU slice only — P1 gets CPU at t=0 so RT=0 even though it doesn't finish until t=30. This is the exact RT ≠ WT distinction flagged in the Theory section; expect it to be tested directly.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q6</span>
+          <span class="q-title">MLFQ walkthrough — a new job enters a 3-queue MLFQ (Q0: q=8, Q1: q=16, Q2: FCFS). Trace where it ends up if it needs 30ms of CPU total.</span>
+          <span class="badge badge-med">MED</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Job enters at Q0 (Rule 3). Runs 8ms, uses the full quantum without finishing (30ms total needed) → demoted to Q1 (Rule 4).</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">In Q1, runs up to 16ms. 8 + 16 = 24ms consumed, 6ms remaining — still uses the full quantum → demoted to Q2.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Q2 is FCFS (no quantum limit) → job runs its remaining 6ms to completion, unless a Priority Boost (Rule 5) happens first and resets it to Q0.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> this is exactly the mechanism that separates short jobs (finish inside Q0's 8ms, never demoted) from long CPU-bound jobs (progressively demoted, but still guaranteed to run eventually because of the boost).</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 4 — MATHEMATICS -->
+  <section class="card" id="math">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">∑</span>
+      <span class="card-title">Mathematics</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="formula">
+        <div class="formula-name">Core Metrics</div>
+        <div class="formula-display">TAT = CT − AT
+WT  = TAT − BT
+RT  = First CPU time − AT</div>
+        <div class="formula-vars">CT = Completion Time, AT = Arrival Time, BT = Burst Time. Compute TAT before WT — WT depends on it.</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">SJF/SRTF Burst-Time Prediction (Exponential Average)</div>
+        <div class="formula-display">τ(n+1) = α·t(n) + (1−α)·τ(n)</div>
+        <div class="formula-vars">τ(n+1) = next predicted burst, t(n) = actual n-th burst, τ(n) = previous prediction, α = weight (typically 0.5). Used because true burst length isn't known in advance — SJF/SRTF must estimate it.</div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Ex</span>
+          <span class="q-title">Worked example: previous prediction τ(n)=10, actual burst t(n)=6, α=0.5. Find τ(n+1).</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Plug into the formula: τ(n+1) = 0.5×6 + 0.5×10.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">= 3 + 5 = 8. The next prediction moves halfway toward the most recent actual burst.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Pattern:</strong> with α=0.5, each new prediction is always the simple average of the previous prediction and the latest actual value — the fastest way to sanity-check your arithmetic on this formula.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 5 — CODE -->
+  <section class="card" id="code">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">💻</span>
+      <span class="card-title">Code</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-note">
+        No code component expected for this quiz. CPU Scheduling questions are hand-traced Gantt charts and process tables (as in the Analytical section), not implementation — unlike Quiz 1's fork() trace, which belonged to the Process module (Topics 1–5), not this one. If NTR breaks pattern and includes pseudocode for a scheduler, it would most likely be RR's queue rotation logic — worth a quick mental walkthrough, but not prioritized here.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6 — FIGURES & DIAGRAMS -->
+  <section class="card" id="figures">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📊</span>
+      <span class="card-title">Figures &amp; Diagrams</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="figure-wrap">
+        <div class="gantt">Priority ↑ │ Queue 0: System processes       [Real-time scheduler]
+           │ Queue 1: Interactive processes  [Round Robin]
+           │ Queue 2: Interactive editing    [Round Robin]
+           │ Queue 3: Batch processes        [FCFS]
+Priority ↓ │ Queue 4: Student processes      [FCFS]</div>
+        <p class="figure-caption">Fig 1. MLQ structure — processes are permanently assigned to one queue by type; a lower queue only runs if all higher queues are empty.</p>
+      </div>
+
+      <div class="figure-wrap">
+        <div class="gantt">New job → Q0 (q=8ms)
+  finishes in 8ms?  → done (stays short next time)
+  uses full 8ms?    → demoted to Q1 (q=16ms)
+    finishes in 16ms? → done
+    uses full 16ms?   → demoted to Q2 (FCFS, runs to completion)
+
+Every S=100ms: ALL jobs boosted back to Q0 (Rule 5)</div>
+        <p class="figure-caption">Fig 2. MLFQ demotion flow — the path a CPU-bound job takes through three queues, and the periodic boost that prevents permanent starvation.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 7 — FACULTY PATTERN ANALYSIS -->
+  <section class="card" id="patterns">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🎯</span>
+      <span class="card-title">Faculty Pattern Analysis</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="callout callout-note">
+        <strong>Source:</strong> Quiz 1 only (2026-07-01, Process chapter) — the only faculty-written data point available so far this semester. Treat frequencies below as a single-sample signal, not an established pattern.
+        <br><strong>Scope:</strong> Midterm and Final are centrally set at BRACU — this analysis covers direct-faculty (NTR) quizzes only.
+      </div>
+
+      <div class="pattern-grid">
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Analytical trace Q</div>
+          <div class="pattern-freq">1×</div>
+          <div class="pattern-desc">fork() trace, worth the most marks (3)</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Short written-answer</div>
+          <div class="pattern-freq">2×</div>
+          <div class="pattern-desc">PCB definition; states+schedulers relation</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Scenario-based Q</div>
+          <div class="pattern-freq">1×</div>
+          <div class="pattern-desc">IPC method choice given constraints</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">MCQ</div>
+          <div class="pattern-freq">0×</div>
+          <div class="pattern-desc">Never appeared on Quiz 1</div>
+        </div>
+      </div>
+
+      <p><strong>Observed tendencies (from Quiz 1):</strong></p>
+      <ul>
+        <li>One analytical trace question carries the most marks — for CPU Scheduling, the natural analog is a Gantt-chart trace (most likely SRTF or RR, given their extra decision complexity).</li>
+        <li>Theoretical questions are short written answers, never MCQ.</li>
+        <li>A scenario-style question appeared ("which mechanism fits this situation?") — a direct analog here would be "which scheduling algorithm best fits these constraints?"</li>
+        <li>Quiz 1 did NOT include a diagram-draw question, despite one being predicted beforehand. Caution: CPU Scheduling is inherently diagram-based (Gantt charts), so this quiz may break that pattern rather than repeat it — do not assume diagrams are off the table.</li>
+      </ul>
+
+    </div>
+  </section>
+
+  <!-- SECTION 8 — PROBABLE QUESTIONS -->
+  <section class="card" id="probable">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🔮</span>
+      <span class="card-title">Probable Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="probable-list">
+
+        <div class="probable-item">
+          <div class="prob-rank rank-1">1</div>
+          <div class="prob-content">
+            <div class="prob-q">Given a process table (AT/BT, possibly with priorities), draw the Gantt chart for SRTF or RR and compute avg TAT/WT.</div>
+            <div class="prob-reason">Matches Quiz 1's highest-mark question type (one heavy analytical trace); CPU Scheduling is explicitly flagged in the module notes as "the primary math section for the midterm," so the faculty has strong incentive to test it directly here too.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-2">2</div>
+          <div class="prob-content">
+            <div class="prob-q">Short written-answer comparison: SJF vs SRTF, or MLQ vs MLFQ.</div>
+            <div class="prob-reason">Quiz 1 had two short-answer definition/comparison questions (PCB; states+schedulers). These two pairs are the module's clearest "explain the difference" targets.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-3">3</div>
+          <div class="prob-content">
+            <div class="prob-q">Scenario question: "Given these constraints (e.g., unknown burst times, need fairness), which scheduling algorithm would you choose and why?"</div>
+            <div class="prob-reason">Direct structural analog to Quiz 1's IPC scenario question (choose shared memory vs message passing given constraints) — same question shape, different domain.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-n">4</div>
+          <div class="prob-content">
+            <div class="prob-q">Short-answer on starvation/aging, or on why Priority Boost (Rule 5) is needed in MLFQ.</div>
+            <div class="prob-reason">The module notes explicitly flag the 5 MLFQ rules as "memorize these" — a strong internal signal that this is considered testable, independent of faculty pattern history.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 9 — MNEMONICS & MEMORY AIDS -->
+  <section class="card" id="mnemonics">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧠</span>
+      <span class="card-title">Mnemonics &amp; Memory Aids</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">TAT → WT → RT, in that order</div>
+        <div class="mnemonic-body">"Complete, then Wait, then Respond" — compute TAT first (CT−AT), then WT depends on it (TAT−BT). RT is separate: First CPU − AT. Never compute WT before TAT.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">SRTF = "Shortest Remaining, Always"</div>
+        <div class="mnemonic-body">Reminder that SRTF re-checks the shortest REMAINING time on every single new arrival — not just at the start, unlike non-preemptive SJF.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">MLFQ Rules: "Enter High, Earn Your Spot, Get Bumped, Get Boosted"</div>
+        <div class="mnemonic-body">Enter High = Rule 3 (new job → top queue). Earn Your Spot = Rules 1&amp;2 (priority order, RR on ties). Get Bumped = Rule 4 (demote after using full quantum). Get Boosted = Rule 5 (periodic reset to top, prevents starvation).</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">RR's 80/20</div>
+        <div class="mnemonic-body">Quantum should be sized so ~80% of bursts finish inside one quantum. Too big → FCFS. Too small → overhead eats the CPU.</div>
+      </div>
+
+      <div class="callout callout-note">
+        Add your own from class. The best mnemonics are the ones you invented yourself.
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggleCard(header) {
+    header.closest('.card').classList.toggle('collapsed');
+  }
+  function toggleQA(questionEl) {
+    questionEl.closest('.qa').classList.toggle('open');
+  }
+  function toggleAnalytical(header) {
+    header.closest('.analytical').classList.toggle('open');
+    const chev = header.querySelector('.card-chevron');
+    if (chev) chev.style.transform =
+      header.closest('.analytical').classList.contains('open') ? 'rotate(0deg)' : 'rotate(-90deg)';
+  }
+  function toggleTheme() {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('rg-theme', next); } catch(e) {}
+  }
+  (function() {
+    try {
+      const saved = localStorage.getItem('rg-theme');
+      if (saved) document.documentElement.dataset.theme = saved;
+    } catch(e) {}
+  })();
+</script>
+
+</body>
+</html>

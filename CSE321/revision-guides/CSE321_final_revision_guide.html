@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE321 — Final (Topics 20–32) | Revision</title>
+
+  <style>
+    :root[data-theme="light"] {
+      --bg:           #f5f6fa;
+      --surface:      #ffffff;
+      --surface-2:    #f0f1f5;
+      --border:       #dde1eb;
+      --text:         #1e2030;
+      --text-muted:   #6b7280;
+      --accent:       #2563eb;
+      --accent-bg:    #eff6ff;
+      --high:         #dc2626;
+      --high-bg:      #fef2f2;
+      --high-border:  #fecaca;
+      --med:          #b45309;
+      --med-bg:       #fffbeb;
+      --med-border:   #fde68a;
+      --low:          #2563eb;
+      --low-bg:       #eff6ff;
+      --low-border:   #bfdbfe;
+      --scan-bg:      #1e2030;
+      --scan-text:    #f8fafc;
+      --scan-surface: #2d3048;
+      --scan-border:  #3d4160;
+      --code-bg:      #1a1b26;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
+      --shadow:       0 2px 8px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.06);
+    }
+    :root[data-theme="dark"] {
+      --bg:           #0d0f18;
+      --surface:      #181b2a;
+      --surface-2:    #212438;
+      --border:       #2e3250;
+      --text:         #e2e8f0;
+      --text-muted:   #94a3b8;
+      --accent:       #60a5fa;
+      --accent-bg:    #1e2d45;
+      --high:         #f87171;
+      --high-bg:      #2d1b1b;
+      --high-border:  #7f1d1d;
+      --med:          #fbbf24;
+      --med-bg:       #2d2310;
+      --med-border:   #78350f;
+      --low:          #60a5fa;
+      --low-bg:       #1e2d45;
+      --low-border:   #1e40af;
+      --scan-bg:      #0d0f18;
+      --scan-text:    #e2e8f0;
+      --scan-surface: #181b2a;
+      --scan-border:  #2e3250;
+      --code-bg:      #0d0f18;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.3);
+      --shadow:       0 2px 8px rgba(0,0,0,.4);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+    p  { margin-bottom: .5rem; font-size: .9rem; }
+    ul, ol { padding-left: 1.3rem; font-size: .9rem; }
+    li { margin-bottom: .3rem; }
+    strong { font-weight: 700; }
+    table { border-collapse: collapse; width: 100%; font-size: .82rem; margin: .5rem 0; }
+    th, td { border: 1px solid var(--border); padding: .35rem .5rem; text-align: left; }
+    th { background: var(--surface-2); }
+
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--shadow-sm);
+    }
+    .site-header-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: .6rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+    .header-title { font-size: 1rem; font-weight: 800; letter-spacing: -.01em; }
+    .header-sub { font-size: .78rem; color: var(--text-muted); margin-top: .1rem; }
+    .theme-btn {
+      flex-shrink: 0; background: var(--surface-2); border: 1px solid var(--border);
+      color: var(--text); padding: .3rem .75rem; border-radius: .5rem; cursor: pointer;
+      font-size: .82rem; font-family: inherit; transition: background .15s;
+    }
+    .theme-btn:hover { background: var(--border); }
+
+    .site-nav {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      overflow-x: auto; white-space: nowrap; padding: 0 1rem;
+      -ms-overflow-style: none; scrollbar-width: none;
+    }
+    .site-nav::-webkit-scrollbar { display: none; }
+    .site-nav a {
+      display: inline-block; color: var(--text-muted); text-decoration: none;
+      font-size: .78rem; font-weight: 500; padding: .55rem .6rem;
+      border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
+    }
+    .site-nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .meta-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+    .meta-pill {
+      background: var(--surface); border: 1px solid var(--border); border-radius: .5rem;
+      padding: .35rem .75rem; font-size: .78rem; display: flex; gap: .35rem;
+      align-items: center; box-shadow: var(--shadow-sm);
+    }
+    .meta-pill-label { color: var(--text-muted); }
+    .meta-pill-value { font-weight: 700; }
+
+    .container { max-width: 920px; margin: 0 auto; padding: 1.25rem 1rem; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: .8rem;
+      margin-bottom: 1rem; overflow: hidden; box-shadow: var(--shadow-sm);
+    }
+    .card-header {
+      padding: .75rem 1.1rem; display: flex; align-items: center; gap: .6rem;
+      background: var(--surface-2); border-bottom: 1px solid var(--border);
+      cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+    }
+    .card-header:hover { background: var(--border); }
+    .card-icon { font-size: 1rem; flex-shrink: 0; }
+    .card-title { font-size: .95rem; font-weight: 700; flex: 1; }
+    .card-chevron { font-size: .75rem; color: var(--text-muted); transition: transform .2s; flex-shrink: 0; }
+    .card.collapsed .card-body  { display: none; }
+    .card.collapsed .card-chevron { transform: rotate(-90deg); }
+    .card-body { padding: 1.1rem; }
+
+    .card-scan { background: var(--scan-bg); border-color: var(--scan-border); }
+    .card-scan .card-header { background: var(--scan-surface); border-color: var(--scan-border); }
+    .card-scan .card-header:hover { background: var(--scan-border); }
+    .card-scan .card-title { color: var(--scan-text); }
+    .card-scan .card-icon  { color: #fbbf24; }
+    .card-scan .card-chevron { color: var(--scan-text); opacity: .6; }
+    .card-scan .card-body  { background: var(--scan-bg); }
+    .scan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: .65rem; margin-bottom: .9rem; }
+    .scan-tile { background: var(--scan-surface); border: 1px solid var(--scan-border); border-radius: .55rem; padding: .75rem .85rem; }
+    .scan-tile-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; color: #94a3b8; margin-bottom: .3rem; }
+    .scan-tile-value { font-size: .88rem; font-weight: 700; color: var(--scan-text); line-height: 1.4; }
+    .scan-tile.tile-high  .scan-tile-label { color: #f87171; }
+    .scan-tile.tile-warn  .scan-tile-label { color: #fbbf24; }
+    .scan-tile.tile-sig   .scan-tile-label { color: #60a5fa; }
+    .scan-divider { border: none; border-top: 1px solid var(--scan-border); margin: .85rem 0; }
+    .scan-list { color: var(--scan-text); font-size: .88rem; }
+    .scan-list li { margin-bottom: .45rem; }
+
+    .badge {
+      display: inline-block; font-size: .67rem; font-weight: 800; padding: .12rem .5rem;
+      border-radius: 999px; text-transform: uppercase; letter-spacing: .06em; line-height: 1.4; flex-shrink: 0;
+    }
+    .badge-high { background: var(--high-bg); color: var(--high); border: 1px solid var(--high-border); }
+    .badge-med  { background: var(--med-bg);  color: var(--med);  border: 1px solid var(--med-border); }
+    .badge-low  { background: var(--low-bg);  color: var(--low);  border: 1px solid var(--low-border); }
+
+    .module-divider {
+      font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--accent); margin: 1.1rem 0 .6rem; padding-bottom: .3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .module-divider:first-child { margin-top: 0; }
+
+    .concept {
+      border-left: 3px solid var(--border); padding: .75rem .95rem; margin-bottom: .75rem;
+      background: var(--surface-2); border-radius: 0 .5rem .5rem 0;
+    }
+    .concept.imp-high { border-color: var(--high); }
+    .concept.imp-med  { border-color: var(--med); }
+    .concept.imp-low  { border-color: var(--low); }
+    .concept-title { font-weight: 700; font-size: .92rem; display: flex; align-items: center; gap: .45rem; margin-bottom: .4rem; flex-wrap: wrap; }
+    .concept-body { font-size: .88rem; }
+
+    .qa { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .65rem; overflow: hidden; }
+    .qa-q {
+      padding: .65rem .9rem; font-weight: 600; font-size: .88rem; cursor: pointer;
+      background: var(--surface-2); display: flex; justify-content: space-between;
+      align-items: flex-start; gap: .5rem; user-select: none; -webkit-tap-highlight-color: transparent;
+    }
+    .qa-q:hover { background: var(--border); }
+    .qa-q-text { flex: 1; line-height: 1.5; }
+    .qa-q-right { display: flex; align-items: center; gap: .4rem; flex-shrink: 0; }
+    .qa-toggle { font-size: .7rem; color: var(--text-muted); }
+    .qa-a { padding: .7rem .9rem; font-size: .88rem; border-top: 1px solid var(--border); display: none; line-height: 1.6; }
+    .qa.open .qa-a   { display: block; }
+    .qa.open .qa-toggle::after  { content: '▲'; }
+    .qa-toggle::after { content: '▼'; }
+
+    .analytical { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .85rem; overflow: hidden; }
+    .analytical-head {
+      padding: .65rem .9rem; background: var(--surface-2); border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: .55rem; cursor: pointer; user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .analytical-head:hover { background: var(--border); }
+    .q-num { font-weight: 800; font-size: .82rem; color: var(--accent); flex-shrink: 0; margin-top: .1rem; }
+    .q-title { font-weight: 600; font-size: .88rem; flex: 1; line-height: 1.5; }
+    .analytical-body { padding: 1rem; display: none; }
+    .analytical.open .analytical-body { display: block; }
+    .analytical.open .card-chevron { transform: rotate(0); }
+
+    .steps { display: flex; flex-direction: column; gap: .6rem; }
+    .step { display: flex; gap: .7rem; align-items: flex-start; }
+    .step-num {
+      width: 1.5rem; height: 1.5rem; background: var(--accent); color: #fff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: .72rem; font-weight: 800;
+      flex-shrink: 0; margin-top: .1rem;
+    }
+    .step-body { flex: 1; font-size: .88rem; line-height: 1.6; }
+
+    .callout { border-radius: .45rem; padding: .6rem .85rem; font-size: .85rem; margin-top: .75rem; line-height: 1.55; }
+    .callout-insight { background: var(--accent-bg); border-left: 3px solid var(--accent); }
+    .callout-insight strong { color: var(--accent); }
+    .callout-warn { background: var(--high-bg); border-left: 3px solid var(--high); }
+    .callout-warn strong { color: var(--high); }
+    .callout-note { background: var(--surface-2); border-left: 3px solid var(--text-muted); }
+    .callout-exam { background: var(--med-bg); border-left: 3px solid var(--med); }
+    .callout-exam strong { color: var(--med); }
+
+    .fig-pair { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-top: .75rem; }
+    @media (max-width: 600px) { .fig-pair { grid-template-columns: 1fr; } }
+    .fig-side-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .3rem; font-weight: 700; }
+
+    .formula { background: var(--surface-2); border: 1px solid var(--border); border-radius: .5rem; padding: .75rem 1rem; margin-bottom: .75rem; }
+    .formula-name { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .4rem; font-weight: 700; }
+    .formula-display {
+      font-family: 'Fira Code', 'Courier New', monospace; font-size: .95rem; text-align: center;
+      padding: .5rem; color: var(--accent); font-weight: 600; overflow-x: auto; white-space: pre;
+    }
+    .formula-vars { font-size: .82rem; color: var(--text-muted); margin-top: .4rem; white-space: pre-line; }
+
+    .code-block { margin-bottom: .85rem; }
+    .code-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .3rem; font-weight: 700; }
+    pre {
+      background: var(--code-bg); color: var(--code-text); padding: .9rem 1rem; border-radius: .5rem;
+      overflow-x: auto; font-size: .8rem; line-height: 1.6; font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+    }
+    .code-analysis { margin-top: .5rem; font-size: .85rem; padding: .5rem .75rem; background: var(--surface-2); border-radius: .4rem; border-left: 3px solid var(--accent); }
+
+    .figure-wrap { margin-bottom: 1rem; }
+    .figure-placeholder {
+      border: 2px dashed var(--border); border-radius: .55rem; min-height: 100px; display: flex;
+      flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted);
+      font-size: .85rem; text-align: center; padding: 1.25rem; gap: .4rem;
+    }
+    .figure-placeholder-icon { font-size: 1.5rem; opacity: .4; }
+    .figure-caption { font-size: .8rem; text-align: center; color: var(--text-muted); margin-top: .4rem; font-style: italic; }
+
+    .pattern-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .6rem; margin-bottom: .85rem; }
+    .pattern-tile { background: var(--surface-2); border: 1px solid var(--border); border-radius: .5rem; padding: .7rem .85rem; }
+    .pattern-tile-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); margin-bottom: .25rem; }
+    .pattern-freq { font-size: 1.4rem; font-weight: 900; color: var(--accent); line-height: 1.1; }
+    .pattern-desc { font-size: .78rem; color: var(--text-muted); margin-top: .2rem; }
+
+    .probable-list { display: flex; flex-direction: column; }
+    .probable-item { display: flex; gap: .75rem; align-items: flex-start; padding: .75rem 0; border-bottom: 1px solid var(--border); }
+    .probable-item:last-child { border-bottom: none; }
+    .prob-rank {
+      width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: .82rem; flex-shrink: 0;
+    }
+    .rank-1 { background: var(--high-bg); color: var(--high); border: 2px solid var(--high-border); }
+    .rank-2 { background: var(--med-bg);  color: var(--med);  border: 2px solid var(--med-border); }
+    .rank-3 { background: var(--low-bg);  color: var(--low);  border: 2px solid var(--low-border); }
+    .rank-n { background: var(--surface-2); color: var(--text-muted); border: 2px solid var(--border); }
+    .prob-content { flex: 1; }
+    .prob-q { font-size: .9rem; font-weight: 600; line-height: 1.5; }
+    .prob-reason { font-size: .8rem; color: var(--text-muted); margin-top: .2rem; line-height: 1.4; }
+
+    .mnemonic { background: var(--med-bg); border: 1px solid var(--med-border); border-radius: .5rem; padding: .75rem 1rem; margin-bottom: .6rem; }
+    .mnemonic-word { font-weight: 900; color: var(--med); font-size: 1.05rem; margin-bottom: .3rem; }
+    .mnemonic-body { font-size: .88rem; }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: .85rem 0; }
+    .tag { background: var(--surface-2); border: 1px solid var(--border); font-size: .73rem; padding: .1rem .5rem; border-radius: 999px; color: var(--text-muted); display: inline-block; margin: .1rem; }
+    .section-intro { font-size: .82rem; color: var(--text-muted); margin-bottom: .85rem; line-height: 1.5; }
+
+    @media print {
+      .site-header, .site-nav, .theme-btn { display: none !important; }
+      .container { padding: 0; }
+      .card { box-shadow: none; page-break-inside: avoid; border: 1px solid #ccc; }
+      .card-body, .qa-a, .analytical-body { display: block !important; }
+      .card.collapsed .card-body { display: block !important; }
+      .card-scan { background: #fff; color: #000; }
+      .scan-tile { background: #f5f5f5; }
+      .scan-tile-value { color: #000; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      .site-header-inner { padding: .5rem .85rem; }
+      .container { padding: .85rem .65rem; }
+      .card-body { padding: .85rem; }
+      .formula-display { font-size: .82rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div>
+      <div class="header-title">CSE321 — Final (Topics 20–32)</div>
+      <div class="header-sub">File Systems → Memory Mgmt → Protection → Security &nbsp;·&nbsp; Created by: Central (BRACU)</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">☀ / ☾</button>
+  </div>
+</header>
+
+<nav class="site-nav" aria-label="Page sections">
+  <a href="#scan">⚡ Morning Scan</a>
+  <a href="#theory">📖 Theory</a>
+  <a href="#short-q">❓ Short Qs</a>
+  <a href="#analytical">🧮 Analytical</a>
+  <a href="#math">∑ Math</a>
+  <a href="#code">💻 Code</a>
+  <a href="#figures">📊 Figures</a>
+  <a href="#patterns">🎯 Patterns</a>
+  <a href="#probable">🔮 Probable Qs</a>
+  <a href="#mnemonics">🧠 Mnemonics</a>
+</nav>
+
+<main class="container">
+
+  <div class="meta-bar">
+    <div class="meta-pill"><span class="meta-pill-label">Course</span><span class="meta-pill-value">CSE321</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Topics</span><span class="meta-pill-value">20–32</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Exam</span><span class="meta-pill-value">Final</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Date</span><span class="meta-pill-value">2026-09-17, 2–4 PM</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Weight</span><span class="meta-pill-value">35%</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Built</span><span class="meta-pill-value">2026-09-12</span></div>
+  </div>
+
+  <div class="callout callout-note" style="margin-bottom:1rem">
+    <strong>Confirmed scope (official central announcement, 2026-09-06):</strong> all of Topics 20–32 are in scope, no exclusions — unlike the Midterm, the topic map and the confirmed syllabus match exactly here.
+    <br><strong>Question-type split, per the same announcement:</strong> File Systems and Memory Management get <em>conceptual questions + mathematics/simulations</em>; Protection and Security get <em>conceptual questions only</em> — no math component for those last two.
+    <br><strong>Creator:</strong> Final is centrally set by BRACU's question committee (confirmed 2026-06-27) — the "Faculty Pattern" section below is relabeled accordingly; nothing here is NTR's own style.
+  </div>
+
+  <!-- ================= SECTION 0 — MORNING SCAN ================= -->
+  <section class="card card-scan" id="scan">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">⚡</span>
+      <span class="card-title" style="color:var(--scan-text)">Morning Quick Scan</span>
+      <span class="card-chevron" style="color:var(--scan-text);opacity:.6">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="scan-grid">
+        <div class="scan-tile tile-high">
+          <div class="scan-tile-label">Must Know Cold</div>
+          <div class="scan-tile-value">TLB EAT formula (solve for EAT, hit ratio, TLB time, or memory time) · Inode byte/sector address calc</div>
+        </div>
+        <div class="scan-tile tile-warn">
+          <div class="scan-tile-label">Most Likely Tested</div>
+          <div class="scan-tile-value">Multi-level paging derivation (levels + bit-widths) · File access-path I/O trace · Inode max-file-size calc (incl. inverse)</div>
+        </div>
+        <div class="scan-tile">
+          <div class="scan-tile-label">Common Trap</div>
+          <div class="scan-tile-value">Max-file-size calc ≠ inode address calc — different skills. Don't assume 12-1-1-1 pointers or standard FIFO/LRU rules — re-read the question's exact numbers/rules every time.</div>
+        </div>
+        <div class="scan-tile tile-sig">
+          <div class="scan-tile-label">Central Committee Signal</div>
+          <div class="scan-tile-value">Current era (Sp25–Sp26): File Systems + Memory Mgmt dominate marks; Protection/Security small and conceptual-only, confirmed again by today's announcement.</div>
+        </div>
+      </div>
+      <hr class="scan-divider">
+      <p style="font-size:.82rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Top 3 things to have ready before entering the exam:</p>
+      <ol class="scan-list">
+        <li>TLB EAT — practice inverting the formula to solve for hit ratio / TLB time / memory time, not just the forward calculation.</li>
+        <li>Inode address calc (byte + sector) and max-file-size calc, both directions — the two most reliable File Systems fixtures.</li>
+        <li>Multilevel paging derivation algorithm (offset bits → page-number bits → bits/level → number of levels → translate) — the densest single skill on the exam.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 1 — THEORY ================= -->
+  <section class="card" id="theory">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📖</span>
+      <span class="card-title">Theory</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="module-divider">Module 5 — File Systems (Topics 20–23)</div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">File Concept, Attributes, Operations <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p>Disk hardware: platter/spindle/surface/read-write head/track/sector. Moving the head toward an <strong>inner</strong> track = forward; toward an <strong>outer</strong> track = backward — a slide-specific directional fact.</p>
+          <p>File attributes: name, identifier (inode #), type, location, size, protection, timestamps/user ID. Operations (Silberschatz, 8): create, open, write, read, seek, delete, truncate, close.</p>
+          <div class="callout callout-warn"><strong>Common error:</strong> the slide deck's own list only names 6 ops (create/read/write/delete/truncate/reposition, no open/close) — know the fuller 8-op list as primary, but don't be thrown by the 6-op phrasing.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">File System Structure, Inode, Directory <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>5-layer stack: Application → Logical FS (metadata/inode/directory/protection) → File-Organization Module (logical→physical block map, free space) → Basic FS (generic device commands) → I/O Control (drivers) → Devices.</p>
+          <p>NTR's own framing (Ext2/VSFS block-group layout): <code>Boot Sector | Block Group 0 | Block Group 1 | ...</code>, each group = <code>Superblock | Group Descriptor | Block Bitmap | Inode Bitmap | Inode Table | Data Blocks</code>.</p>
+          <p>Directory = list of (name, inode#) pairs + built-in <code>.</code>/<code>..</code> entries. <strong>Root inode number = 2</strong> in most UNIX file systems — a quotable fact.</p>
+          <div class="callout callout-insight"><strong>Why it matters:</strong> open() is expensive (directory scan → inode lookup → open-file table entry); read()/write() afterward are cheap because the lookup is cached.</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Indexed Allocation & the UNIX Inode <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Inode = metadata + block pointers: 12 direct, 1 single-indirect, 1 double-indirect, 1 triple-indirect (classic layout — <strong>a problem may give different counts</strong>, always use the stated numbers).</p>
+          <p>Two distinct skills: (1) <strong>max file size</strong> — sum addressable bytes across all pointer levels; (2) <strong>inode disk address</strong> — locate inode N's byte/sector position via <code>offset = inode# × inode_size</code>.</p>
+          <p>Disk accesses to read a block (inode assumed cached): direct=1, single=2, double=3, triple=4 — add 1 at every level if the inode itself isn't cached.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Crash Consistency & Journaling <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>A logical FS operation = multiple physical writes (bitmap, inode, data block) — not atomic, so a crash mid-operation can leave the FS inconsistent. <strong>fsck</strong> (old fix) scans the whole disk at reboot — slow, only guarantees structural sanity.</p>
+          <p><strong>Journaling</strong>: write a transaction (TxB + blocks + TxE) to a log first; only checkpoint to final location once TxE is safely on disk. Crash before TxE → discard; crash after TxE → redo by replaying the log.</p>
+          <p>Full protocol: Journal write → Journal commit (TxE) → Checkpoint → Free. <strong>Revoke records</strong> prevent replaying a stale write to a block that's since been reused by a different file.</p>
+        </div>
+      </div>
+
+      <div class="module-divider">Module 6 — Memory Management (Topics 24–28)</div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Address Binding, Logical vs Physical, MMU <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>Three binding times: compile-time (absolute code), load-time (relocatable), execution-time (needs hardware support — most modern systems). Only execution-time binding makes logical ≠ physical address.</p>
+          <p>Relocation register: <code>Physical = Logical + Relocation</code>. Base/limit registers enforce protection: <code>base ≤ address &lt; base+limit</code>, else trap.</p>
+          <p>Dynamic loading (routine loaded only when called) vs dynamic linking (library linked at runtime, one shared copy for all processes) vs static linking (baked in at compile time).</p>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">Contiguous Allocation & Fragmentation <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p><strong>Not in the theory slide deck at all</strong> — textbook-only, still in the confirmed Topic 20–32 range. Dormant in every recent Final sitting (0/4) but nominally in-scope.</p>
+          <p>First-fit (fast) / best-fit (least waste, many tiny holes) / worst-fit (performs worst overall). External fragmentation → fixed by compaction (needs dynamic relocation). Internal fragmentation → allocated block larger than needed.</p>
+          <p>50-percent rule: ~1/3 of memory can become unusable to external fragmentation under random alloc/dealloc patterns — the classic motivation for paging.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Paging: Page Table, Frames, Address Translation, TLB <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Physical memory → fixed-size <strong>frames</strong>; logical memory → same-size <strong>pages</strong>. Page table maps page# → frame#. Eliminates external fragmentation entirely (frames need not be contiguous).</p>
+          <p>Translation: <code>page# = LA ÷ page_size</code>, <code>offset = LA mod page_size</code>, <code>PA = frame# × page_size + offset</code>. Same math whether addresses are given in decimal (divide/mod) or as binary strings (cut the bits directly).</p>
+          <p><strong>TLB</strong> caches recent page-table entries to avoid two memory accesses per reference. <strong>Multilevel paging</strong> pages the page table itself when it's too large for one frame — the densest calculation skill in this module.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Virtual Memory & Demand Paging <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Pages loaded only when referenced (lazy). Valid-invalid bit now means: valid = in memory, invalid = either illegal <em>or</em> legal-but-not-loaded-yet.</p>
+          <p>Page fault sequence: trap → check legality → find/evict a frame → schedule disk read → update page table → <strong>restart the instruction from scratch</strong> (not resume mid-instruction).</p>
+          <p>EAT with page faults: dominated by disk I/O (ms range, ~10⁵–10⁶× slower than memory) — even a tiny fault probability causes severe slowdown.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Page Replacement: FIFO, Optimal, LRU <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p><strong>FIFO</strong>: evict oldest-loaded — simple, suffers Belady's Anomaly (more frames can mean more faults). <strong>Optimal</strong>: evict page used furthest in future — best possible, unimplementable (needs future knowledge). <strong>LRU</strong>: evict least-recently-used — practical approximation, no Belady's Anomaly.</p>
+          <div class="callout callout-warn"><strong>Common error:</strong> the current era's exams like to give a deliberately "buggy"/modified replacement rule (e.g. "also replace the next-frame page") — read the question's exact rule, don't assume textbook-standard FIFO/LRU/OPT mechanics.</div>
+        </div>
+      </div>
+
+      <div class="module-divider">Module 7 — Protection (Topics 29–30) — conceptual only, no math</div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Protection Goals, Domain of Protection, Access Matrix <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p><strong>Protection vs Security:</strong> Protection = internal, controls access of already-authenticated entities per policy. Security = defends against external threats. Mechanism (what the OS builds) vs Policy (who's allowed what).</p>
+          <p>Domain = set of (object, rights) pairs. UNIX domain = user-id, switched via setuid, <code>su</code>, <code>sudo</code>. Android = per-app UID/GID + isolated UIDs.</p>
+          <p>Access matrix: rows = domains, columns = objects, entry = allowed operations. Four special rights: <strong>copy</strong> (*, re-copyable if starred), <strong>owner</strong>, <strong>control</strong> (domain-on-domain), <strong>switch/transfer</strong>. Implementations: global table, ACL (per-object), capability list (per-domain), lock-key.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">Revocation, MAC vs DAC, Capability-Based Systems <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p>Revocation dimensions: immediate/delayed, selective/general, partial/total, temporary/permanent. ACL revocation = easy (edit one list). Capability revocation = hard (rights decentralized) — fixed via reacquisition, back-pointers, indirection, or keys.</p>
+          <p><strong>DAC</strong>: owner decides, can change (standard UNIX/Windows permissions). <strong>MAC</strong>: system enforces fixed labels, owner cannot override (SELinux, TrustedBSD, Trusted Solaris). POSIX capabilities: permitted/effective/inheritable bitmaps, once revoked cannot be reacquired.</p>
+          <div class="callout callout-exam"><strong>Exam note:</strong> not appeared as exam content in any sampled sitting — keep for completeness, but this is the lowest-yield theory in Module 7.</div>
+        </div>
+      </div>
+
+      <div class="module-divider">Module 8 — Security (Topics 31–32) — conceptual only, no math</div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Security Problem, Violations, Program Threats <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>CIA + Authenticity goals. <strong>Violation categories</strong> (what): confidentiality, integrity, availability, theft of service, DoS. <strong>Violation methods</strong> (how): masquerading, replay, MITM, session hijacking, privilege escalation — don't conflate the two lists.</p>
+          <p>4 official security levels: Physical, Application, OS, Network (human/social-engineering is a cross-cutting risk, not a formal 5th level).</p>
+          <p>Program threats: Trojan Horse, Trap Door, Logic Bomb, Buffer Overflow (bounds-check failure, trampoline redirection). Malware terms: spyware, ransomware, RAT, code-injection. Virus (needs host + human action, 10 types incl. Armored) vs Worm (standalone, self-propagating — Morris Worm specifics: finger/sendmail bugs, rsh trust, 99-line grappling hook, reinfects every 7th time).</p>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">Security Defenses: Crypto, Firewalls, IDS/IPS <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p>Defense in depth: security policy (target state) vs vulnerability assessment (actual state vs policy). <strong>Cryptography is textbook-only, not in the slide deck</strong> and has never appeared on any sampled sitting — symmetric (DES/AES, fast, key-distribution problem) vs asymmetric (RSA, slow, solves distribution, used for key exchange/signatures).</p>
+          <p>Firewalls: network/packet-filtering, application-level (proxy), personal, system-call. Weaknesses: tunneling (smuggle disallowed protocol inside an allowed one), spoofing (forge trusted IP/hostname).</p>
+          <p>IDS (alerts only) vs IPS (blocks). Signature-based (precise, blind to zero-days) vs anomaly-based (catches zero-days, noisier).</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 2 — SHORT QUESTIONS ================= -->
+  <section class="card" id="short-q">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">❓</span>
+      <span class="card-title">Short Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="section-intro">Tap a question to reveal the answer. Try to recall first.</p>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why is open() expensive but read()/write() cheap afterward?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">open() must scan the directory structure, find the inode, and populate the system-wide + per-process open-file tables — a one-time cost. read()/write() reuse that cached FCB, so they only touch data blocks, not the lookup path.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What's the root directory's inode number in most UNIX file systems?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">2 — not 0 or 1. A specific, quotable fact worth memorizing directly.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">How many disk I/Os does a single write() that appends a new block cost?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">5: read data bitmap → write data bitmap → read inode → write inode → write the data block itself. Creating the file first (before any write) adds further I/O for the new directory entry.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why does journaling only need to scan the log on recovery, not the whole disk like fsck?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">The journal already records exactly which transactions were in progress and whether they completed (via TxB/TxE), so recovery only needs to replay or discard those small entries — it doesn't need to cross-check the entire disk's bitmaps and inodes like fsck does.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What problem do revoke records solve in journaling?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Prevents a crash-recovery replay from overwriting a reused block's new data with a stale logged write to that same block number (e.g. a deleted directory's block reused by a new file) — recovery skips replaying any write to a block later revoked.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why does execution-time binding require hardware support?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Because the logical and physical addresses differ and can change while the process runs (e.g. if it's relocated in memory) — a base/relocation register must translate every reference at run time; without that hardware, only compile-time/load-time binding (fixed addresses) would be possible.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why does paging eliminate external fragmentation?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Because a process's pages can be placed in any free frames anywhere in physical memory — they don't need to be contiguous, so there's no "hole too small to use" problem the way there is with contiguous allocation.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why is a TLB miss more expensive than a hit — precisely how many memory accesses does each cost?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Hit: 1 memory access (the TLB itself isn't memory). Miss: 2 memory accesses — one to read the page table entry, one to fetch the actual data — plus the TLB lookup time either way.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why is a page fault's trapping instruction restarted from scratch rather than resumed?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">The hardware generally can't preserve enough mid-instruction state to resume exactly where it left off, so the safe approach is to restart the whole instruction once the needed page is loaded.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why is Optimal page replacement not implementable in practice?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">It requires knowing the future reference string in advance (which page will be used furthest away) — real systems can't know this, so Optimal is used only as a theoretical benchmark to measure how close FIFO/LRU get.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What's the difference between the access matrix's `owner` and `control` rights?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">`owner` lets a domain add/remove rights in any domain's entry for a specific object. `control` lets a domain modify the rights of a different domain itself (a domain acting as an object) — owner governs object rights, control governs domain rights.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why is revocation easy under access lists but hard under capability lists?</span><span class="qa-q-right"><span class="badge badge-low">LOW</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">ACLs centralize rights at the object (one list to edit). Capabilities are copies distributed across domains — there's no single place to revoke from, which is why indirection/keys/back-pointers exist, to recover a central point of control.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What's the key difference between a virus and a worm?</span><span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">A virus needs a host program and human action to spread (running/opening an infected file). A worm is standalone, self-replicating via a spawn mechanism, and needs no human action — it propagates autonomously across a network.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">What's the difference between IDS and IPS?</span><span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">IDS only monitors and alerts on suspected intrusions. IPS can actively block or prevent the detected threat, not just flag it.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)"><span class="qa-q-text">Why is asymmetric encryption usually paired with symmetric encryption in practice?</span><span class="qa-q-right"><span class="badge badge-low">LOW</span><span class="qa-toggle"></span></span></div>
+        <div class="qa-a">Asymmetric encryption is slow but solves the key-distribution problem, so it's used just to exchange a symmetric session key; the bulk of the actual communication then uses fast symmetric encryption — a hybrid approach.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 3 — ANALYTICAL QUESTIONS ================= -->
+  <section class="card" id="analytical">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧮</span>
+      <span class="card-title">Analytical Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q1</span><span class="q-title">TLB access = 20 ns, memory access = 100 ns, hit ratio = 80%. Find the Effective Access Time.</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Hit case: TLB access + 1 memory access = 20 + 100 = 120 ns.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Miss case: TLB access + 2 memory accesses (page table, then data) = 20 + 100 + 100 = 220 ns.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">EAT = 0.8 × 120 + 0.2 × 220 = 96 + 44 = <strong>140 ns</strong>.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> memorize the formula's structure (hit = 1 memory access, miss = 2), not the numbers — this generalizes to any given hit ratio/times.</div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> appeared in every single sampled sitting, both eras — the single most reliable fixture on the whole exam.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q2</span><span class="q-title">EAT = 116 ns, TLB access = 10 ns, memory access = 100 ns. Find the hit ratio.</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Let hit ratio = h. Hit case = 10+100 = 110. Miss case = 10+100+100 = 210.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">EAT = h(110) + (1−h)(210) = 210 − 100h.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">116 = 210 − 100h → 100h = 94 → <strong>h = 0.94 (94%)</strong>.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> the current-era exam explicitly tests solving for any one of hit ratio / TLB time / memory time given EAT and the rest — set up the same two-branch equation and solve algebraically instead of memorizing only the forward direction.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q3</span><span class="q-title">Inode #32, inode size 256 B, block size 4 KB, inode table starts at 12 KB, disk sector size 512 B. Find the byte address and the sector address.</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Byte offset = 32 × 256 = 8,192 B = 8 KB. Byte address = 12 KB + 8 KB = <strong>20 KB</strong>.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Block# = (32 × 256) / 4096 = 8192/4096 = 2.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Sector address = (2 × 4096 + 12288) / 512 = 20480 / 512 = <strong>sector 40</strong>.</div></div>
+          </div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> near-universal in File Systems sections — always phrased with a specific inode size, block size, sector size, and a list of reserved leading blocks (superblock, journal, bitmaps). Read which blocks are reserved before the inode table carefully.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q4</span><span class="q-title">Inode has 8 direct, 2 single indirect, 2 double indirect, 2 triple indirect pointers. Block size = 32 B, pointer size = 4 B. Find the max file size.</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Pointers per block = 32/4 = 8.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Direct: 8×32 = 256 B. Single indirect: 2×8×32 = 512 B.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Double indirect: 2×8²×32 = 4,096 B. Triple indirect: 2×8³×32 = 32,768 B.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">Sum = 256+512+4096+32768 = <strong>37,632 bytes</strong>.</div></div>
+          </div>
+          <div class="callout callout-warn"><strong>Common error:</strong> this inode has 2 of each indirect type, not the usual classic 12-1-1-1 — always use the problem's stated pointer counts. The inverse variant (given max size, solve for an unknown pointer count) is also common — same formula, solve algebraically for the unknown term.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q5</span><span class="q-title">8-bit logical address space, page size = 16 B, page-table entry size = 4 B, main memory = 512 B. Derive the paging levels needed and translate a given address.</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Offset bits n = log2(16) = 4.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Page-number bits P = 8 − 4 = 4.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Bits per level k = log2(16/4) = log2(4) = 2.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">Levels = ceil(4/2) = 2 → two-level paging. Split: p1 (2 bits) | p2 (2 bits) | offset (4 bits) = 8 bits total. Check: each table = 2²×4B = 16B = exactly 1 frame ✓.</div></div>
+            <div class="step"><div class="step-num">5</div><div class="step-body">To translate: convert address to binary, cut into p1|p2|d, look up p1 in the outer table for the inner table's frame, look up p2 in that inner table for the final frame, append d unchanged.</div></div>
+          </div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> if step 4 gives 3+ levels, keep chunking the same way — the outermost level absorbs whatever bits are left, even less than a full k. This is the module's densest and most heavily tested individual skill.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q6</span><span class="q-title">Reference string 7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1, 3 frames. Trace FIFO, LRU, and Optimal; report fault ratio and hit ratio.</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">FIFO: evict the oldest-loaded resident page on each fault → 15 faults total (of 20 references).</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">LRU: evict the page unused longest looking backward → 12 faults.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Optimal: at each fault, evict whichever resident page is used furthest away (or never again) looking forward → 9 faults.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">Fault ratio = faults/total refs × 100%; hit ratio = 100% − fault ratio. E.g. FIFO: 15/20 = 75% fault, 25% hit.</div></div>
+          </div>
+          <div class="callout callout-warn"><strong>Common error:</strong> the current era likes a deliberately modified rule (e.g. "also evict the next-frame page" instead of standard FIFO) — trace exactly what the question defines, not the textbook algorithm from memory. Also check whether the answer wants raw fault counts or a percentage — the practice-sheet format asks for percentages.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q7</span><span class="q-title">A crash occurs mid-write to a file. Given which of 2–3 writes (bitmap/inode/data) succeeded, deduce the resulting inconsistency and its visible symptom.</span><span class="badge badge-med">MED</span><span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">List the writes a single append normally needs: (a) mark bitmap used, (b) update inode pointers/size, (c) write data block.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">For the given crash point, identify which of (a)/(b)/(c) completed and which didn't.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Reason the symptom: e.g. bitmap marked used but inode never updated → a block is "lost" (unreferenced but unusable, disk space shrinks over time); inode updated but bitmap not → the block could be double-allocated later, corrupting another file.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> without journaling, these partial-write scenarios are exactly what fsck has to detect; with journaling, the same scenario is analyzed against whether TxE was reached.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q8</span><span class="q-title">Illustrate the full disk-access timeline for opening and reading file /foo/bar.</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">open(): start at root inode (root = inode 2) → read root inode's block → read root's directory data to find "foo" → read foo's inode block → read foo's directory data to find "bar" → read bar's inode block → check permissions → allocate a file descriptor.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">read(): consult bar's cached inode for the first data block's location → read that data block → update last-accessed time → update the open-file table's offset.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">close(): deallocate the descriptor — no disk I/O, pure in-memory bookkeeping.</div></div>
+          </div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> the writing variant (create() then write()) instead costs 5 I/Os per appended block: read/write data bitmap, read/write inode, write data block — plus extra I/O for a brand-new directory entry if the file is being created.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q9</span><span class="q-title">A process calls fork(), then both parent and child run a loop writing to a shared array. What's the min/max number of new pages created after the fork?</span><span class="badge badge-med">MED</span><span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Right after fork(), parent and child share all pages via copy-on-write (COW) — no new pages are created yet.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">A new page is only created when either process <em>writes</em> to a shared page — the write triggers a copy so the two processes stop sharing that specific page.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Minimum new pages = 0 (if the loop never actually writes, e.g. it exits immediately or only reads). Maximum = the number of pages the array spans (if every page gets written to by at least one side).</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> this tests COW understanding specifically, not standard demand-paging mechanics — the answer is a range (min/max), not a single number.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q10</span><span class="q-title">Domain D1 has the Copy right on Object X. D1 copies the right to D2. Later, D1's rights are revoked. Does D2 still have the right? Update the access matrix.</span><span class="badge badge-med">MED</span><span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Check whether the right was copied as a plain right or an asterisked right* — an asterisked copy can be re-copied further; a plain copy is one-generation-only.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Update D2's row/column entry for object X to add the copied right (matrix cell [D2, X] gains the right).</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">D1 losing the right afterward does not retroactively remove D2's already-copied right (copy is a one-time grant, not a live link) — unless the scenario specifies a revocation scheme (see Topic 30) that explicitly propagates.</div></div>
+          </div>
+          <div class="callout callout-exam"><strong>Exam note:</strong> Protection questions are always small (2–5 marks) and always this style — an access-matrix right in use, or a static-domain "how do you add rights" scenario. Never a deep-recall question on revocation schemes.</div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q11</span><span class="q-title">32-bit logical address space, page size 4 KB, page-table entry size 4 B. A process uses the maximum available logical memory. Find the total page-table size.</span><span class="badge badge-med">MED</span><span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Offset bits = log2(4096) = 12. Page-number bits = 32 − 12 = 20.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Number of page-table entries = 2²⁰ = 1,048,576.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Total page-table size = entries × entry size = 1,048,576 × 4 B = <strong>4,194,304 B = 4 MB</strong>.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Key insight:</strong> this is exactly why multilevel paging exists — a single-level table this large can't fit contiguously in one frame, motivating the split into multiple smaller tables (Q5).</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 4 — MATHEMATICS ================= -->
+  <section class="card" id="math">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">∑</span>
+      <span class="card-title">Mathematics</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="formula">
+        <div class="formula-name">Relocation / Base-Limit Protection</div>
+        <div class="formula-display">Physical = Logical + Relocation
+base ≤ address &lt; base + limit  → allowed, else trap</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Address Translation (Paging)</div>
+        <div class="formula-display">page# = LA ÷ page_size   (integer division)
+offset = LA mod page_size
+PA = (frame# × page_size) + offset</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">TLB Effective Access Time</div>
+        <div class="formula-display">EAT = hit×(TLB + mem) + miss×(TLB + mem + mem)</div>
+        <div class="formula-vars">hit + miss = 1. Solve for any one variable (hit ratio, TLB time, mem time) given EAT and the rest.</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">EAT with Page Faults</div>
+        <div class="formula-display">EAT = (1 − p) × mem_access + p × page_fault_service_time</div>
+        <div class="formula-vars">p = page-fault probability. page_fault_service_time is ~10⁵–10⁶× mem_access (disk-dominated).</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Internal Fragmentation (Paging)</div>
+        <div class="formula-display">frag = page_size − (process_size mod page_size)   [if remainder ≠ 0]</div>
+        <div class="formula-vars">Worst case ≈ frame_size − 1. Average ≈ ½ a frame per process.</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Multilevel Paging Derivation</div>
+        <div class="formula-display">n (offset bits)      = log2(page size)
+P (page-number bits) = total address bits − n
+k (bits per level)    = log2(frame size / entry size)
+levels needed         = ceil(P / k)</div>
+        <div class="formula-vars">Split P into k-bit chunks, innermost first; outermost level takes the leftover (≤ k bits).</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Indirect-Block Indirection Math</div>
+        <div class="formula-display">Pointers per block = block size / pointer size
+Direct:          N_direct blocks
+Single indirect: (ptrs/block)¹ blocks
+Double indirect: (ptrs/block)² blocks
+Triple indirect: (ptrs/block)³ blocks</div>
+        <div class="formula-vars">Disk accesses to read a block (inode cached): direct=1, single=2, double=3, triple=4. Add 1 at every level if inode not cached.</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Inode Address Calculation</div>
+        <div class="formula-display">Byte:   offset = inode# × inode_size ; address = inode_table_start + offset
+Sector: block# = (inode# × inode_size) / block_size
+        sector = (block# × block_size + inode_table_start) / sector_size</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Fault Ratio / Hit Ratio (Page Replacement)</div>
+        <div class="formula-display">fault ratio = (faults / total references) × 100%
+hit ratio   = 100% − fault ratio</div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Ex</span><span class="q-title">Page size = 2,048 B, process size = 72,766 B. Find internal fragmentation.</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">72,766 ÷ 2,048 = 35 full pages, remainder 1,086 B (a 36th partial page).</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Internal fragmentation = 2,048 − 1,086 = <strong>962 bytes</strong>.</div></div>
+          </div>
+          <div class="callout callout-insight"><strong>Pattern:</strong> fragmentation is only nonzero when the process size doesn't divide evenly into the page size — always check the remainder first.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 5 — CODE ================= -->
+  <section class="card" id="code">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">💻</span>
+      <span class="card-title">Code</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="callout callout-note">
+        <strong>Scope note:</strong> unlike the Midterm (which explicitly listed "code simulations" per topic), the confirmed Final announcement (2026-09-06) describes File Systems/Memory Management as "conceptual questions; mathematics &amp; simulations" — no dedicated code-writing/tracing component is called out for the Final, and Protection/Security are conceptual-only. The closest code-adjacent question type observed in past sittings is the fork()+demand-paging reasoning item below (Q9 above) — conceptual reasoning about a code scenario, not code to write or trace line-by-line.
+      </div>
+
+      <div class="code-block">
+        <div class="code-label">C — fork() + demand paging scenario (reasoning, not tracing)</div>
+        <pre><code>int arr[N];  // spans several pages
+
+int main() {
+    pid_t pid = fork();
+    // both parent and child now share arr's pages via copy-on-write
+    for (int i = 0; i < N; i++) {
+        arr[i] = i;   // first WRITE to each page triggers a COW copy
+    }
+    ...
+}</code></pre>
+        <div class="code-analysis">What to notice: no new pages exist immediately after fork() — sharing is free until a write happens. Each page gets copied at most once, on its first write from either parent or child. Min new pages = 0 (loop never runs), max = number of pages <code>arr</code> spans (every page written by at least one side).</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 6 — FIGURES ================= -->
+  <section class="card" id="figures">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📊</span>
+      <span class="card-title">Figures & Diagrams</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="figure-wrap">
+        <div class="figure-placeholder"><span class="figure-placeholder-icon">📊</span><span>UNIX inode: 12 direct + single/double/triple indirect pointer tree — see CSE321_m5_file_systems for the ASCII diagram to redraw by hand</span></div>
+        <p class="figure-caption">Fig 1. Inode block-pointer structure.</p>
+      </div>
+
+      <div class="figure-wrap">
+        <div class="figure-placeholder"><span class="figure-placeholder-icon">📊</span><span>Ext2/VSFS block-group layout: Boot Sector | Block Group 0..N, each = Superblock | Group Descriptor | Block Bitmap | Inode Bitmap | Inode Table | Data Blocks</span></div>
+        <p class="figure-caption">Fig 2. NTR's own on-disk layout framing (Lecture 5 slides).</p>
+      </div>
+
+      <div class="figure-wrap">
+        <div class="figure-placeholder"><span class="figure-placeholder-icon">📊</span><span>Two-level page table translation: p1 (outer) → p2 (inner) → frame, offset appended unchanged</span></div>
+        <p class="figure-caption">Fig 3. Multilevel paging translation path (matches Q5).</p>
+      </div>
+
+      <div class="figure-wrap">
+        <div class="figure-placeholder"><span class="figure-placeholder-icon">📊</span><span>FIFO vs LRU vs Optimal fault trace on 7 0 1 2 0 3 0 4 2 3 0 3 2 1 2 0 1 7 0 1 (3 frames) — 15 / 12 / 9 faults</span></div>
+        <p class="figure-caption">Fig 4. Page replacement comparison (matches Q6).</p>
+      </div>
+
+      <div class="figure-wrap">
+        <div class="figure-placeholder"><span class="figure-placeholder-icon">📊</span><span>Access matrix: rows = domains, columns = objects, cells = rights (incl. a domain-as-object column for switch/control)</span></div>
+        <p class="figure-caption">Fig 5. Access matrix structure (matches Q10).</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 7 — CENTRAL EXAM PATTERN ANALYSIS ================= -->
+  <section class="card" id="patterns">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🎯</span>
+      <span class="card-title">Central Exam Pattern Analysis (Not Faculty-Authored)</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="callout callout-note">
+        <strong>Source:</strong> 8 of 14 past Final sittings read in full (Sp22, Su23, Fa24, Su24, Sp25, Su25, Fa25, Sp26 — see CSE321_final_probable_questions).
+        <br><strong>Creator:</strong> the Final is centrally set by BRACU's question committee, confirmed 2026-06-27 — this is a pattern in the <em>central question pool</em>, not NTR's own style. Do not read this as faculty-specific.
+      </div>
+
+      <div class="pattern-grid">
+        <div class="pattern-tile"><div class="pattern-tile-label">File Systems (current era)</div><div class="pattern-freq">4/4</div><div class="pattern-desc">Fixture since Sp25, usually the largest or 2nd-largest section</div></div>
+        <div class="pattern-tile"><div class="pattern-tile-label">Memory Mgmt</div><div class="pattern-freq">8/8</div><div class="pattern-desc">Largest section in every sitting, both eras — the one true constant</div></div>
+        <div class="pattern-tile"><div class="pattern-tile-label">Protection (current era)</div><div class="pattern-freq">2/4</div><div class="pattern-desc">Always small (2–5 marks), single applied scenario</div></div>
+        <div class="pattern-tile"><div class="pattern-tile-label">Security (current era)</div><div class="pattern-freq">1/4</div><div class="pattern-desc">Fa25 only — buffer overflow + violation-method ID, 5 marks total</div></div>
+      </div>
+
+      <p><strong>Observed tendencies:</strong></p>
+      <ul>
+        <li>The exam changed shape substantially around Spring 2025 — this is closer to two different exams than a stable skeleton with drifting details (unlike the Midterm's own pattern).</li>
+        <li>Pre-2025: zero File Systems, heavy Contiguous Allocation + Banker's Algorithm/RAG (Banker's isn't even in the current topic map) + deep Peterson's-timeline pre-midterm review.</li>
+        <li>Post-2025: File Systems became a fixture; Contiguous Allocation and Banker's/RAG both disappeared entirely (0/4 recent); pre-midterm topics reappear only as light 1–2 mark sub-questions.</li>
+        <li>Every sitting with two sets (A/B) is structurally parallel — same question slots and marks, numbers/scenario framing swapped. Practicing one set is direct practice for the other.</li>
+        <li>Named-scenario question style ("Shoumo implemented...", "Dipu is designing...") throughout the current era, plus explicit CA-E/CA-M/CA-D difficulty tagging from Fa25 onward.</li>
+        <li>Weight almost entirely toward the current era (Sp25–Sp26) as the best predictor — the pre-2025 pattern reads as a retired exam design.</li>
+      </ul>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 8 — PROBABLE QUESTIONS ================= -->
+  <section class="card" id="probable">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🔮</span>
+      <span class="card-title">Probable Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="probable-list">
+
+        <div class="probable-item"><div class="prob-rank rank-1">1</div><div class="prob-content"><div class="prob-q">TLB Effective Access Time — solve for EAT, or any one input given the rest</div><div class="prob-reason">Appeared in every current-era sitting sampled, both eras — the single most reliable fixture on the entire exam.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-1">2</div><div class="prob-content"><div class="prob-q">Inode byte/sector address calculation</div><div class="prob-reason">Appeared in every File Systems section sampled in the current era.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-1">3</div><div class="prob-content"><div class="prob-q">Multi-level paging derivation (2- or 3-level)</div><div class="prob-reason">Near-certain, present in nearly every recent sitting — the module's densest skill.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-2">4</div><div class="prob-content"><div class="prob-q">Inode max-file-size calculation, possibly inverted (solve for unknown pointer count)</div><div class="prob-reason">Standard in the current era, 3+ of last 4 sittings.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-2">5</div><div class="prob-content"><div class="prob-q">Crash-consistency deduction from a partial-write scenario</div><div class="prob-reason">High probability, current-era standard.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-2">6</div><div class="prob-content"><div class="prob-q">File access-path I/O timeline</div><div class="prob-reason">High probability — full read/write trace, current-era standard.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-2">7</div><div class="prob-content"><div class="prob-q">Page replacement trace (FIFO/LRU/Optimal) — watch for a modified/"buggy" rule</div><div class="prob-reason">High probability; the exact algorithm rule is often altered, so read carefully rather than assume textbook mechanics.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-3">8</div><div class="prob-content"><div class="prob-q">Access-matrix right application (Protection)</div><div class="prob-reason">Moderate — present in about half the current-era sittings, always small.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-3">9</div><div class="prob-content"><div class="prob-q">Single-level page-table-size calculation</div><div class="prob-reason">Moderate probability.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-3">10</div><div class="prob-content"><div class="prob-q">Small pre-midterm identification sub-questions (PCB field, sync bug, fork()/output trace)</div><div class="prob-reason">Moderate — folded lightly into early Process/Sync-labeled questions, not essay-depth.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-3">11</div><div class="prob-content"><div class="prob-q">fork() + demand paging interaction (copy-on-write reasoning)</div><div class="prob-reason">Moderate — appeared Fa25 both sets, a genuinely distinct question type.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-n">12</div><div class="prob-content"><div class="prob-q">Security: buffer-overflow spotting, violation-method identification</div><div class="prob-reason">Lower probability (1/4 recent) but syllabus-confirmed and cheap to prepare — small, single-scenario.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-n">13</div><div class="prob-content"><div class="prob-q">Contiguous allocation (first-fit/best-fit/worst-fit)</div><div class="prob-reason">Dormant since before Sp25 (0/4 recent) but nominally still in-scope — know the mechanics to not lose an easy mark if it resurfaces.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-n">14</div><div class="prob-content"><div class="prob-q">Banker's Algorithm / Resource Allocation Graph</div><div class="prob-reason">Zero appearances in the current era, not in the current topic map at all — lowest-priority revision time.</div></div></div>
+
+        <div class="probable-item"><div class="prob-rank rank-n">15</div><div class="prob-content"><div class="prob-q">Cryptography, firewalls, IDS/IPS</div><div class="prob-reason">Never appeared in any sitting sampled, old or new — lowest-yield material in the entire post-Midterm syllabus.</div></div></div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION 9 — MNEMONICS ================= -->
+  <section class="card" id="mnemonics">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧠</span>
+      <span class="card-title">Mnemonics & Memory Aids</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">CIA + A</div>
+        <div class="mnemonic-body">Security goals: Confidentiality, Integrity, Availability, + Authenticity.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">PAON</div>
+        <div class="mnemonic-body">4 official security levels: Physical, Application, OS, Network. (Humans are a cross-cutting risk, not a formal 5th level — don't add "Human" if asked to "name the 4 levels".)</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">What vs How</div>
+        <div class="mnemonic-body">Violation <strong>categories</strong> = WHAT was violated (confidentiality/integrity/availability/theft-of-service/DoS). Violation <strong>methods</strong> = HOW it was done (masquerading/replay/MITM/session-hijacking/privilege-escalation).</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">1-2-3-4</div>
+        <div class="mnemonic-body">Disk accesses by indirection level (inode cached): direct=1, single=2, double=3, triple=4 — one more access per level of indirection.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">Two Different Skills</div>
+        <div class="mnemonic-body">"Max file size" (sum across pointer levels) ≠ "inode disk address" (offset = inode# × inode_size). Both use inode structure but answer completely different questions — don't mix them up under time pressure.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">Backward-Forward</div>
+        <div class="mnemonic-body">LRU looks backward (what's been used least recently — knowable). Optimal looks forward (what won't be used for longest — unknowable, benchmark only).</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">ACL = Object, Capability = Domain</div>
+        <div class="mnemonic-body">"Who can access this object?" → Access List, stored per object. "What can this process access?" → Capability List, stored per domain.</div>
+      </div>
+
+      <div class="callout callout-note">
+        Add your own from class. The best mnemonics are the ones you invented yourself.
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggleCard(header) { header.closest('.card').classList.toggle('collapsed'); }
+  function toggleQA(questionEl) { questionEl.closest('.qa').classList.toggle('open'); }
+  function toggleAnalytical(header) {
+    header.closest('.analytical').classList.toggle('open');
+    const chev = header.querySelector('.card-chevron');
+    if (chev) chev.style.transform = header.closest('.analytical').classList.contains('open') ? 'rotate(0deg)' : 'rotate(-90deg)';
+  }
+  function toggleTheme() {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('rg-theme', next); } catch(e) {}
+  }
+  (function() {
+    try {
+      const saved = localStorage.getItem('rg-theme');
+      if (saved) document.documentElement.dataset.theme = saved;
+    } catch(e) {}
+  })();
+</script>
+
+</body>
+</html>

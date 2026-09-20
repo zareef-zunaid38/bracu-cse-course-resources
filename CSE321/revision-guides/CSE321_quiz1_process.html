@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE321 — Chapter Process | Revision</title>
+
+  <style>
+    :root[data-theme="light"] {
+      --bg:           #f5f6fa;
+      --surface:      #ffffff;
+      --surface-2:    #f0f1f5;
+      --border:       #dde1eb;
+      --text:         #1e2030;
+      --text-muted:   #6b7280;
+      --accent:       #2563eb;
+      --accent-bg:    #eff6ff;
+      --high:         #dc2626;
+      --high-bg:      #fef2f2;
+      --high-border:  #fecaca;
+      --med:          #b45309;
+      --med-bg:       #fffbeb;
+      --med-border:   #fde68a;
+      --low:          #2563eb;
+      --low-bg:       #eff6ff;
+      --low-border:   #bfdbfe;
+      --scan-bg:      #1e2030;
+      --scan-text:    #f8fafc;
+      --scan-surface: #2d3048;
+      --scan-border:  #3d4160;
+      --code-bg:      #1a1b26;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
+      --shadow:       0 2px 8px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.06);
+    }
+    :root[data-theme="dark"] {
+      --bg:           #0d0f18;
+      --surface:      #181b2a;
+      --surface-2:    #212438;
+      --border:       #2e3250;
+      --text:         #e2e8f0;
+      --text-muted:   #94a3b8;
+      --accent:       #60a5fa;
+      --accent-bg:    #1e2d45;
+      --high:         #f87171;
+      --high-bg:      #2d1b1b;
+      --high-border:  #7f1d1d;
+      --med:          #fbbf24;
+      --med-bg:       #2d2310;
+      --med-border:   #78350f;
+      --low:          #60a5fa;
+      --low-bg:       #1e2d45;
+      --low-border:   #1e40af;
+      --scan-bg:      #0d0f18;
+      --scan-text:    #e2e8f0;
+      --scan-surface: #181b2a;
+      --scan-border:  #2e3250;
+      --code-bg:      #0d0f18;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.3);
+      --shadow:       0 2px 8px rgba(0,0,0,.4);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+    p  { margin-bottom: .5rem; font-size: .9rem; }
+    ul, ol { padding-left: 1.3rem; font-size: .9rem; }
+    li { margin-bottom: .3rem; }
+    strong { font-weight: 700; }
+
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--shadow-sm);
+    }
+    .site-header-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: .6rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+    .header-title { font-size: 1rem; font-weight: 800; letter-spacing: -.01em; }
+    .header-sub { font-size: .78rem; color: var(--text-muted); margin-top: .1rem; }
+    .theme-btn {
+      flex-shrink: 0;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: .3rem .75rem;
+      border-radius: .5rem;
+      cursor: pointer;
+      font-size: .82rem;
+      font-family: inherit;
+      transition: background .15s;
+    }
+    .theme-btn:hover { background: var(--border); }
+
+    .site-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0 1rem;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .site-nav::-webkit-scrollbar { display: none; }
+    .site-nav a {
+      display: inline-block;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: .78rem;
+      font-weight: 500;
+      padding: .55rem .6rem;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .site-nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .meta-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
+    .meta-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .5rem;
+      padding: .35rem .75rem;
+      font-size: .78rem;
+      display: flex;
+      gap: .35rem;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .meta-pill-label { color: var(--text-muted); }
+    .meta-pill-value { font-weight: 700; }
+
+    .container { max-width: 920px; margin: 0 auto; padding: 1.25rem 1rem; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .8rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .card-header {
+      padding: .75rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card-header:hover { background: var(--border); }
+    .card-icon { font-size: 1rem; flex-shrink: 0; }
+    .card-title { font-size: .95rem; font-weight: 700; flex: 1; }
+    .card-chevron { font-size: .75rem; color: var(--text-muted); transition: transform .2s; flex-shrink: 0; }
+    .card.collapsed .card-body  { display: none; }
+    .card.collapsed .card-chevron { transform: rotate(-90deg); }
+    .card-body { padding: 1.1rem; }
+
+    .card-scan { background: var(--scan-bg); border-color: var(--scan-border); }
+    .card-scan .card-header { background: var(--scan-surface); border-color: var(--scan-border); }
+    .card-scan .card-header:hover { background: var(--scan-border); }
+    .card-scan .card-title { color: var(--scan-text); }
+    .card-scan .card-icon  { color: #fbbf24; }
+    .card-scan .card-chevron { color: var(--scan-text); opacity: .6; }
+    .card-scan .card-body  { background: var(--scan-bg); }
+    .scan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: .65rem;
+      margin-bottom: .9rem;
+    }
+    .scan-tile {
+      background: var(--scan-surface);
+      border: 1px solid var(--scan-border);
+      border-radius: .55rem;
+      padding: .75rem .85rem;
+    }
+    .scan-tile-label {
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: #94a3b8;
+      margin-bottom: .3rem;
+    }
+    .scan-tile-value { font-size: .88rem; font-weight: 700; color: var(--scan-text); line-height: 1.4; }
+    .scan-tile.tile-high  .scan-tile-label { color: #f87171; }
+    .scan-tile.tile-warn  .scan-tile-label { color: #fbbf24; }
+    .scan-tile.tile-sig   .scan-tile-label { color: #60a5fa; }
+    .scan-divider { border: none; border-top: 1px solid var(--scan-border); margin: .85rem 0; }
+    .scan-list { color: var(--scan-text); font-size: .88rem; }
+    .scan-list li { margin-bottom: .45rem; }
+
+    .badge {
+      display: inline-block;
+      font-size: .67rem;
+      font-weight: 800;
+      padding: .12rem .5rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      line-height: 1.4;
+      flex-shrink: 0;
+    }
+    .badge-high { background: var(--high-bg); color: var(--high); border: 1px solid var(--high-border); }
+    .badge-med  { background: var(--med-bg);  color: var(--med);  border: 1px solid var(--med-border); }
+    .badge-low  { background: var(--low-bg);  color: var(--low);  border: 1px solid var(--low-border); }
+
+    .concept {
+      border-left: 3px solid var(--border);
+      padding: .75rem .95rem;
+      margin-bottom: .75rem;
+      background: var(--surface-2);
+      border-radius: 0 .5rem .5rem 0;
+    }
+    .concept.imp-high { border-color: var(--high); }
+    .concept.imp-med  { border-color: var(--med); }
+    .concept.imp-low  { border-color: var(--low); }
+    .concept-title {
+      font-weight: 700;
+      font-size: .92rem;
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      margin-bottom: .4rem;
+      flex-wrap: wrap;
+    }
+    .concept-body { font-size: .88rem; }
+
+    .qa { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .65rem; overflow: hidden; }
+    .qa-q {
+      padding: .65rem .9rem;
+      font-weight: 600;
+      font-size: .88rem;
+      cursor: pointer;
+      background: var(--surface-2);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: .5rem;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .qa-q:hover { background: var(--border); }
+    .qa-q-text { flex: 1; line-height: 1.5; }
+    .qa-q-right { display: flex; align-items: center; gap: .4rem; flex-shrink: 0; }
+    .qa-toggle { font-size: .7rem; color: var(--text-muted); }
+    .qa-a { padding: .7rem .9rem; font-size: .88rem; border-top: 1px solid var(--border); display: none; line-height: 1.6; }
+    .qa.open .qa-a   { display: block; }
+    .qa.open .qa-toggle::after  { content: '▲'; }
+    .qa-toggle::after { content: '▼'; }
+
+    .analytical { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .85rem; overflow: hidden; }
+    .analytical-head {
+      padding: .65rem .9rem;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: .55rem;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .analytical-head:hover { background: var(--border); }
+    .q-num { font-weight: 800; font-size: .82rem; color: var(--accent); flex-shrink: 0; margin-top: .1rem; }
+    .q-title { font-weight: 600; font-size: .88rem; flex: 1; line-height: 1.5; }
+    .analytical-body { padding: 1rem; display: none; }
+    .analytical.open .analytical-body { display: block; }
+
+    .steps { display: flex; flex-direction: column; gap: .6rem; }
+    .step { display: flex; gap: .7rem; align-items: flex-start; }
+    .step-num {
+      width: 1.5rem; height: 1.5rem;
+      background: var(--accent); color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; font-weight: 800;
+      flex-shrink: 0; margin-top: .1rem;
+    }
+    .step-body { flex: 1; font-size: .88rem; line-height: 1.6; }
+
+    .callout {
+      border-radius: .45rem;
+      padding: .6rem .85rem;
+      font-size: .85rem;
+      margin-top: .75rem;
+      line-height: 1.55;
+    }
+    .callout-insight { background: var(--accent-bg); border-left: 3px solid var(--accent); }
+    .callout-insight strong { color: var(--accent); }
+    .callout-warn { background: var(--high-bg); border-left: 3px solid var(--high); }
+    .callout-warn strong { color: var(--high); }
+    .callout-note { background: var(--surface-2); border-left: 3px solid var(--text-muted); }
+    .callout-exam { background: var(--med-bg); border-left: 3px solid var(--med); }
+    .callout-exam strong { color: var(--med); }
+
+    .formula {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: .5rem;
+      padding: .75rem 1rem;
+      margin-bottom: .75rem;
+    }
+    .formula-name { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .4rem; font-weight: 700; }
+    .formula-display {
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: 1rem;
+      text-align: center;
+      padding: .5rem;
+      color: var(--accent);
+      font-weight: 600;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .formula-vars { font-size: .82rem; color: var(--text-muted); margin-top: .4rem; }
+
+    .code-block { margin-bottom: .85rem; }
+    .code-label { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .3rem; font-weight: 700; }
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: .9rem 1rem;
+      border-radius: .5rem;
+      overflow-x: auto;
+      font-size: .82rem;
+      line-height: 1.6;
+      font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+    }
+    .code-analysis {
+      margin-top: .5rem;
+      font-size: .85rem;
+      padding: .5rem .75rem;
+      background: var(--surface-2);
+      border-radius: .4rem;
+      border-left: 3px solid var(--accent);
+    }
+
+    .figure-wrap { margin-bottom: 1rem; }
+    .figure-caption { font-size: .8rem; text-align: center; color: var(--text-muted); margin-top: .4rem; font-style: italic; }
+    .diagram-pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 1rem 1.25rem;
+      border-radius: .5rem;
+      font-size: .82rem;
+      line-height: 1.75;
+      font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .pattern-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .6rem; margin-bottom: .85rem; }
+    .pattern-tile { background: var(--surface-2); border: 1px solid var(--border); border-radius: .5rem; padding: .7rem .85rem; }
+    .pattern-tile-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); margin-bottom: .25rem; }
+    .pattern-freq { font-size: 1.6rem; font-weight: 900; color: var(--accent); line-height: 1.1; }
+    .pattern-desc { font-size: .78rem; color: var(--text-muted); margin-top: .2rem; }
+
+    .probable-list { display: flex; flex-direction: column; }
+    .probable-item { display: flex; gap: .75rem; align-items: flex-start; padding: .75rem 0; border-bottom: 1px solid var(--border); }
+    .probable-item:last-child { border-bottom: none; }
+    .prob-rank { width: 2rem; height: 2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: .82rem; flex-shrink: 0; }
+    .rank-1 { background: var(--high-bg); color: var(--high); border: 2px solid var(--high-border); }
+    .rank-2 { background: var(--med-bg);  color: var(--med);  border: 2px solid var(--med-border); }
+    .rank-3 { background: var(--low-bg);  color: var(--low);  border: 2px solid var(--low-border); }
+    .rank-n { background: var(--surface-2); color: var(--text-muted); border: 2px solid var(--border); }
+    .prob-content { flex: 1; }
+    .prob-q { font-size: .9rem; font-weight: 600; line-height: 1.5; }
+    .prob-reason { font-size: .8rem; color: var(--text-muted); margin-top: .2rem; line-height: 1.4; }
+
+    .mnemonic { background: var(--med-bg); border: 1px solid var(--med-border); border-radius: .5rem; padding: .75rem 1rem; margin-bottom: .6rem; }
+    .mnemonic-word { font-weight: 900; color: var(--med); font-size: 1.05rem; margin-bottom: .3rem; }
+    .mnemonic-body { font-size: .88rem; }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: .85rem 0; }
+    .section-intro { font-size: .82rem; color: var(--text-muted); margin-bottom: .85rem; line-height: 1.5; }
+
+    /* Comparison table */
+    .cmp-table { width: 100%; border-collapse: collapse; font-size: .85rem; margin-top: .5rem; }
+    .cmp-table th { background: var(--surface-2); padding: .5rem .75rem; text-align: left; font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); border-bottom: 2px solid var(--border); }
+    .cmp-table td { padding: .5rem .75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .cmp-table tr:last-child td { border-bottom: none; }
+    .cmp-table td:first-child { font-weight: 600; }
+
+    @media print {
+      .site-header, .site-nav, .theme-btn { display: none !important; }
+      .container { padding: 0; }
+      .card { box-shadow: none; page-break-inside: avoid; border: 1px solid #ccc; }
+      .card-body, .qa-a, .analytical-body { display: block !important; }
+      .card.collapsed .card-body { display: block !important; }
+      .card-scan { background: #fff; color: #000; }
+      .scan-tile { background: #f5f5f5; }
+      .scan-tile-value { color: #000; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      .site-header-inner { padding: .5rem .85rem; }
+      .container { padding: .85rem .65rem; }
+      .card-body { padding: .85rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div>
+      <div class="header-title">CSE321 — Chapter Process</div>
+      <div class="header-sub">Quiz 1 &nbsp;·&nbsp; Week 5 &nbsp;·&nbsp; Faculty: NTR</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">☀ / ☾</button>
+  </div>
+</header>
+
+<nav class="site-nav" aria-label="Page sections">
+  <a href="#scan">⚡ Morning Scan</a>
+  <a href="#theory">📖 Theory</a>
+  <a href="#short-q">❓ Short Qs</a>
+  <a href="#analytical">🧮 Analytical</a>
+  <a href="#math">∑ Math</a>
+  <a href="#code">💻 Code</a>
+  <a href="#figures">📊 Figures</a>
+  <a href="#patterns">🎯 Patterns</a>
+  <a href="#probable">🔮 Probable Qs</a>
+  <a href="#mnemonics">🧠 Mnemonics</a>
+</nav>
+
+<main class="container">
+
+  <div class="meta-bar">
+    <div class="meta-pill"><span class="meta-pill-label">Course</span><span class="meta-pill-value">CSE321</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Topic</span><span class="meta-pill-value">Chapter Process</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Exam</span><span class="meta-pill-value">Quiz 1</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Date</span><span class="meta-pill-value">2026-07-01</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Weight</span><span class="meta-pill-value">Quiz 10% (best 3 of 4)</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Built</span><span class="meta-pill-value">2026-06-30</span></div>
+  </div>
+
+  <!-- =================================================================
+       SECTION 0 — MORNING QUICK SCAN
+       ================================================================= -->
+  <section class="card card-scan" id="scan">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">⚡</span>
+      <span class="card-title" style="color:var(--scan-text)">Morning Quick Scan</span>
+      <span class="card-chevron" style="color:var(--scan-text);opacity:.6">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="scan-grid">
+        <div class="scan-tile tile-high">
+          <div class="scan-tile-label">Must Know Cold</div>
+          <div class="scan-tile-value">5 states + all 6 transitions. fork() returns: 0 in child, +PID in parent, -1 on error. PCB has 6 field categories.</div>
+        </div>
+        <div class="scan-tile tile-warn">
+          <div class="scan-tile-label">Most Likely Tested</div>
+          <div class="scan-tile-value">State diagram / transition scenario. fork() code trace (how many processes, what is printed). Shared memory vs message passing comparison.</div>
+        </div>
+        <div class="scan-tile">
+          <div class="scan-tile-label">Common Traps</div>
+          <div class="scan-tile-value">WAITING ≠ READY. Zombie ≠ Orphan. Ordinary pipe ≠ Named pipe. Context switch = overhead, not scheduling decision.</div>
+        </div>
+        <div class="scan-tile tile-sig">
+          <div class="scan-tile-label">Faculty Signal (NTR)</div>
+          <div class="scan-tile-value">Quiz 1 — no prior NTR quiz data. Standard OS pattern: definition + state diagram + fork() trace + one IPC comparison.</div>
+        </div>
+      </div>
+      <hr class="scan-divider">
+      <p style="font-size:.82rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Top 3 to have ready before entering the exam:</p>
+      <ol class="scan-list">
+        <li>Draw the full process state diagram from memory — all 5 states and all 6 transitions with their triggers.</li>
+        <li>Trace fork() return values: know what each process sees and why. Identify zombie and orphan from a scenario.</li>
+        <li>Write the shared memory vs message passing comparison: speed, synchronization, and use case — three rows, two columns.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 1 — THEORY
+       ================================================================= -->
+  <section class="card" id="theory">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📖</span>
+      <span class="card-title">Theory</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="concept imp-high">
+        <div class="concept-title">Process Concept &amp; PCB <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>A <strong>process</strong> is a program in execution. A program is passive (a file on disk); a process is active (loaded into memory, with a program counter, stack, and resources). One program binary can run as multiple simultaneous processes.</p>
+          <p>The OS represents each process using a <strong>PCB (Process Control Block)</strong> — a kernel data structure with six field categories:</p>
+          <ul>
+            <li><strong>Process state</strong> — new / ready / running / waiting / terminated</li>
+            <li><strong>Program counter</strong> — address of the next instruction</li>
+            <li><strong>CPU registers</strong> — all register values; saved on context switch</li>
+            <li><strong>Memory management info</strong> — page tables, base/limit registers</li>
+            <li><strong>I/O status info</strong> — open file list, allocated I/O devices</li>
+            <li><strong>Accounting info</strong> — CPU time used, time limits, job numbers</li>
+          </ul>
+          <div class="callout callout-exam">
+            <strong>Exam note:</strong> "What is saved during a context switch?" — answer: CPU registers + program counter (the CPU state fields of the PCB). Do not say "the whole PCB"; memory and I/O info are also there but the CPU state is what changes per switch.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Process States &amp; Transitions <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>A process passes through five states. Every state has specific triggers for entry and exit.</p>
+          <table class="cmp-table">
+            <tr><th>Transition</th><th>Trigger</th></tr>
+            <tr><td>new → ready</td><td>OS admits the process into memory</td></tr>
+            <tr><td>ready → running</td><td>Short-term scheduler dispatches the process</td></tr>
+            <tr><td>running → waiting</td><td>Process issues I/O request or waits for an event</td></tr>
+            <tr><td>waiting → ready</td><td>I/O completes or event occurs</td></tr>
+            <tr><td>running → ready</td><td>Timer interrupt (preemption by OS)</td></tr>
+            <tr><td>running → terminated</td><td>Process calls exit() or is killed</td></tr>
+          </table>
+          <div class="callout callout-warn">
+            <strong>Critical distinction:</strong> A process in <strong>WAITING</strong> is blocked — it cannot use the CPU even if the CPU is free. A process in <strong>READY</strong> is capable of running but is waiting for the scheduler. The scheduler never touches a WAITING process directly.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">fork(), exec(), wait() <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p><strong>fork()</strong> creates a child process as an exact duplicate of the parent. Both processes resume from the line after fork(). The return value distinguishes them:</p>
+          <ul>
+            <li>In child: returns <strong>0</strong></li>
+            <li>In parent: returns <strong>child's PID</strong> (positive integer)</li>
+            <li>On error: returns <strong>-1</strong></li>
+          </ul>
+          <p><strong>exec()</strong> replaces the calling process's memory image with a new program. If exec() succeeds, the caller does not return — the new program takes over.</p>
+          <p><strong>wait()</strong> blocks the parent until a child terminates and collects the child's exit status, releasing the child's PCB entry.</p>
+          <div class="callout callout-exam">
+            <strong>Exam note:</strong> The classic question shows code with one or more fork() calls and asks how many processes are created or what is printed. Trace each fork() call and track PID return values separately for each process branch.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Zombie vs Orphan <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <table class="cmp-table">
+            <tr><th>State</th><th>Cause</th><th>Effect</th><th>Resolution</th></tr>
+            <tr><td><strong>Zombie</strong></td><td>Child exited; parent has not called wait()</td><td>Child PCB remains in process table — wastes a process table entry</td><td>Parent calls wait(); or SIGCHLD handler</td></tr>
+            <tr><td><strong>Orphan</strong></td><td>Parent terminated before child</td><td>Child loses its parent reference</td><td>init (PID 1) adopts the child and periodically calls wait()</td></tr>
+          </table>
+          <div class="callout callout-insight">
+            <strong>Why zombie exists:</strong> The OS guarantees a parent can always retrieve a child's exit code. To uphold that guarantee, the PCB must persist until the parent acknowledges the exit — even after the child has stopped running.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">IPC — Shared Memory vs Message Passing <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Processes are isolated by default (separate address spaces). IPC provides two fundamental models for cooperating processes to exchange data.</p>
+          <table class="cmp-table">
+            <tr><th>Dimension</th><th>Shared Memory</th><th>Message Passing</th></tr>
+            <tr><td>Mechanism</td><td>OS maps a shared region into both address spaces; processes read/write directly</td><td>Processes call send(msg) and receive(msg); kernel mediates</td></tr>
+            <tr><td>Speed</td><td>Fast — no kernel involvement per operation after setup</td><td>Slow — every exchange is at least 2 system calls</td></tr>
+            <tr><td>Synchronization</td><td>Manual — programmer must prevent race conditions</td><td>Automatic — kernel serializes access</td></tr>
+            <tr><td>Best for</td><td>Large data on the same machine</td><td>Small messages or distributed systems</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Scheduling Queues &amp; Schedulers <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>Processes move between three queues during their lifetime:</p>
+          <ul>
+            <li><strong>Job queue</strong> — all processes in the system (including on disk)</li>
+            <li><strong>Ready queue</strong> — processes in main memory, ready and waiting for CPU</li>
+            <li><strong>Device queue</strong> — processes waiting for a specific I/O device (one per device)</li>
+          </ul>
+          <p>Three schedulers manage the queues:</p>
+          <table class="cmp-table">
+            <tr><th>Scheduler</th><th>Also Called</th><th>Frequency</th><th>Role</th></tr>
+            <tr><td>Long-term</td><td>Job / admission scheduler</td><td>Infrequent</td><td>Controls degree of multiprogramming (how many processes in memory)</td></tr>
+            <tr><td>Short-term</td><td>CPU scheduler / dispatcher</td><td>Very frequent (ms)</td><td>Selects which ready process gets the CPU next</td></tr>
+            <tr><td>Medium-term</td><td>Swapper</td><td>Moderate</td><td>Swaps processes in/out of memory (virtual memory systems)</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Context Switch <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>When the CPU switches from process A to process B: (1) save A's CPU state (registers, PC) into A's PCB; (2) load B's CPU state from B's PCB; (3) resume B from where it left off.</p>
+          <p>Context switch time is <strong>pure overhead</strong> — no user-level work is performed during the switch. Typical cost: a few microseconds. This is why a very short Round Robin time quantum is harmful: more time is spent switching than executing.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Ordinary vs Named Pipes <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <table class="cmp-table">
+            <tr><th>Property</th><th>Ordinary Pipe</th><th>Named Pipe (FIFO)</th></tr>
+            <tr><td>Directionality</td><td>Unidirectional (one write end, one read end)</td><td>Bidirectional capable</td></tr>
+            <tr><td>Process relationship</td><td>Parent–child only</td><td>Any two processes</td></tr>
+            <tr><td>Lifetime</td><td>Temporary (exists while processes run)</td><td>Persistent (appears as a file in the filesystem)</td></tr>
+            <tr><td>UNIX creation</td><td>pipe(fd[2]) — fd[1] write, fd[0] read</td><td>mkfifo() system call</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">Sockets <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p>A socket is a communication endpoint identified by <strong>IP address : port number</strong>. Sockets support communication between processes on different machines (or the same machine via loopback 127.0.0.1).</p>
+          <ul>
+            <li><strong>TCP socket</strong> — connection-oriented; reliable, ordered, error-corrected</li>
+            <li><strong>UDP socket</strong> — connectionless; no delivery guarantee, lower overhead</li>
+          </ul>
+          <p>Ports below 1024 are reserved for system services and require root privileges to bind.</p>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">Message Passing Variants <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <ul>
+            <li><strong>Naming:</strong> Direct (processes name each other) vs Indirect (messages go to/from a mailbox/port)</li>
+            <li><strong>Synchronization:</strong> Blocking send (sender waits for receipt) vs Non-blocking send (sender continues immediately). Same distinction applies to receive.</li>
+            <li><strong>Buffering:</strong> Zero capacity (rendezvous — sender blocks until receiver ready) / Bounded capacity (sender blocks when queue full) / Unbounded capacity (sender never blocks)</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 2 — SHORT QUESTIONS
+       ================================================================= -->
+  <section class="card" id="short-q">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">❓</span>
+      <span class="card-title">Short Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="section-intro">Tap a question to reveal the answer. Try to answer it first.</p>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What is a process? How is it different from a program?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          A process is a <strong>program in execution</strong>. A program is passive — it is a binary file stored on disk. A process is active — it is that program loaded into memory with its own program counter, stack, heap, and allocated resources. One program can be the basis of multiple processes simultaneously (e.g., two browser windows running the same executable).
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">List all five process states. What triggers the transition from RUNNING to WAITING?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          The five states are: <strong>New, Ready, Running, Waiting, Terminated</strong>. The transition from Running to Waiting is triggered when the process issues an I/O request or waits for an event (e.g., disk read, user input, a signal). The process cannot proceed until that I/O completes or the event occurs.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What does fork() return in the parent, in the child, and on error?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          <ul>
+            <li><strong>In the child:</strong> fork() returns <strong>0</strong></li>
+            <li><strong>In the parent:</strong> fork() returns the <strong>child's PID</strong> (a positive integer)</li>
+            <li><strong>On error:</strong> fork() returns <strong>-1</strong> (no child is created)</li>
+          </ul>
+          Both parent and child continue executing from the line immediately after the fork() call.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What is a zombie process? What causes it and why is it a problem?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          A zombie is a process that has terminated (called exit()) but whose PCB entry <strong>still exists in the process table</strong> because the parent has not yet called wait() to collect the exit status. It is a problem because zombie entries accumulate in the process table, which has a fixed size — enough zombies will eventually prevent any new process creation.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What is the key difference between shared memory and message passing IPC?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          Shared memory is <strong>faster</strong> — processes read and write a shared memory region directly with no kernel involvement per operation — but the programmer must manually synchronize access to prevent race conditions. Message passing routes every exchange through the kernel (send/receive system calls), making it <strong>slower</strong> but automatically safe. Shared memory suits large data transfers on one machine; message passing suits distributed systems or small messages.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What is a context switch? Why is it described as overhead?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          A context switch is the CPU operation of saving the state of the current process (registers, program counter) into its PCB, then loading the state of the next process from its PCB. It is pure overhead because <strong>no user-level computation is performed</strong> during the switch — the CPU is doing bookkeeping, not useful work. Frequent context switching wastes CPU cycles.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What is an orphan process? How does UNIX resolve it?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          An orphan process is one whose <strong>parent terminated before it did</strong>. Without a parent, no process would call wait() on it, and it would eventually become a zombie. UNIX resolves this by re-parenting the orphan to <strong>init (PID 1)</strong>, which periodically calls wait() to clean up any children that have exited.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What are the differences between an ordinary pipe and a named pipe (FIFO)?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          An ordinary pipe is <strong>unidirectional</strong>, works only between a parent and its child, and is temporary (disappears when the processes end). A named pipe (FIFO) can be <strong>bidirectional</strong>, works between any two processes (no relationship required), and is <strong>persistent</strong> — it exists as a file in the filesystem even after the processes exit.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What six categories of information does a PCB contain?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          Process state · Program counter · CPU registers · Memory management info · I/O status info · Accounting info. The first three together form the <strong>CPU state</strong> — the part that must be saved and restored on every context switch.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 3 — ANALYTICAL QUESTIONS
+       ================================================================= -->
+  <section class="card" id="analytical">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧮</span>
+      <span class="card-title">Analytical Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q1</span>
+          <span class="q-title">A process calls fork() twice in sequence. How many processes exist in total after both calls execute? Justify your answer.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">Start: 1 process (the original, call it P0).</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">P0 calls fork(). This creates child P1. Now 2 processes exist: P0 and P1. Both resume after the first fork() call.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Both P0 and P1 reach the second fork() call independently. P0 creates P2. P1 creates P3. Each process that reaches fork() creates one child.</div></div>
+            <div class="step"><div class="step-num">4</div><div class="step-body">Total after both forks: <strong>4 processes</strong> — P0, P1, P2, P3.</div></div>
+          </div>
+          <div class="callout callout-insight">
+            <strong>Pattern:</strong> n sequential fork() calls (where every process calls every fork()) → 2<sup>n</sup> total processes. Each fork doubles the current count.
+          </div>
+          <div class="callout callout-exam">
+            <strong>Exam note:</strong> The question may instead specify that only the parent calls fork() each time (children return immediately). In that case: n forks → n+1 processes (original + n children). Always read which branch the next fork() is in.
+          </div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q2</span>
+          <span class="q-title">For each scenario below, identify the process state and the transition trigger: (a) a process finishes an I/O request; (b) the OS timer interrupt fires; (c) the scheduler selects a process from the ready queue; (d) a process calls exit().</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">a</div><div class="step-body"><strong>I/O completes:</strong> Process was in WAITING. Transition: WAITING → READY. Trigger: I/O completion event. The process does not go directly to RUNNING — it re-enters the ready queue and waits for the scheduler.</div></div>
+            <div class="step"><div class="step-num">b</div><div class="step-body"><strong>Timer interrupt fires:</strong> Process was RUNNING. Transition: RUNNING → READY. Trigger: preemption by OS (time slice expired). The process is returned to the ready queue without any I/O involvement.</div></div>
+            <div class="step"><div class="step-num">c</div><div class="step-body"><strong>Scheduler selects a process:</strong> Process was in READY. Transition: READY → RUNNING. Trigger: short-term scheduler dispatch. This is the only way a process enters the RUNNING state.</div></div>
+            <div class="step"><div class="step-num">d</div><div class="step-body"><strong>Process calls exit():</strong> Process was RUNNING. Transition: RUNNING → TERMINATED. Trigger: process voluntarily exits or is killed by signal. PCB is retained as a zombie until the parent calls wait().</div></div>
+          </div>
+          <div class="callout callout-insight">
+            <strong>Key rule:</strong> The only entry point to RUNNING is from READY. The scheduler never promotes a WAITING process directly to RUNNING — I/O completion moves it to READY first.
+          </div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q3</span>
+          <span class="q-title">A child process exits, but its parent is in an infinite loop and never calls wait(). Separately, a parent exits while its child is still sleeping. Describe what happens in each case.</span>
+          <span class="badge badge-med">MED</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Case 1 — Parent never calls wait():</strong> The child terminates and transitions to TERMINATED, but its PCB entry is not freed. The child becomes a <strong>zombie</strong>. It will remain a zombie for as long as the parent runs. If the parent eventually exits, init inherits the zombie and calls wait() to clean it up.</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Case 2 — Parent exits before child:</strong> The child's parent reference becomes invalid. UNIX re-parents the child to <strong>init (PID 1)</strong>. Init periodically calls wait(), so when the child eventually exits, init will collect it — no zombie remains.</div></div>
+          </div>
+          <div class="callout callout-insight">
+            <strong>Summary:</strong> Zombie = child outlives collection. Orphan = child outlives parent. In both cases the child continues to exist in the process table — the difference is what happens next. An orphan is adopted and cleaned up. A zombie waits indefinitely for a parent that may never call wait().
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 4 — MATHEMATICS
+       ================================================================= -->
+  <section class="card" id="math">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">∑</span>
+      <span class="card-title">Mathematics</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <p class="section-intro">Chapter Process has minimal formal math. The only quantitative pattern is the fork() process count formula.</p>
+
+      <div class="formula">
+        <div class="formula-name">Process Count — All branches fork</div>
+        <div class="formula-display">Total processes = 2^n</div>
+        <div class="formula-vars">Where n = number of fork() calls, assuming every existing process executes every fork().</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Process Count — Only parent forks each time</div>
+        <div class="formula-display">Total processes = n + 1</div>
+        <div class="formula-vars">Where n = number of fork() calls, and only the parent process reaches each fork() (children exit or exec immediately).</div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Ex</span>
+          <span class="q-title">Given the code: fork(); fork(); fork(); — how many processes are created in total?</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step"><div class="step-num">1</div><div class="step-body">n = 3 fork() calls. All processes reach all fork() calls (no conditional branching).</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-body">Apply: 2<sup>3</sup> = <strong>8 processes total</strong>.</div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-body">Verification: after fork 1 → 2 processes; after fork 2 → 4; after fork 3 → 8. Each fork doubles the count.</div></div>
+          </div>
+          <div class="callout callout-insight">
+            <strong>Pattern:</strong> Look for if/else branching around fork() calls. If children exit in the if-branch before reaching the next fork(), they do not contribute to the next doubling. Trace carefully.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 5 — CODE
+       ================================================================= -->
+  <section class="card" id="code">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">💻</span>
+      <span class="card-title">Code</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="code-block">
+        <div class="code-label">C — fork() basic pattern</div>
+        <pre><code>#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main() {
+    pid_t pid = fork();
+
+    if (pid == 0) {
+        // CHILD: fork() returned 0
+        printf("Child PID = %d\n", getpid());
+    } else if (pid &gt; 0) {
+        // PARENT: fork() returned child's PID
+        printf("Parent PID = %d, Child PID = %d\n", getpid(), pid);
+        wait(NULL);   // blocks until child exits; prevents zombie
+    } else {
+        // ERROR: fork() returned -1
+        perror("fork failed");
+        return 1;
+    }
+    return 0;
+}</code></pre>
+        <div class="code-analysis">
+          <strong>What to notice:</strong> pid == 0 always means you are in the child. pid &gt; 0 always means you are in the parent, and that positive value is the child's PID. The wait(NULL) call is critical — omitting it leaves the child as a zombie after it exits. The parent and child both continue from after the fork() call, which is why both branches execute.
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-label">C — pipe() between parent and child</div>
+        <pre><code>#include &lt;unistd.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;sys/wait.h&gt;
+
+int main() {
+    int fd[2];
+    pipe(fd);          // fd[1] = write end, fd[0] = read end
+
+    pid_t pid = fork();
+
+    if (pid == 0) {
+        // CHILD reads from pipe
+        close(fd[1]);          // child does not write; close write end
+        char buf[64] = {0};
+        read(fd[0], buf, sizeof(buf));
+        printf("Child received: %s\n", buf);
+        close(fd[0]);
+    } else {
+        // PARENT writes to pipe
+        close(fd[0]);          // parent does not read; close read end
+        const char *msg = "hello from parent";
+        write(fd[1], msg, strlen(msg));
+        close(fd[1]);
+        wait(NULL);
+    }
+    return 0;
+}</code></pre>
+        <div class="code-analysis">
+          <strong>What to notice:</strong> fd[1] is always the write end; fd[0] is always the read end — memorize this. Each process must close the end it does not use. If the parent does not close fd[0] and the child does not close fd[1], the child's read() will block indefinitely — the kernel sees the write end as still open and will not signal EOF. Forgetting to close unused pipe ends is the most common pipe bug.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 6 — FIGURES & DIAGRAMS
+       ================================================================= -->
+  <section class="card" id="figures">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📊</span>
+      <span class="card-title">Figures &amp; Diagrams</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="figure-wrap">
+        <div class="diagram-pre">
+  ┌───────┐  admitted       ┌─────────┐  dispatched     ┌───────────┐
+  │  NEW  │ ──────────────► │  READY  │ ──────────────► │  RUNNING  │
+  └───────┘                 └─────────┘                 └─────┬─────┘
+                                 ▲                            │         ──exit()──► TERMINATED
+                                 │                            │
+                                 │  I/O complete /            │  I/O request /
+                                 │  event occurs              │  event wait
+                                 │                            ▼
+                                 │                       ┌───────────┐
+                                 └───────────────────────│  WAITING  │
+                                                         └───────────┘
+
+  RUNNING ──timer interrupt──► READY   (preemption; process returns to ready queue)
+  RUNNING ──exit() / kill────► TERMINATED</div>
+        <p class="figure-caption">Fig 1. Process State Transition Diagram — all 5 states, 6 transitions</p>
+      </div>
+
+      <div class="figure-wrap">
+        <div class="diagram-pre">
+  ┌──────────────────────────────────────────────────────────────────┐
+  │                     SHARED MEMORY MODEL                          │
+  │                                                                  │
+  │  Process A │ shared memory region │ Process B                   │
+  │  (user     │  [  data area  ]     │ (user                       │
+  │   space)   │  read / write direct │  space)                     │
+  │            └──────────────────────┘                             │
+  │  No kernel involvement per read/write. Fast.                     │
+  │  Risk: race conditions if access not synchronized manually.      │
+  └──────────────────────────────────────────────────────────────────┘
+
+  ┌──────────────────────────────────────────────────────────────────┐
+  │                   MESSAGE PASSING MODEL                           │
+  │                                                                  │
+  │  Process A           KERNEL              Process B              │
+  │  send(msg) ────────► [route] ──────────► receive(msg)           │
+  │                                                                  │
+  │  Every exchange crosses kernel boundary: at least 2 syscalls.   │
+  │  Slower. Safe: kernel serializes access automatically.           │
+  └──────────────────────────────────────────────────────────────────┘</div>
+        <p class="figure-caption">Fig 2. IPC — Shared Memory vs Message Passing architecture</p>
+      </div>
+
+      <div class="figure-wrap">
+        <div class="diagram-pre">
+  PIPE ENDS (memorize this):
+  ┌───────────────────────────────┐
+  │  fd[1]  ──write──►  fd[0]    │
+  │  (write end)       (read end) │
+  └───────────────────────────────┘
+
+  ORDINARY PIPE (parent → child):
+    Parent ──write fd[1]──► [pipe buffer] ──read fd[0]──► Child
+
+  NAMED PIPE (any two processes):
+    ProcessA ──► /tmp/mypipe (persists as file) ──► ProcessB
+    Created with mkfifo(). No parent-child relationship required.</div>
+        <p class="figure-caption">Fig 3. Pipe ends and ordinary vs named pipe structure</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 7 — FACULTY PATTERN ANALYSIS
+       ================================================================= -->
+  <section class="card" id="patterns">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🎯</span>
+      <span class="card-title">Faculty Pattern Analysis</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="callout callout-note">
+        <strong>Source:</strong> Quiz 1 by NTR — this is the first quiz. No prior NTR quiz data available for this course.<br>
+        <strong>Scope:</strong> Quizzes are faculty-written (NTR). Midterm, Final, and Assignments are centrally created by BRACU. Patterns here apply to quizzes and labs only — do not generalize to midterm/final.
+      </div>
+
+      <div class="callout callout-warn" style="margin-top:.75rem">
+        <strong>Update after Quiz 1:</strong> After sitting this quiz, record: exact question types, marks distribution, whether it was MCQ/short-answer/analytical, and any topic that appeared unexpectedly. Add to <code>cse321_exam_notes.md</code> under Quiz Pattern.
+      </div>
+
+      <div class="pattern-grid" style="margin-top:.85rem">
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">State Diagram</div>
+          <div class="pattern-freq">?×</div>
+          <div class="pattern-desc">Standard opener for Chapter Process in any OS course</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">fork() Trace</div>
+          <div class="pattern-freq">?×</div>
+          <div class="pattern-desc">Classic code-tracing question; high frequency in OS courses globally</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">IPC Comparison</div>
+          <div class="pattern-freq">?×</div>
+          <div class="pattern-desc">Standard compare-and-contrast; likely as short question or table</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Pipe Distinction</div>
+          <div class="pattern-freq">?×</div>
+          <div class="pattern-desc">Ordinary vs named — typically a sub-part or fill-in-the-blank</div>
+        </div>
+      </div>
+
+      <p><strong>Assumed tendencies (no data — update after Quiz 1):</strong></p>
+      <ul>
+        <li>Chapter Process quizzes at BRACU typically include at least one diagram-based question (state diagram or fork() tree).</li>
+        <li>Definitions asked as short written answers, not MCQ, in most quiz formats.</li>
+        <li>IPC is the second most common topic area in Chapter Process quizzes after states/fork().</li>
+      </ul>
+
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 8 — PROBABLE QUESTIONS
+       ================================================================= -->
+  <section class="card" id="probable">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🔮</span>
+      <span class="card-title">Probable Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="probable-list">
+
+        <div class="probable-item">
+          <div class="prob-rank rank-1">1</div>
+          <div class="prob-content">
+            <div class="prob-q">Draw the process state diagram. Label all states and all transitions with their triggers.</div>
+            <div class="prob-reason">Foundational to Chapter Process; the first question in almost every OS course on this topic. Highly visual, easy to grade, high discriminating value. Cannot skip.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-2">2</div>
+          <div class="prob-content">
+            <div class="prob-q">Given a C code snippet with one or two fork() calls, determine: how many processes are created, and what output is printed.</div>
+            <div class="prob-reason">Classic OS analytical question. High frequency across institutions. Tests whether students can trace execution across concurrent branches — a skill specific to processes.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-3">3</div>
+          <div class="prob-content">
+            <div class="prob-q">Compare shared memory and message passing IPC. State one advantage and one disadvantage of each.</div>
+            <div class="prob-reason">IPC is the second major concept block in Chapter Process. A comparison question is the cleanest way to test it. High probability as a short written question.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-n">4</div>
+          <div class="prob-content">
+            <div class="prob-q">What is a zombie process? Give a scenario where one is created and explain how to prevent it.</div>
+            <div class="prob-reason">Zombie/orphan distinction is a standard definitional trap. Frequently appears as a short answer to distinguish students who understand lifecycle from those who only know states.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-n">5</div>
+          <div class="prob-content">
+            <div class="prob-q">Distinguish between an ordinary pipe and a named pipe (FIFO). What restriction does each have?</div>
+            <div class="prob-reason">Pipes section is the last sub-topic and often tested as a short definitional question or fill-in-the-blank table row. Lower weight than states or fork(), but straightforward marks.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================================
+       SECTION 9 — MNEMONICS & MEMORY AIDS
+       ================================================================= -->
+  <section class="card" id="mnemonics">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧠</span>
+      <span class="card-title">Mnemonics &amp; Memory Aids</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">Never Rest — Run While Tired</div>
+        <div class="mnemonic-body"><strong>N</strong>ew → <strong>R</strong>eady → <strong>R</strong>unning → <strong>W</strong>aiting → <strong>T</strong>erminated. The five states in order. Note: RUNNING can skip back to READY (interrupt) or go to WAITING (I/O) before reaching TERMINATED.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">Zero child. Positive parent. Negative nobody.</div>
+        <div class="mnemonic-body">fork() return values: 0 in the child, positive PID in the parent, -1 (negative) when fork fails and no child was created. Say it once before entering the exam.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">PCB = "PPCMIA"</div>
+        <div class="mnemonic-body"><strong>P</strong>rocess state · <strong>P</strong>rogram counter · <strong>C</strong>PU registers · <strong>M</strong>emory management info · <strong>I</strong>/O status info · <strong>A</strong>ccounting info. The first three are the CPU state saved on every context switch.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">Zombie = orphaned collection. Orphan = orphaned parent.</div>
+        <div class="mnemonic-body">A zombie's <em>exit status collection</em> was orphaned — the parent never called wait(). An orphan's <em>parent process</em> was orphaned — the parent exited first. Two different things that got orphaned.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">fd[1] writes, fd[0] reads. 1 → 0, like a countdown.</div>
+        <div class="mnemonic-body">In pipe(fd): fd[1] is the write end, fd[0] is the read end. Think of data flowing from 1 down to 0. Close whichever end you are not using, or reads will block forever.</div>
+      </div>
+
+      <div class="callout callout-note">
+        Add your own. The best mnemonic is the one you invented during study, not one you read here.
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggleCard(header) {
+    header.closest('.card').classList.toggle('collapsed');
+  }
+
+  function toggleQA(questionEl) {
+    questionEl.closest('.qa').classList.toggle('open');
+  }
+
+  function toggleAnalytical(header) {
+    const block = header.closest('.analytical');
+    block.classList.toggle('open');
+    const chev = header.querySelector('.card-chevron');
+    if (chev) chev.style.transform =
+      block.classList.contains('open') ? 'rotate(0deg)' : 'rotate(-90deg)';
+  }
+
+  function toggleTheme() {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('rg-theme', next); } catch(e) {}
+  }
+
+  (function() {
+    try {
+      const saved = localStorage.getItem('rg-theme');
+      if (saved) document.documentElement.dataset.theme = saved;
+    } catch(e) {}
+  })();
+</script>
+
+</body>
+</html>

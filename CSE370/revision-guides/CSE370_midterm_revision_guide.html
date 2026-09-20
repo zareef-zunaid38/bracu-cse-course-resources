@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSE370 — Midterm Revision</title>
+<style>
+:root[data-theme="light"]{--bg:#f5f6fa;--surface:#fff;--surface-2:#f0f1f5;--border:#dde1eb;--text:#1e2030;--text-muted:#6b7280;--accent:#2563eb;--accent-bg:#eff6ff;--high:#dc2626;--high-bg:#fef2f2;--high-border:#fecaca;--med:#b45309;--med-bg:#fffbeb;--med-border:#fde68a;--low:#2563eb;--low-bg:#eff6ff;--low-border:#bfdbfe;--scan-bg:#1e2030;--scan-text:#f8fafc;--scan-surface:#2d3048;--scan-border:#3d4160;--code-bg:#1a1b26;--code-text:#c0caf5;--shadow-sm:0 1px 2px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.1);--shadow:0 2px 8px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.06);}
+:root[data-theme="dark"]{--bg:#0d0f18;--surface:#181b2a;--surface-2:#212438;--border:#2e3250;--text:#e2e8f0;--text-muted:#94a3b8;--accent:#60a5fa;--accent-bg:#1e2d45;--high:#f87171;--high-bg:#2d1b1b;--high-border:#7f1d1d;--med:#fbbf24;--med-bg:#2d2310;--med-border:#78350f;--low:#60a5fa;--low-bg:#1e2d45;--low-border:#1e40af;--scan-bg:#0d0f18;--scan-text:#e2e8f0;--scan-surface:#181b2a;--scan-border:#2e3250;--code-bg:#0d0f18;--code-text:#c0caf5;--shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow:0 2px 8px rgba(0,0,0,.4);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:15px}
+p{margin-bottom:.5rem;font-size:.9rem}
+ul,ol{padding-left:1.3rem;font-size:.9rem}
+li{margin-bottom:.3rem}
+strong{font-weight:700}
+.site-header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-sm)}
+.site-header-inner{max-width:920px;margin:0 auto;padding:.6rem 1.25rem;display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
+.header-title{font-size:1rem;font-weight:800}
+.header-sub{font-size:.78rem;color:var(--text-muted);margin-top:.1rem}
+.theme-btn{flex-shrink:0;background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:.3rem .75rem;border-radius:.5rem;cursor:pointer;font-size:.82rem;font-family:inherit}
+.site-nav{background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 1rem;scrollbar-width:none}
+.site-nav::-webkit-scrollbar{display:none}
+.site-nav a{display:inline-block;color:var(--text-muted);text-decoration:none;font-size:.76rem;font-weight:600;padding:.55rem .55rem;border-bottom:2px solid transparent}
+.site-nav a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.meta-bar{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
+.meta-pill{background:var(--surface);border:1px solid var(--border);border-radius:.5rem;padding:.35rem .75rem;font-size:.78rem;display:flex;gap:.35rem;align-items:center;box-shadow:var(--shadow-sm)}
+.meta-pill-label{color:var(--text-muted)}
+.meta-pill-value{font-weight:700}
+.container{max-width:920px;margin:0 auto;padding:1.25rem 1rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:.8rem;margin-bottom:1rem;overflow:hidden;box-shadow:var(--shadow-sm)}
+.card-header{padding:.75rem 1.1rem;display:flex;align-items:center;gap:.6rem;background:var(--surface-2);border-bottom:1px solid var(--border);cursor:pointer;user-select:none}
+.card-header:hover{background:var(--border)}
+.card-icon{font-size:1rem;flex-shrink:0}
+.card-title{font-size:.95rem;font-weight:700;flex:1}
+.card-chevron{font-size:.75rem;color:var(--text-muted);transition:transform .2s;flex-shrink:0}
+.card.collapsed .card-body{display:none}
+.card.collapsed .card-chevron{transform:rotate(-90deg)}
+.card-body{padding:1.1rem}
+.card-scan{background:var(--scan-bg);border-color:var(--scan-border)}
+.card-scan .card-header{background:var(--scan-surface);border-color:var(--scan-border)}
+.card-scan .card-title{color:var(--scan-text)}
+.card-scan .card-body{background:var(--scan-bg)}
+.scan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.65rem;margin-bottom:.9rem}
+.scan-tile{background:var(--scan-surface);border:1px solid var(--scan-border);border-radius:.55rem;padding:.75rem .85rem}
+.scan-tile-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:#94a3b8;margin-bottom:.3rem}
+.scan-tile-value{font-size:.85rem;font-weight:700;color:var(--scan-text);line-height:1.4}
+.scan-tile.tile-high .scan-tile-label{color:#f87171}
+.scan-tile.tile-warn .scan-tile-label{color:#fbbf24}
+.scan-tile.tile-sig .scan-tile-label{color:#60a5fa}
+.scan-divider{border:none;border-top:1px solid var(--scan-border);margin:.85rem 0}
+.scan-list{color:var(--scan-text);font-size:.86rem}
+.scan-list li{margin-bottom:.4rem}
+.badge{display:inline-block;font-size:.65rem;font-weight:800;padding:.12rem .5rem;border-radius:999px;text-transform:uppercase;letter-spacing:.06em;line-height:1.4;flex-shrink:0}
+.badge-high{background:var(--high-bg);color:var(--high);border:1px solid var(--high-border)}
+.badge-med{background:var(--med-bg);color:var(--med);border:1px solid var(--med-border)}
+.badge-low{background:var(--low-bg);color:var(--low);border:1px solid var(--low-border)}
+.concept{border-left:3px solid var(--border);padding:.7rem .9rem;margin-bottom:.7rem;background:var(--surface-2);border-radius:0 .5rem .5rem 0}
+.concept.imp-high{border-color:var(--high)}
+.concept.imp-med{border-color:var(--med)}
+.concept.imp-low{border-color:var(--low)}
+.concept-title{font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:.45rem;margin-bottom:.35rem;flex-wrap:wrap}
+.concept-body{font-size:.86rem}
+.qa{border:1px solid var(--border);border-radius:.55rem;margin-bottom:.6rem;overflow:hidden}
+.qa-q{padding:.6rem .85rem;font-weight:600;font-size:.86rem;cursor:pointer;background:var(--surface-2);display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem}
+.qa-q:hover{background:var(--border)}
+.qa-q-text{flex:1;line-height:1.5}
+.qa-q-right{display:flex;align-items:center;gap:.4rem;flex-shrink:0}
+.qa-toggle{font-size:.7rem;color:var(--text-muted)}
+.qa-a{padding:.65rem .85rem;font-size:.86rem;border-top:1px solid var(--border);display:none;line-height:1.55}
+.qa.open .qa-a{display:block}
+.qa.open .qa-toggle::after{content:'▲'}
+.qa-toggle::after{content:'▼'}
+.analytical{border:1px solid var(--border);border-radius:.55rem;margin-bottom:.8rem;overflow:hidden}
+.analytical-head{padding:.6rem .85rem;background:var(--surface-2);border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:.5rem;cursor:pointer}
+.analytical-head:hover{background:var(--border)}
+.q-num{font-weight:800;font-size:.8rem;color:var(--accent);flex-shrink:0;margin-top:.1rem}
+.q-title{font-weight:600;font-size:.86rem;flex:1;line-height:1.5}
+.analytical-body{padding:.95rem;display:none}
+.analytical.open .analytical-body{display:block}
+.steps{display:flex;flex-direction:column;gap:.55rem}
+.step{display:flex;gap:.65rem;align-items:flex-start}
+.step-num{width:1.4rem;height:1.4rem;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0;margin-top:.1rem}
+.step-body{flex:1;font-size:.86rem;line-height:1.55}
+.callout{border-radius:.45rem;padding:.55rem .8rem;font-size:.83rem;margin-top:.7rem;line-height:1.5}
+.callout-insight{background:var(--accent-bg);border-left:3px solid var(--accent)}
+.callout-insight strong{color:var(--accent)}
+.callout-warn{background:var(--high-bg);border-left:3px solid var(--high)}
+.callout-warn strong{color:var(--high)}
+.callout-note{background:var(--surface-2);border-left:3px solid var(--text-muted)}
+.callout-exam{background:var(--med-bg);border-left:3px solid var(--med)}
+.callout-exam strong{color:var(--med)}
+.formula{background:var(--surface-2);border:1px solid var(--border);border-radius:.5rem;padding:.65rem .9rem;margin-bottom:.65rem}
+.formula-name{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:.35rem;font-weight:700}
+.formula-display{font-family:'Fira Code','Courier New',monospace;font-size:.92rem;text-align:center;padding:.4rem;color:var(--accent);font-weight:600;overflow-x:auto;white-space:pre}
+pre{background:var(--code-bg);color:var(--code-text);padding:.8rem .9rem;border-radius:.5rem;overflow-x:auto;font-size:.78rem;line-height:1.55;font-family:'Fira Code','Cascadia Code','Courier New',monospace}
+table.schema{width:100%;border-collapse:collapse;font-size:.8rem;margin:.5rem 0}
+table.schema th,table.schema td{border:1px solid var(--border);padding:.35rem .5rem;text-align:left}
+table.schema th{background:var(--surface-2)}
+.pattern-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem;margin-bottom:.85rem}
+.pattern-tile{background:var(--surface-2);border:1px solid var(--border);border-radius:.5rem;padding:.65rem .8rem}
+.pattern-tile-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:.2rem}
+.pattern-freq{font-size:1.4rem;font-weight:900;color:var(--accent);line-height:1.1}
+.probable-list{display:flex;flex-direction:column}
+.probable-item{display:flex;gap:.7rem;align-items:flex-start;padding:.7rem 0;border-bottom:1px solid var(--border)}
+.probable-item:last-child{border-bottom:none}
+.prob-rank{width:1.9rem;height:1.9rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.8rem;flex-shrink:0}
+.rank-1{background:var(--high-bg);color:var(--high);border:2px solid var(--high-border)}
+.rank-2{background:var(--med-bg);color:var(--med);border:2px solid var(--med-border)}
+.rank-3{background:var(--low-bg);color:var(--low);border:2px solid var(--low-border)}
+.rank-n{background:var(--surface-2);color:var(--text-muted);border:2px solid var(--border)}
+.prob-content{flex:1}
+.prob-q{font-size:.88rem;font-weight:600;line-height:1.5}
+.prob-reason{font-size:.78rem;color:var(--text-muted);margin-top:.2rem;line-height:1.4}
+.mnemonic{background:var(--med-bg);border:1px solid var(--med-border);border-radius:.5rem;padding:.65rem .9rem;margin-bottom:.55rem}
+.mnemonic-word{font-weight:900;color:var(--med);font-size:1rem;margin-bottom:.25rem}
+.mnemonic-body{font-size:.86rem}
+.divider{border:none;border-top:1px solid var(--border);margin:.8rem 0}
+.section-intro{font-size:.8rem;color:var(--text-muted);margin-bottom:.8rem;line-height:1.5}
+@media print{.site-header,.site-nav,.theme-btn{display:none!important}.container{padding:0}.card{box-shadow:none;page-break-inside:avoid;border:1px solid #ccc}.card-body,.qa-a,.analytical-body{display:block!important}}
+@media (max-width:480px){body{font-size:14px}.site-header-inner{padding:.5rem .85rem}.container{padding:.85rem .65rem}.card-body{padding:.85rem}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+<div class="site-header-inner">
+<div>
+<div class="header-title">CSE370 — Midterm Revision</div>
+<div class="header-sub">Database Systems · Faculty: NFF · Central Exam</div>
+</div>
+<button class="theme-btn" onclick="toggleTheme()">☀ / ☾</button>
+</div>
+</header>
+
+<nav class="site-nav" aria-label="Page sections">
+<a href="#scan">⚡ Scan</a>
+<a href="#intro">1. Intro</a>
+<a href="#er">2. ER Model</a>
+<a href="#eer">3. EER</a>
+<a href="#relmodel">4. Rel. Model</a>
+<a href="#mapping">5. Mapping</a>
+<a href="#norm">6. Normalization</a>
+<a href="#ra">7. Rel. Algebra</a>
+<a href="#probable">🔮 Probable Qs</a>
+<a href="#mnemonics">🧠 Mnemonics</a>
+</nav>
+
+<main class="container">
+
+<div class="meta-bar">
+<div class="meta-pill"><span class="meta-pill-label">Course</span><span class="meta-pill-value">CSE370</span></div>
+<div class="meta-pill"><span class="meta-pill-label">Exam</span><span class="meta-pill-value">Midterm</span></div>
+<div class="meta-pill"><span class="meta-pill-label">Date</span><span class="meta-pill-value">2026-07-29</span></div>
+<div class="meta-pill"><span class="meta-pill-label">Time</span><span class="meta-pill-value">4:30 PM</span></div>
+<div class="meta-pill"><span class="meta-pill-label">Room</span><span class="meta-pill-value">08A-02C</span></div>
+<div class="meta-pill"><span class="meta-pill-label">Weight</span><span class="meta-pill-value">20% (conflict, see notes)</span></div>
+</div>
+
+<section class="card card-scan" id="scan">
+<div class="card-header" onclick="toggleCard(this)">
+<span class="card-icon">⚡</span><span class="card-title" style="color:var(--scan-text)">Morning Quick Scan</span>
+<span class="card-chevron" style="color:var(--scan-text);opacity:.6">▼</span>
+</div>
+<div class="card-body">
+<div class="scan-grid">
+<div class="scan-tile tile-high"><div class="scan-tile-label">Must Know Cold</div><div class="scan-tile-value">Normalization: 1NF→2NF→3NF, what each removes. RA: all 8 operators + symbols. Mapping Steps 1–8D.</div></div>
+<div class="scan-tile tile-warn"><div class="scan-tile-label">Most Likely Tested</div><div class="scan-tile-value">Given a scenario/FDs → normalize to 3NF showing each intermediate schema. ER/EER→relational mapping. Write RA for a query.</div></div>
+<div class="scan-tile"><div class="scan-tile-label">Common Trap</div><div class="scan-tile-value">RA grading is strict from the first operator — one early mistake zeroes the whole answer, no partial credit. Build incrementally, verify each step.</div></div>
+<div class="scan-tile tile-sig"><div class="scan-tile-label">Scope Note</div><div class="scan-tile-value">SQL is NOT on this exam (lab-only). Storage/Indexing/Transactions are Final-track, not here.</div></div>
+</div>
+<hr class="scan-divider">
+<p style="font-size:.8rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Top things to have ready before entering the exam:</p>
+<ol class="scan-list">
+<li>1NF/2NF/3NF definitions + the anomaly each fixes (insertion/deletion/update) — do one normalization by hand as warm-up.</li>
+<li>All 8 RA operators (σ π ρ ∪ ∩ − × ⋈) with correct subscript notation — write one query cold before the exam.</li>
+<li>ER→Relational mapping steps 1–5 (regular entity, weak entity, N:M, 1:N, 1:1) — know which needs cross-referencing vs. foreign-key approach.</li>
+<li>EER→Relational: disjoint/overlapping (d/o) and total/partial specialization — know when to use option 8A vs 8B vs 8C vs 8D.</li>
+<li>4 relational integrity constraints (domain, key, entity integrity, referential integrity) and what INSERT/DELETE/UPDATE can violate.</li>
+</ol>
+</div>
+</section>
+
+<section class="card" id="intro">
+<div class="card-header" onclick="toggleCard(this)"><span class="card-icon">📖</span><span class="card-title">1. Introduction to Databases</span><span class="card-chevron">▼</span></div>
+<div class="card-body">
+<p class="section-intro">Lecture 1, Ch 1–2. Lowest-stakes topic — likely 1 short question, not a full analytical question.</p>
+<div class="concept imp-low">
+<div class="concept-title">DBMS vs. File System <span class="badge badge-low">LOW</span></div>
+<div class="concept-body"><p>A DBMS solves the redundancy, inconsistency, and lack of concurrency-control problems of flat file systems by centralizing data with a shared schema, integrity constraints, and controlled access.</p></div>
+</div>
+<div class="concept imp-low">
+<div class="concept-title">Three-Schema Architecture <span class="badge badge-low">LOW</span></div>
+<div class="concept-body"><p><strong>External</strong> (user views) → <strong>Conceptual</strong> (structure/constraints for the whole DB) → <strong>Internal</strong> (physical storage structures, access paths/indexes).</p></div>
+</div>
+<div class="concept imp-low">
+<div class="concept-title">Data Independence <span class="badge badge-low">LOW</span></div>
+<div class="concept-body"><p>Ability to change a schema at one level without impacting the level above it. <strong>Logical</strong>: change the conceptual schema without changing external schemas/apps (e.g. add a column not shown in the app). <strong>Physical</strong>: change the internal schema without changing the conceptual schema (e.g. reorganize file structure or add an index).</p></div>
+</div>
+<div class="concept imp-low">
+<div class="concept-title">Schema vs. State <span class="badge badge-low">LOW</span></div>
+<div class="concept-body"><p><strong>Schema</strong> = the structure/description of a database (should rarely change). <strong>State</strong> (a.k.a. instance/occurrence/snapshot) = the actual data at a moment in time (changes on every update). DDL changes the schema; DML changes the state.</p></div>
+</div>
+</div>
+</section>
+
+<section class="card" id="er">
+<div class="card-header" onclick="toggleCard(this)"><span class="card-icon">📖</span><span class="card-title">2. ER Model</span><span class="card-chevron">▼</span></div>
+<div class="card-body">
+<p class="section-intro">Lecture 2, Ch 3.</p>
+<div class="concept imp-high">
+<div class="concept-title">Entity Sets & Attribute Types <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body"><p>Entity = a distinguishable real-world object. Attribute types: <strong>simple</strong> (atomic), <strong>composite</strong> (has sub-parts, e.g. Address→City/Street), <strong>multi-valued</strong> (double oval, e.g. Phone), <strong>derived</strong> (dotted oval, e.g. Age from DOB — not stored). <strong>Key attribute</strong>: underlined, unique per entity, must not be multivalued — an entity can have more than one key attribute.</p></div>
+</div>
+<div class="concept imp-high">
+<div class="concept-title">Relationship Sets & Cardinality <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body"><p>Cardinality ratios: 1:1, 1:N, M:N — written on the connecting lines. <strong>Participation constraint</strong>: total/mandatory (double line, every entity instance must participate) vs. partial/optional (single line). <strong>Degree</strong> = number of participating entity types: 2 = binary, 3 = ternary, n = n-ary. A relationship needing its own key (weak entity's owner link) is an <strong>identifying relationship</strong> — shown as a double diamond.</p></div>
+</div>
+<div class="analytical">
+<div class="analytical-head" onclick="toggleAnalytical(this)"><span class="q-num">Ex</span><span class="q-title">Worked example: XYZ Company employee/dept/project ER diagram</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span></div>
+<div class="analytical-body">
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div class="step-body">EMPLOYEE (Ssn, Name[Fname,Minit,Lname], Bdate, Address, Sex, Salary) — regular entity, Ssn is key.</div></div>
+<div class="step"><div class="step-num">2</div><div class="step-body">DEPARTMENT (Name, Number, Locations[multivalued]) — WORKS_FOR (N:1 Employee→Dept), MANAGES (1:1), CONTROLS (1:N Dept→Project).</div></div>
+<div class="step"><div class="step-num">3</div><div class="step-body">PROJECT (Name, Number, Location) — WORKS_ON is M:N between Employee and Project, with relationship attribute Hours.</div></div>
+<div class="step"><div class="step-num">4</div><div class="step-body">SUPERVISION is a recursive 1:N relationship on Employee (Supervisor/Supervisee roles). DEPENDENT is a <strong>weak entity</strong> (double rectangle) identified via DEPENDENTS_OF, partial key = Name.</div></div>
+</div>
+<div class="callout callout-insight"><strong>Key insight:</strong> This exact diagram reappears in the Schema Mapping lecture as the canonical worked example for ER→relational conversion — know it in both directions.</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="card" id="eer">
+<div class="card-header" onclick="toggleCard(this)"><span class="card-icon">📖</span><span class="card-title">3. EER Model</span><span class="card-chevron">▼</span></div>
+<div class="card-body">
+<p class="section-intro">Lecture 3, Ch 4. Extends ER with subclass/superclass, inheritance, specialization/generalization.</p>
+<div class="concept imp-high">
+<div class="concept-title">Specialization vs. Generalization <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body">
+<ul>
+<li><strong>Specialization</strong> (top-down): defining a set of subclasses of a superclass, based on some distinguishing characteristic of its entities (e.g. Student → {Undergrad, Graduate} by degree level).</li>
+<li><strong>Generalization</strong> (bottom-up): the reverse — defining a superclass from several existing entity types that share common attributes (e.g. TheoryRoom + LabRoom → Classroom, with shared attributes like RoomNo/capacity/boardType moved up and only local attributes like equipmentList/type left in the subclasses).</li>
+<li>A superclass can have <strong>multiple independent specializations</strong> at once — e.g. Faculty can be specialized simultaneously by contract type {Contractual, Full-time}, by designation {Lecturer, Assistant Prof, Associate Prof, Prof}, and by department-head status {DeptHead}.</li>
+<li>A subclass can be shared by more than one superclass (a <strong>lattice</strong>, not just a tree) — e.g. StudentTutor can be a subclass of both Student and Employee at once. Subclass/superclass is also called an <strong>IS-A relationship</strong> (an Undergrad IS-A Student).</li>
+</ul>
+</div>
+</div>
+<div class="concept imp-high">
+<div class="concept-title">Inheritance & Local Attributes <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body"><p>A subclass entity inherits <strong>all</strong> attributes and relationships of its superclass (and, transitively, of every ancestor superclass up the hierarchy), plus it may define its own <strong>local</strong> attributes/relationships. If an entity is a member of any subclass, it <strong>must</strong> also belong to the superclass — but a superclass member need not belong to any subclass (unless the specialization is total).</p></div>
+</div>
+<div class="concept imp-high">
+<div class="concept-title">Disjoint/Overlapping & Total/Partial <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body">
+<ul>
+<li><strong>Disjoint (d)</strong>: an entity can belong to at most one subclass of that specialization. <strong>Overlapping (o)</strong>: an entity can belong to more than one subclass of the same specialization simultaneously.</li>
+<li><strong>Total</strong> (double line from superclass to circle): every superclass member must belong to at least one subclass. <strong>Partial</strong> (single line): membership is optional. 4 combinations exist: disjoint-total, disjoint-partial, overlapping-total, overlapping-partial.</li>
+</ul>
+<div class="callout callout-warn"><strong>Common error:</strong> Confusing disjoint/overlapping (can an entity be in >1 subclass?) with total/partial (must every entity be in some subclass?) — these are independent, orthogonal constraints.</div>
+</div>
+</div>
+<div class="concept imp-med">
+<div class="concept-title">Weak Entities (recap from ER) <span class="badge badge-med">MED</span></div>
+<div class="concept-body"><p>No key of its own — identified only via a foreign key to its owner entity plus a partial key. Shown as a double-outlined rectangle with a double-outlined diamond identifying relationship.</p></div>
+</div>
+<div class="analytical">
+<div class="analytical-head" onclick="toggleAnalytical(this)"><span class="q-num">Ex</span><span class="q-title">Worked example (from the lecture's own practice slide): University Person hierarchy</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span></div>
+<div class="analytical-body">
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div class="step-body">PERSON (Ssn, Name, Sex, Address, Birth_date) is the superclass. "There are only 3 types of persons: Employee, Alumnus, Student" and "a person can be of different types at the same time" → specialization is <strong>total</strong> (every person is one of the 3) and <strong>overlapping (o)</strong> (can be more than one, e.g. an employee who is also an alumnus).</div></div>
+<div class="step"><div class="step-num">2</div><div class="step-body">EMPLOYEE adds Salary. "Employees must belong to only 1 type: Staff, Faculty, Student Assistant" → <strong>disjoint (d), total</strong>.</div></div>
+<div class="step"><div class="step-num">3</div><div class="step-body">STUDENT adds Major. "Students can be in any one of only two types: undergraduate or graduate" → <strong>disjoint (d), total</strong> — GRADUATE_STUDENT adds Degree_program, UNDERGRADUATE_STUDENT adds Class.</div></div>
+<div class="step"><div class="step-num">4</div><div class="step-body">STUDENT_ASSISTANT (local attribute Percent_time) is a <strong>shared subclass</strong> — it inherits from both EMPLOYEE and STUDENT (lattice, not tree). "Can be any one of only two types: Research and Teaching assistant" → <strong>disjoint (d), total</strong> — RESEARCH_ASSISTANT adds Project, TEACHING_ASSISTANT adds Course.</div></div>
+<div class="step"><div class="step-num">5</div><div class="step-body">ALUMNUS has a composite-multivalued attribute Degrees(Year, Degree, Major) — one alumnus can hold several degrees.</div></div>
+</div>
+<div class="callout callout-insight"><strong>Key insight:</strong> This single diagram demonstrates almost every EER concept at once — overlapping + disjoint in the same hierarchy, a shared/lattice subclass, and a composite-multivalued attribute. If one comprehensive EER question appears, this is the shape it's likely to take.</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="card" id="relmodel">
+<div class="card-header" onclick="toggleCard(this)"><span class="card-icon">📖</span><span class="card-title">4. Relational Model & Constraints</span><span class="card-chevron">▼</span></div>
+<div class="card-body">
+<p class="section-intro">Lecture 4, Ch 5.</p>
+<div class="concept imp-high">
+<div class="concept-title">Relation, Schema, State <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body"><p>Relation = table. Schema = R(A1,...,An) — the structure. State = the actual data at a point in time. Tuples are <strong>unordered</strong>; attributes are <strong>ordered</strong> (reordering columns changes the schema).</p></div>
+</div>
+<div class="concept imp-high">
+<div class="concept-title">Superkey → Candidate Key → Primary Key <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body">
+<ul>
+<li><strong>Superkey</strong>: any attribute set with unique values per tuple.</li>
+<li><strong>Key</strong>: a <em>minimal</em> superkey — removing any attribute breaks uniqueness.</li>
+<li>All keys of a relation are <strong>candidate keys</strong>; exactly one is chosen as the <strong>primary key</strong> (convention: smallest value set, e.g. ID over Email).</li>
+<li><strong>Foreign key</strong>: references a primary key of another (or the same, for recursive) relation.</li>
+</ul>
+</div>
+</div>
+<div class="concept imp-high">
+<div class="concept-title">Four Relational Integrity Constraints <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body">
+<ul>
+<li><strong>Domain constraint</strong>: every value must be from its attribute's declared domain (type/range), or NULL if allowed.</li>
+<li><strong>Key constraint</strong>: every key value must be unique across tuples.</li>
+<li><strong>Entity integrity constraint</strong>: no primary key attribute (or any component if composite) may be NULL.</li>
+<li><strong>Referential integrity constraint</strong>: a foreign key value must either match an existing primary key value in the referenced table, or be NULL (only if the FK isn't also part of this table's own primary key).</li>
+</ul>
+<div class="callout callout-exam"><strong>Exam note:</strong> INSERT can violate all 4 constraints. DELETE can only violate referential integrity (of rows referencing the deleted key). UPDATE's violation risk depends on which attribute is modified — same rules as insert/delete combined.</div>
+</div>
+</div>
+<div class="concept imp-med">
+<div class="concept-title">ON DELETE / ON UPDATE Actions <span class="badge badge-med">MED</span></div>
+<div class="concept-body"><p><strong>Restrict</strong> (block the operation), <strong>Cascade</strong> (propagate the delete/update to referencing rows), <strong>Set Null</strong> (only valid if the FK is not part of the referencing table's own primary key).</p></div>
+</div>
+<div class="analytical">
+<div class="analytical-head" onclick="toggleAnalytical(this)"><span class="q-num">Ex</span><span class="q-title">SQL DDL enforcing all constraints (worked example)</span><span class="badge badge-med">MED</span><span class="card-chevron">▼</span></div>
+<div class="analytical-body">
+<div class="code-block"><pre><code>CREATE TABLE Student (
+  ID INT,
+  Name VARCHAR(100) NOT NULL,
+  EmailAdd VARCHAR(100) UNIQUE,
+  CGPA DECIMAL(3,2),
+  Dept CHAR(3),
+  PRIMARY KEY (ID),
+  FOREIGN KEY (Dept) REFERENCES Department(DeptID),
+  CHECK (CGPA >= 0.00 AND CGPA <= 4.00)
+);</code></pre></div>
+<div class="callout callout-insight"><strong>Key insight:</strong> PRIMARY KEY enforces key + entity integrity together. UNIQUE enforces key constraint on non-PK candidate keys. FOREIGN KEY...REFERENCES enforces referential integrity. CHECK/data type enforces domain.</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="card" id="mapping">
+<div class="card-header" onclick="toggleCard(this)"><span class="card-icon">🧮</span><span class="card-title">5. ER/EER → Relational Schema Mapping</span><span class="card-chevron">▼</span></div>
+<div class="card-body">
+<p class="section-intro">Lecture 5. This is the algorithmic core of the midterm — expect a full scenario-to-schema question.</p>
+<div class="concept imp-high">
+<div class="concept-title">Steps 1–7 (ER → Relational) <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body">
+<ul>
+<li><strong>Step 1 — Regular entities:</strong> one table per entity; simple attributes + composite sub-parts become columns; multivalued deferred to Step 6; one candidate key underlined as PK.</li>
+<li><strong>Step 2 — Weak entities:</strong> owner's PK added as FK; combined with weak entity's partial key = weak entity's PK.</li>
+<li><strong>Step 3 — Binary N:M:</strong> separate relationship table; both entities' PKs added as FKs, together forming the PK (cross-referencing approach).</li>
+<li><strong>Step 4 — Binary 1:N:</strong> foreign-key approach — PK of the "1" side entity added as FK into the "N" side table (space-efficient; cross-referencing works but wastes space).</li>
+<li><strong>Step 5 — Binary 1:1:</strong> 3 options — cross-referencing, merged relation, or foreign-key (put FK on the side with <strong>total participation</strong> to avoid NULLs).</li>
+<li><strong>Step 6 — Multivalued attributes:</strong> separate table; owner's PK as FK + the attribute value, both underlined as combined PK.</li>
+<li><strong>Step 7 — N-ary relationships:</strong> separate table; all participating entities' PKs added as FKs forming the combined PK.</li>
+</ul>
+</div>
+</div>
+<div class="concept imp-high">
+<div class="concept-title">Step 8 — EER Specialization/Generalization (4 options) <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body">
+<ul>
+<li><strong>8A — Multiple tables (superclass + each subclass):</strong> always valid for any disjoint/overlapping, total/partial combination. Superclass PK becomes FK = PK in each subclass table.</li>
+<li><strong>8B — Subclass tables only (no superclass table):</strong> only valid if specialization is <strong>total</strong> — otherwise members not in any subclass are lost.</li>
+<li><strong>8C — Single table, one type attribute:</strong> only valid if <strong>disjoint</strong> — one discriminator column (e.g. StudentType) suffices only when membership is mutually exclusive.</li>
+<li><strong>8D — Single table, N flag attributes:</strong> works for any constraint combination but wastes space for disjoint cases (N boolean flag columns instead of 1).</li>
+</ul>
+<div class="callout callout-warn"><strong>Common error:</strong> Picking 8B or 8C without checking the total/partial or disjoint/overlapping constraint first — these options are conditionally valid, not universally applicable like 8A/8D.</div>
+</div>
+</div>
+<div class="analytical">
+<div class="analytical-head" onclick="toggleAnalytical(this)"><span class="q-num">Ex</span><span class="q-title">Worked example: EMPLOYEE/DEPARTMENT/PROJECT ER → relational tables (cross-check with Step 1–7)</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span></div>
+<div class="analytical-body">
+<table class="schema"><tr><th>Table</th><th>Columns</th></tr>
+<tr><td>EMPLOYEE</td><td>Fname, Minit, Lname, <u>Ssn</u>, Bdate, Address, Sex, Salary, Super_ssn (FK→Employee), Dno (FK→Department)</td></tr>
+<tr><td>DEPARTMENT</td><td>Dname, <u>Dnumber</u>, Mgr_ssn (FK), Mgr_start_date</td></tr>
+<tr><td>DEPT_LOCATIONS</td><td><u>Dnumber</u> (FK), <u>Dlocation</u></td></tr>
+<tr><td>PROJECT</td><td>Pname, <u>Pnumber</u>, Plocation, Dnum (FK)</td></tr>
+<tr><td>WORKS_ON</td><td><u>Essn</u> (FK), <u>Pno</u> (FK), Hours</td></tr>
+<tr><td>DEPENDENT</td><td><u>Essn</u> (FK), <u>Dependent_name</u>, Sex, Bdate, Relationship</td></tr>
+</table>
+<div class="callout callout-insight"><strong>Pattern:</strong> Dept_Locations = multivalued attribute (Step 6). Works_On = M:N relationship (Step 3). Project→Department uses Step 4 (1:N, FK on the N side). Dependent = weak entity (Step 2).</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="card" id="norm">
+<div class="card-header" onclick="toggleCard(this)"><span class="card-icon">📖</span><span class="card-title">6. Normalization</span><span class="card-chevron">▼</span></div>
+<div class="card-body">
+<p class="section-intro">Lecture 6. Flagged as the historically hardest-scoring topic — allocate extra practice time. <strong>Scope note (confirmed by full slide review):</strong> the deck teaches 1NF, 2NF, and 3NF in full, each with a definition and worked example. BCNF is named only once, on the "Normal Forms" overview slide ("normal forms are 1NF, 2NF, 3NF, BCNF, 4NF, 5NF... typically normalized up to 3NF and sometimes BCNF") — no BCNF definition or example is given anywhere in the deck. Treat 1NF/2NF/3NF as the confirmed depth for this exam.</p>
+<div class="concept imp-high">
+<div class="concept-title">Why Normalize — the Three Anomalies <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body"><ul><li><strong>Insertion anomaly:</strong> can't add a fact without an unrelated fact also being present.</li><li><strong>Deletion anomaly:</strong> deleting one fact accidentally destroys another, unrelated fact.</li><li><strong>Modification (update) anomaly:</strong> a fact stored redundantly across rows must be updated in every row, or the data becomes inconsistent.</li></ul></div>
+</div>
+<div class="concept imp-high">
+<div class="concept-title">Functional Dependencies (FDs) <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body"><p>X → Y means: for any two tuples, if they agree on X, they must agree on Y. FDs are the formal basis for every normal form check — always identify the primary key and all FDs first.</p></div>
+</div>
+<div class="concept imp-high">
+<div class="concept-title">1NF / 2NF / 3NF Definitions <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body">
+<ul>
+<li><strong>1NF:</strong> no multi-valued or composite attributes in any cell; no nested tables.</li>
+<li><strong>2NF:</strong> 1NF + no <strong>partial dependency</strong> — no non-prime attribute depends on only part of a composite primary key.</li>
+<li><strong>3NF:</strong> 2NF + no <strong>transitive dependency</strong> — no non-prime attribute depends on another non-prime attribute (only on the whole key).</li>
+</ul>
+</div>
+</div>
+<div class="analytical">
+<div class="analytical-head" onclick="toggleAnalytical(this)"><span class="q-num">Ex</span><span class="q-title">Worked example: Student(StID, CourseCode, Semester, StudentName, AttemptedCredits, CourseTitle, Grade, ProjID, ProjectMarks, ProjectName) → normalize to 3NF</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span></div>
+<div class="analytical-body">
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div class="step-body"><strong>FDs given:</strong> StID→StudentName; CourseCode→CourseTitle; StID,Semester→AttemptedCredits; ProjID→ProjectName,ProjectMarks. PK = {StID, CourseCode, Semester}.</div></div>
+<div class="step"><div class="step-num">2</div><div class="step-body"><strong>1NF:</strong> already satisfied (no multivalued/composite cells, no nested tables).</div></div>
+<div class="step"><div class="step-num">3</div><div class="step-body"><strong>Not 2NF:</strong> partial dependencies exist — StudentName depends on only StID (not full key), CourseTitle on only CourseCode, AttemptedCredits on only {StID,Semester}. Decompose into: Student(StID,StudentName), Course(CourseCode,CourseTitle), Student_Credits(StID,Semester,AttemptedCredits), Student_Grades(StID,CourseCode,Semester,Grade,ProjID,ProjectMarks,ProjectName).</div></div>
+<div class="step"><div class="step-num">4</div><div class="step-body"><strong>Still not 3NF:</strong> in Student_Grades, ProjectName/ProjectMarks depend transitively on ProjID (a non-prime attribute), not on the full key. Decompose further: Student_Grades(StID,CourseCode,Semester,Grade,ProjID) + Student_Projects(ProjID,ProjectMarks,ProjectName).</div></div>
+<div class="step"><div class="step-num">5</div><div class="step-body">Final 3NF schema: 5 tables — Student, Course, Student_Credits, Student_Grades, Student_Projects.</div></div>
+</div>
+<div class="callout callout-exam"><strong>Exam note:</strong> The practice sheet variant of this question explicitly instructs "show the complete current schema after EACH normalization step" — losing marks for skipping intermediate schemas is a real risk; don't jump straight to the final answer.</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="card" id="ra">
+<div class="card-header" onclick="toggleCard(this)"><span class="card-icon">🧮</span><span class="card-title">7. Relational Algebra</span><span class="card-chevron">▼</span></div>
+<div class="card-body">
+<p class="section-intro">Lecture 7, Ch 8. <strong>Zero partial-credit risk</strong> per classmate report — grading is strict from the first operator. Build expressions incrementally and verify each step.</p>
+<div class="concept imp-high">
+<div class="concept-title">Unary Operations (1 relation → 1 relation) <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body">
+<ul>
+<li><strong>SELECT σ<sub>C</sub>(R)</strong> — filters tuples by condition C (=, &lt;, ≤, &gt;, ≥, ≠, combined with AND/OR/NOT).</li>
+<li><strong>PROJECT π<sub>A1,...,An</sub>(R)</strong> — returns specified columns, duplicates removed (set semantics).</li>
+<li><strong>RENAME ρ<sub>R'(B1,...,Bn)</sub>(R)</strong> — renames the relation and/or its attributes; changes schema, not instance.</li>
+</ul>
+</div>
+</div>
+<div class="concept imp-high">
+<div class="concept-title">Binary Operations (2 relations → 1 relation) <span class="badge badge-high">HIGH</span></div>
+<div class="concept-body">
+<ul>
+<li><strong>UNION R∪S, INTERSECTION R∩S, DIFFERENCE R−S</strong> — require R and S to be <strong>union-compatible</strong>: same number of attributes, same order, compatible domains.</li>
+<li><strong>CARTESIAN PRODUCT R×S</strong> — combines every tuple of R with every tuple of S; R×S ≠ S×R; rarely meaningful alone.</li>
+<li><strong>JOIN R⋈<sub>C</sub>S</strong> — equivalent to σ<sub>C</sub>(R×S); merges on a condition over common/related attributes.</li>
+</ul>
+<div class="callout callout-insight"><strong>Why it matters:</strong> SQL's SELECT/FROM/WHERE/GROUP BY/HAVING/ORDER BY compiles internally into an RA tree ("logical plan") before execution — this is literally how a real RDBMS query optimizer works.</div>
+</div>
+</div>
+<div class="concept imp-med">
+<div class="concept-title">Query Trees <span class="badge badge-med">MED</span></div>
+<div class="concept-body"><p>Internal representation of an RA expression: leaf nodes = base tables, internal nodes = operations (σ, π, ρ, ⋈), root = final result. Draw bottom-up: base tables first, then apply operations upward matching the expression's nesting.</p></div>
+</div>
+<div class="analytical">
+<div class="analytical-head" onclick="toggleAnalytical(this)"><span class="q-num">Ex</span><span class="q-title">Worked example set — schema: Student(SID,SName,address,dept,totalCredits), ST(SID,assignedCourse), Faculty(FIN,FName,LName,Desk#), Course(CCode,CName), FacultyCourses(FIN,CCode,Section)</span><span class="badge badge-high">HIGH</span><span class="card-chevron">▼</span></div>
+<div class="analytical-body">
+<div class="steps">
+<div class="step"><div class="step-num">1</div><div class="step-body">Students with ≥70 credits from 'CS' dept: <code>σ<sub>totalCredits≥70 AND dept='CS'</sub>(Student)</code></div></div>
+<div class="step"><div class="step-num">2</div><div class="step-body">FName and Desk# of all faculty: <code>π<sub>FName,Desk#</sub>(Faculty)</code></div></div>
+<div class="step"><div class="step-num">3</div><div class="step-body">SID, SName of Students from 'CSE' dept: <code>π<sub>SID,SName</sub>(σ<sub>dept='CSE'</sub>(Student))</code></div></div>
+<div class="step"><div class="step-num">4</div><div class="step-body">Rename Course's CCode,CName to Code,CTitle: <code>ρ<sub>Code,CTitle</sub>(Course)</code></div></div>
+<div class="step"><div class="step-num">5</div><div class="step-body">ST's SName, dept, assignedCourse (needs a join first): <code>π<sub>SName,dept,assignedCourse</sub>(ST ⋈<sub>SID=SID</sub> Student)</code></div></div>
+<div class="step"><div class="step-num">6</div><div class="step-body">Faculty FName/Desk# teaching CSE370 or CSE230: <code>π<sub>FName,Desk#</sub>(σ<sub>CCode='CSE370' OR CCode='CSE230'</sub>(Faculty ⋈<sub>FIN=FIN</sub> FacultyCourses))</code></div></div>
+<div class="step"><div class="step-num">7</div><div class="step-body">Faculty FName/Desk# teaching 'Database Systems' or 'AI' (needs course name, so join Course too — use assignment operator to decompose): <code>R ← (Faculty ⋈<sub>FIN=FIN</sub> FacultyCourses) ⋈<sub>CCode=CCode</sub> Course;</code>&nbsp;&nbsp;<code>π<sub>FName,Desk#</sub>(σ<sub>CCode='Database Systems' OR CCode='AI'</sub>(R))</code></div></div>
+</div>
+<div class="callout callout-insight"><strong>Pattern:</strong> When a query needs a column that lives on a different table than the filter condition, join first, then project/select. Use the assignment operator (←) to break a 3+ table query into readable intermediate steps — this also reduces the blast radius of a single mistake under the strict grading rule.</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="card" id="probable">
+<div class="card-header" onclick="toggleCard(this)"><span class="card-icon">🔮</span><span class="card-title">Probable Questions</span><span class="card-chevron">▼</span></div>
+<div class="card-body">
+<div class="callout callout-note"><strong>Source:</strong> Practice sheet content, confirmed exam syllabus lecture order, and classmate reports on grading behavior. Midterm is centrally set — this is topic-centrality reasoning, not faculty-style pattern-matching.</div>
+<div class="probable-list">
+<div class="probable-item"><div class="prob-rank rank-1">1</div><div class="prob-content"><div class="prob-q">Given a schema + FDs, normalize step-by-step to 3NF, showing the schema after each step.</div><div class="prob-reason">Directly matches the practice sheet's explicit instruction format; Normalization flagged as historically hardest-scoring topic.</div></div></div>
+<div class="probable-item"><div class="prob-rank rank-2">2</div><div class="prob-content"><div class="prob-q">Write 3–5 RA expressions against a given schema (mix of select/project/join, possibly one requiring the assignment operator).</div><div class="prob-reason">Last confirmed lecture topic (Lecture 7); zero-partial-credit grading risk explicitly flagged; matches practice sheet's "Example Problems I/II" format exactly.</div></div></div>
+<div class="probable-item"><div class="prob-rank rank-3">3</div><div class="prob-content"><div class="prob-q">Given an ER/EER diagram (or scenario to draw one), map it to a relational schema — including at least one weak entity or specialization.</div><div class="prob-reason">Schema Mapping (Lecture 5) is the longest, most example-heavy lecture in the confirmed syllabus and integrates ER+EER+Relational Model content together.</div></div></div>
+<div class="probable-item"><div class="prob-rank rank-n">4</div><div class="prob-content"><div class="prob-q">Identify which relational integrity constraint(s) a given INSERT/DELETE/UPDATE would violate.</div><div class="prob-reason">Directly testable short-answer format explicitly walked through in Lecture 4 across 3 dedicated slides.</div></div></div>
+<div class="probable-item"><div class="prob-rank rank-n">5</div><div class="prob-content"><div class="prob-q">Short-answer: define/distinguish disjoint vs. overlapping, or total vs. partial specialization.</div><div class="prob-reason">Explicit terminology pair introduced in EER; commonly conflated by students (flagged as a common error above).</div></div></div>
+</div>
+</div>
+</section>
+
+<section class="card" id="mnemonics">
+<div class="card-header" onclick="toggleCard(this)"><span class="card-icon">🧠</span><span class="card-title">Mnemonics & Memory Aids</span><span class="card-chevron">▼</span></div>
+<div class="card-body">
+<div class="mnemonic"><div class="mnemonic-word">1NF → 2NF → 3NF ladder</div><div class="mnemonic-body">1NF kills <em>repeating groups</em>. 2NF kills <em>partial</em> dependency (needs a composite key to even apply). 3NF kills <em>transitive</em> dependency (non-key depending on non-key).</div></div>
+<div class="mnemonic"><div class="mnemonic-word">σπρ∪∩−×⋈</div><div class="mnemonic-body">Unary ops first (σ select, π project, ρ rename) — alphabetically-ish Greek. Binary ops need union-compatibility (∪∩−) except × and ⋈ which don't.</div></div>
+<div class="mnemonic"><div class="mnemonic-word">"1 side gets the FK on the N side"</div><div class="mnemonic-body">For 1:N mapping — the foreign key always lives on the table connected to the "N" (many) end, pointing back to the "1" end's primary key.</div></div>
+<div class="mnemonic"><div class="mnemonic-word">Total participation → put the FK there</div><div class="mnemonic-body">For 1:1 mapping via foreign-key approach — placing the FK on the entity with total participation avoids unnecessary NULLs.</div></div>
+</div>
+</section>
+
+</main>
+
+<script>
+function toggleCard(header){header.closest('.card').classList.toggle('collapsed');}
+function toggleAnalytical(header){header.closest('.analytical').classList.toggle('open');const chev=header.querySelector('.card-chevron');if(chev)chev.style.transform=header.closest('.analytical').classList.contains('open')?'rotate(0deg)':'rotate(-90deg)';}
+function toggleTheme(){const root=document.documentElement;const next=root.dataset.theme==='dark'?'light':'dark';root.dataset.theme=next;try{localStorage.setItem('rg-theme',next);}catch(e){}}
+(function(){try{const saved=localStorage.getItem('rg-theme');if(saved)document.documentElement.dataset.theme=saved;}catch(e){}})();
+</script>
+</body>
+</html>

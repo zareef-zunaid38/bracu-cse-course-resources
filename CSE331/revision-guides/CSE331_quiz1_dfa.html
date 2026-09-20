@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE331 — DFA & Cross Product | Revision</title>
+  <style>
+    :root[data-theme="light"] {
+      --bg:#f5f6fa;--surface:#ffffff;--surface-2:#f0f1f5;--border:#dde1eb;
+      --text:#1e2030;--text-muted:#6b7280;--accent:#2563eb;--accent-bg:#eff6ff;
+      --high:#dc2626;--high-bg:#fef2f2;--high-border:#fecaca;
+      --med:#b45309;--med-bg:#fffbeb;--med-border:#fde68a;
+      --low:#2563eb;--low-bg:#eff6ff;--low-border:#bfdbfe;
+      --scan-bg:#1e2030;--scan-text:#f8fafc;--scan-surface:#2d3048;--scan-border:#3d4160;
+      --code-bg:#1a1b26;--code-text:#c0caf5;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.1);
+      --shadow:0 2px 8px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.06);
+    }
+    :root[data-theme="dark"] {
+      --bg:#0d0f18;--surface:#181b2a;--surface-2:#212438;--border:#2e3250;
+      --text:#e2e8f0;--text-muted:#94a3b8;--accent:#60a5fa;--accent-bg:#1e2d45;
+      --high:#f87171;--high-bg:#2d1b1b;--high-border:#7f1d1d;
+      --med:#fbbf24;--med-bg:#2d2310;--med-border:#78350f;
+      --low:#60a5fa;--low-bg:#1e2d45;--low-border:#1e40af;
+      --scan-bg:#0d0f18;--scan-text:#e2e8f0;--scan-surface:#181b2a;--scan-border:#2e3250;
+      --code-bg:#0d0f18;--code-text:#c0caf5;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.3);--shadow:0 2px 8px rgba(0,0,0,.4);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;font-size:15px}
+    p{margin-bottom:.5rem;font-size:.9rem}
+    ul,ol{padding-left:1.3rem;font-size:.9rem}
+    li{margin-bottom:.3rem}
+    strong{font-weight:700}
+    .site-header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:var(--shadow-sm)}
+    .site-header-inner{max-width:920px;margin:0 auto;padding:.6rem 1.25rem;display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
+    .header-title{font-size:1rem;font-weight:800;letter-spacing:-.01em}
+    .header-sub{font-size:.78rem;color:var(--text-muted);margin-top:.1rem}
+    .theme-btn{flex-shrink:0;background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:.3rem .75rem;border-radius:.5rem;cursor:pointer;font-size:.82rem;font-family:inherit;transition:background .15s}
+    .theme-btn:hover{background:var(--border)}
+    .site-nav{background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;white-space:nowrap;padding:0 1rem;-ms-overflow-style:none;scrollbar-width:none}
+    .site-nav::-webkit-scrollbar{display:none}
+    .site-nav a{display:inline-block;color:var(--text-muted);text-decoration:none;font-size:.78rem;font-weight:500;padding:.55rem .6rem;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+    .site-nav a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+    .meta-bar{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem}
+    .meta-pill{background:var(--surface);border:1px solid var(--border);border-radius:.5rem;padding:.35rem .75rem;font-size:.78rem;display:flex;gap:.35rem;align-items:center;box-shadow:var(--shadow-sm)}
+    .meta-pill-label{color:var(--text-muted)}
+    .meta-pill-value{font-weight:700}
+    .container{max-width:920px;margin:0 auto;padding:1.25rem 1rem}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:.8rem;margin-bottom:1rem;overflow:hidden;box-shadow:var(--shadow-sm)}
+    .card-header{padding:.75rem 1.1rem;display:flex;align-items:center;gap:.6rem;background:var(--surface-2);border-bottom:1px solid var(--border);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+    .card-header:hover{background:var(--border)}
+    .card-icon{font-size:1rem;flex-shrink:0}
+    .card-title{font-size:.95rem;font-weight:700;flex:1}
+    .card-chevron{font-size:.75rem;color:var(--text-muted);transition:transform .2s;flex-shrink:0}
+    .card.collapsed .card-body{display:none}
+    .card.collapsed .card-chevron{transform:rotate(-90deg)}
+    .card-body{padding:1.1rem}
+    .card-scan{background:var(--scan-bg);border-color:var(--scan-border)}
+    .card-scan .card-header{background:var(--scan-surface);border-color:var(--scan-border)}
+    .card-scan .card-header:hover{background:var(--scan-border)}
+    .card-scan .card-title{color:var(--scan-text)}
+    .card-scan .card-icon{color:#fbbf24}
+    .card-scan .card-chevron{color:var(--scan-text);opacity:.6}
+    .card-scan .card-body{background:var(--scan-bg)}
+    .scan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.65rem;margin-bottom:.9rem}
+    .scan-tile{background:var(--scan-surface);border:1px solid var(--scan-border);border-radius:.55rem;padding:.75rem .85rem}
+    .scan-tile-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:#94a3b8;margin-bottom:.3rem}
+    .scan-tile-value{font-size:.88rem;font-weight:700;color:var(--scan-text);line-height:1.4}
+    .scan-tile.tile-high .scan-tile-label{color:#f87171}
+    .scan-tile.tile-warn .scan-tile-label{color:#fbbf24}
+    .scan-tile.tile-sig .scan-tile-label{color:#60a5fa}
+    .scan-divider{border:none;border-top:1px solid var(--scan-border);margin:.85rem 0}
+    .scan-list{color:var(--scan-text);font-size:.88rem}
+    .scan-list li{margin-bottom:.45rem}
+    .badge{display:inline-block;font-size:.67rem;font-weight:800;padding:.12rem .5rem;border-radius:999px;text-transform:uppercase;letter-spacing:.06em;line-height:1.4;flex-shrink:0}
+    .badge-high{background:var(--high-bg);color:var(--high);border:1px solid var(--high-border)}
+    .badge-med{background:var(--med-bg);color:var(--med);border:1px solid var(--med-border)}
+    .badge-low{background:var(--low-bg);color:var(--low);border:1px solid var(--low-border)}
+    .concept{border-left:3px solid var(--border);padding:.75rem .95rem;margin-bottom:.75rem;background:var(--surface-2);border-radius:0 .5rem .5rem 0}
+    .concept.imp-high{border-color:var(--high)}
+    .concept.imp-med{border-color:var(--med)}
+    .concept.imp-low{border-color:var(--low)}
+    .concept-title{font-weight:700;font-size:.92rem;display:flex;align-items:center;gap:.45rem;margin-bottom:.4rem;flex-wrap:wrap}
+    .concept-body{font-size:.88rem}
+    .qa{border:1px solid var(--border);border-radius:.55rem;margin-bottom:.65rem;overflow:hidden}
+    .qa-q{padding:.65rem .9rem;font-weight:600;font-size:.88rem;cursor:pointer;background:var(--surface-2);display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;user-select:none;-webkit-tap-highlight-color:transparent}
+    .qa-q:hover{background:var(--border)}
+    .qa-q-text{flex:1;line-height:1.5}
+    .qa-q-right{display:flex;align-items:center;gap:.4rem;flex-shrink:0}
+    .qa-toggle{font-size:.7rem;color:var(--text-muted)}
+    .qa-a{padding:.7rem .9rem;font-size:.88rem;border-top:1px solid var(--border);display:none;line-height:1.6}
+    .qa.open .qa-a{display:block}
+    .qa.open .qa-toggle::after{content:'▲'}
+    .qa-toggle::after{content:'▼'}
+    .analytical{border:1px solid var(--border);border-radius:.55rem;margin-bottom:.85rem;overflow:hidden}
+    .analytical-head{padding:.65rem .9rem;background:var(--surface-2);border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:.55rem;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+    .analytical-head:hover{background:var(--border)}
+    .q-num{font-weight:800;font-size:.82rem;color:var(--accent);flex-shrink:0;margin-top:.1rem}
+    .q-title{font-weight:600;font-size:.88rem;flex:1;line-height:1.5}
+    .analytical-body{padding:1rem;display:none}
+    .analytical.open .analytical-body{display:block}
+    .steps{display:flex;flex-direction:column;gap:.6rem}
+    .step{display:flex;gap:.7rem;align-items:flex-start}
+    .step-num{width:1.5rem;height:1.5rem;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;margin-top:.1rem}
+    .step-body{flex:1;font-size:.88rem;line-height:1.6}
+    .callout{border-radius:.45rem;padding:.6rem .85rem;font-size:.85rem;margin-top:.75rem;line-height:1.55}
+    .callout-insight{background:var(--accent-bg);border-left:3px solid var(--accent)}
+    .callout-insight strong{color:var(--accent)}
+    .callout-warn{background:var(--high-bg);border-left:3px solid var(--high)}
+    .callout-warn strong{color:var(--high)}
+    .callout-note{background:var(--surface-2);border-left:3px solid var(--text-muted)}
+    .callout-exam{background:var(--med-bg);border-left:3px solid var(--med)}
+    .callout-exam strong{color:var(--med)}
+    .formula{background:var(--surface-2);border:1px solid var(--border);border-radius:.5rem;padding:.75rem 1rem;margin-bottom:.75rem}
+    .formula-name{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:.4rem;font-weight:700}
+    .formula-display{font-family:'Fira Code','Courier New',monospace;font-size:.95rem;text-align:center;padding:.5rem;color:var(--accent);font-weight:600;overflow-x:auto;white-space:pre}
+    .formula-vars{font-size:.82rem;color:var(--text-muted);margin-top:.4rem}
+    .figure-wrap{margin-bottom:1.25rem}
+    .figure-caption{font-size:.8rem;text-align:center;color:var(--text-muted);margin-top:.4rem;font-style:italic}
+    .pattern-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem;margin-bottom:.85rem}
+    .pattern-tile{background:var(--surface-2);border:1px solid var(--border);border-radius:.5rem;padding:.7rem .85rem}
+    .pattern-tile-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:.25rem}
+    .pattern-freq{font-size:1.6rem;font-weight:900;color:var(--accent);line-height:1.1}
+    .pattern-desc{font-size:.78rem;color:var(--text-muted);margin-top:.2rem}
+    .probable-list{display:flex;flex-direction:column}
+    .probable-item{display:flex;gap:.75rem;align-items:flex-start;padding:.75rem 0;border-bottom:1px solid var(--border)}
+    .probable-item:last-child{border-bottom:none}
+    .prob-rank{width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.82rem;flex-shrink:0}
+    .rank-1{background:var(--high-bg);color:var(--high);border:2px solid var(--high-border)}
+    .rank-2{background:var(--med-bg);color:var(--med);border:2px solid var(--med-border)}
+    .rank-3{background:var(--low-bg);color:var(--low);border:2px solid var(--low-border)}
+    .rank-n{background:var(--surface-2);color:var(--text-muted);border:2px solid var(--border)}
+    .prob-content{flex:1}
+    .prob-q{font-size:.9rem;font-weight:600;line-height:1.5}
+    .prob-reason{font-size:.8rem;color:var(--text-muted);margin-top:.2rem;line-height:1.4}
+    .mnemonic{background:var(--med-bg);border:1px solid var(--med-border);border-radius:.5rem;padding:.75rem 1rem;margin-bottom:.6rem}
+    .mnemonic-word{font-weight:900;color:var(--med);font-size:1.05rem;margin-bottom:.3rem}
+    .mnemonic-body{font-size:.88rem}
+    .divider{border:none;border-top:1px solid var(--border);margin:.85rem 0}
+    .section-intro{font-size:.82rem;color:var(--text-muted);margin-bottom:.85rem;line-height:1.5}
+    /* Transition table */
+    table{border-collapse:collapse;width:100%;font-size:.85rem;margin:.75rem 0}
+    th,td{border:1px solid var(--border);padding:.4rem .7rem;text-align:center}
+    th{background:var(--surface-2);font-weight:700}
+    .td-accept{background:var(--accent-bg);font-weight:700;color:var(--accent)}
+    .td-start{background:var(--med-bg)}
+    .td-both{background:var(--high-bg);font-weight:700;color:var(--high)}
+    /* SVG wrapper */
+    .svg-wrap{color:var(--text);margin:.5rem 0}
+    @media print{.site-header,.site-nav,.theme-btn{display:none!important}.container{padding:0}.card{box-shadow:none;page-break-inside:avoid}.card-body,.qa-a,.analytical-body{display:block!important}.card.collapsed .card-body{display:block!important}}
+    @media(max-width:480px){body{font-size:14px}.site-header-inner{padding:.5rem .85rem}.container{padding:.85rem .65rem}.card-body{padding:.85rem}}
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div>
+      <div class="header-title">CSE331 — DFA Construction &amp; Cross Product</div>
+      <div class="header-sub">Quiz 1 &nbsp;·&nbsp; Week 5 &nbsp;·&nbsp; Faculty: TNF</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">☀ / ☾</button>
+  </div>
+</header>
+
+<nav class="site-nav" aria-label="Page sections">
+  <a href="#scan">⚡ Morning Scan</a>
+  <a href="#theory">📖 Theory</a>
+  <a href="#short-q">❓ Short Qs</a>
+  <a href="#analytical">🧮 Analytical</a>
+  <a href="#math">∑ Math</a>
+  <a href="#figures">📊 Figures</a>
+  <a href="#patterns">🎯 Patterns</a>
+  <a href="#probable">🔮 Probable Qs</a>
+  <a href="#mnemonics">🧠 Mnemonics</a>
+</nav>
+
+<main class="container">
+
+  <div class="meta-bar">
+    <div class="meta-pill"><span class="meta-pill-label">Course</span><span class="meta-pill-value">CSE331</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Topic</span><span class="meta-pill-value">DFA &amp; Cross Product</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Exam</span><span class="meta-pill-value">Quiz 1</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Date</span><span class="meta-pill-value">2026-07-01 · 8:10 AM</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Weight</span><span class="meta-pill-value">Part of 20%</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Built</span><span class="meta-pill-value">2026-06-30</span></div>
+  </div>
+
+  <!-- MORNING SCAN -->
+  <section class="card card-scan" id="scan">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">⚡</span>
+      <span class="card-title" style="color:var(--scan-text)">Morning Quick Scan</span>
+      <span class="card-chevron" style="color:var(--scan-text);opacity:.6">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="scan-grid">
+        <div class="scan-tile tile-high">
+          <div class="scan-tile-label">Must Know Cold</div>
+          <div class="scan-tile-value">5-tuple M = (Q, Σ, δ, q₀, F). δ is TOTAL — every state must have a transition for every symbol.</div>
+        </div>
+        <div class="scan-tile tile-warn">
+          <div class="scan-tile-label">Most Likely Tested</div>
+          <div class="scan-tile-value">2 large DFA constructions + 1 small DFA + 1 cross product. Announced by TNF.</div>
+        </div>
+        <div class="scan-tile">
+          <div class="scan-tile-label">Common Trap</div>
+          <div class="scan-tile-value">Missing transitions = invalid DFA. If you don't know where a state goes, add a dead (trap) state. Don't leave blanks.</div>
+        </div>
+        <div class="scan-tile tile-sig">
+          <div class="scan-tile-label">Faculty Signal</div>
+          <div class="scan-tile-value">TNF writes quizzes directly (not central). Pattern announced explicitly. Cross product will be intersection or union — know both accept conditions.</div>
+        </div>
+      </div>
+      <hr class="scan-divider">
+      <p style="font-size:.82rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Top 3 before entering the exam:</p>
+      <ol class="scan-list">
+        <li>Write the 5-tuple from memory. Define each component in one line. This is how you start every DFA question.</li>
+        <li>For DFA construction: ask "what does the machine need to remember?" — each distinct memory = one state. Draw the diagram, then trace one accepting string and one rejecting string to verify.</li>
+        <li>For cross product: build the state table row by row. Intersection accept = BOTH in accept; union accept = EITHER in accept. Don't confuse them.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- THEORY -->
+  <section class="card" id="theory">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📖</span>
+      <span class="card-title">Theory</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="concept imp-high">
+        <div class="concept-title">DFA — Formal Definition <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>A <strong>Deterministic Finite Automaton</strong> is a 5-tuple M = (Q, Σ, δ, q₀, F) where:</p>
+          <ul>
+            <li><strong>Q</strong> — finite, non-empty set of states</li>
+            <li><strong>Σ</strong> — finite input alphabet</li>
+            <li><strong>δ: Q × Σ → Q</strong> — transition function (must be total)</li>
+            <li><strong>q₀ ∈ Q</strong> — start state</li>
+            <li><strong>F ⊆ Q</strong> — set of accept states (may be empty)</li>
+          </ul>
+          <p style="margin-top:.5rem">The DFA accepts string w if reading w from q₀ ends in a state that belongs to F.</p>
+          <div class="callout callout-warn">
+            <strong>Critical:</strong> δ must be defined for every (state, symbol) pair. A DFA with undefined transitions is not a valid DFA. If a string leads to guaranteed rejection, route it to a dead state — never leave a transition undefined.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">DFA Construction Strategy <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>The design question is always: <strong>what does the machine need to remember at each point in the input?</strong> Each distinct "memory configuration" becomes one state.</p>
+          <ul>
+            <li>Counting mod n → n states (one per remainder value)</li>
+            <li>Tracking last k characters → up to |Σ|ᵏ states</li>
+            <li>Substring matching → states track "longest prefix of target matched so far"</li>
+          </ul>
+          <p style="margin-top:.4rem">After drawing: trace an accepting string and a rejecting string manually. If either gives the wrong result, your state design is wrong.</p>
+          <div class="callout callout-insight">
+            <strong>Process:</strong> (1) Identify what to remember → (2) Name states → (3) Fill transitions for every state × every symbol → (4) Mark start and accept states → (5) Verify with test strings.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">Dead (Trap) State <span class="badge badge-med">MED</span></div>
+        <div class="concept-body">
+          <p>A <strong>dead state</strong> is a non-accepting state where every transition loops back to itself. Once entered, the machine can never accept.</p>
+          <p>Needed when: the input seen so far makes acceptance permanently impossible, regardless of future input.</p>
+          <div class="callout callout-warn">
+            <strong>Common error:</strong> Not drawing the dead state explicitly. If your DFA has states that lack transitions for some symbol, it is invalid. Add the dead state and route those transitions there.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">Cross Product Construction <span class="badge badge-high">HIGH</span></div>
+        <div class="concept-body">
+          <p>Given M₁ = (Q₁, Σ, δ₁, q₁, F₁) and M₂ = (Q₂, Σ, δ₂, q₂, F₂), the cross product DFA is:</p>
+          <ul>
+            <li><strong>States:</strong> Q₁ × Q₂ = all pairs (r, s) where r ∈ Q₁ and s ∈ Q₂</li>
+            <li><strong>Start state:</strong> (q₁, q₂)</li>
+            <li><strong>Transition:</strong> δ((r, s), a) = (δ₁(r, a), δ₂(s, a)) — advance both simultaneously</li>
+            <li><strong>Accept (intersection):</strong> F = {(r, s) | r ∈ F₁ <em>and</em> s ∈ F₂}</li>
+            <li><strong>Accept (union):</strong> F = {(r, s) | r ∈ F₁ <em>or</em> s ∈ F₂}</li>
+          </ul>
+          <div class="callout callout-insight">
+            <strong>Key insight:</strong> The cross product runs both DFAs simultaneously. At every step, both components advance on the same input symbol. The combined state tracks where each machine is independently.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">Regular Operations Recap <span class="badge badge-low">LOW</span></div>
+        <div class="concept-body">
+          <p><em>Note: Regular expressions are excluded from this quiz (TNF announcement). Know this for context only.</em></p>
+          <p>Union (A ∪ B), Concatenation (A ∘ B), and Kleene Star (A*) are the three regular operations. DFAs are closed under all of them. The cross product directly constructs the DFA for union and intersection.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SHORT QUESTIONS -->
+  <section class="card" id="short-q">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">❓</span>
+      <span class="card-title">Short Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="section-intro">Tap a question to reveal the answer. Recall first.</p>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What are the 5 components of a DFA? State each component's type.</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          M = (Q, Σ, δ, q₀, F).<br>
+          <strong>Q</strong>: finite set of states.<br>
+          <strong>Σ</strong>: finite input alphabet.<br>
+          <strong>δ: Q × Σ → Q</strong>: total transition function.<br>
+          <strong>q₀ ∈ Q</strong>: start state.<br>
+          <strong>F ⊆ Q</strong>: set of accept states.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Why must δ be a total function? What happens if it is not?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          A DFA must process any input without getting stuck. If δ(q, a) is undefined for some state q and symbol a, the machine has no valid move when it reads a in state q — it is not a well-defined DFA. The fix is to add a dead (trap) state and route all "reject-forever" transitions there. Dead state has self-loops on every symbol and is not an accept state.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What is a dead (trap) state? Give an example of when one is needed.</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          A non-accepting state where every transition loops back to itself. Once entered, no future input can lead to acceptance. Example: DFA for "strings that start with 'a'" — if the first character is 'b', the machine can never accept regardless of what follows. Move to a dead state and loop there forever.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">DFA A has 3 states, DFA B has 4 states. How many states does their cross product have?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          3 × 4 = <strong>12 states</strong>. One combined state (rᵢ, sⱼ) for every pair where rᵢ ∈ Q_A and sⱼ ∈ Q_B. Note: not all 12 may be reachable from the start state, but the construction creates all of them. In practice you only need reachable states, but creating all of them first is safer in an exam.
+        </div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">How do accept states differ between intersection and union in cross product construction?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">
+          <strong>Intersection:</strong> (r, s) is an accept state if and only if r ∈ F₁ AND s ∈ F₂. Both components must be in their own accept states simultaneously.<br><br>
+          <strong>Union:</strong> (r, s) is an accept state if r ∈ F₁ OR s ∈ F₂. It is enough for at least one component to be accepting.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ANALYTICAL -->
+  <section class="card" id="analytical">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧮</span>
+      <span class="card-title">Analytical Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <!-- Q1: Large -->
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q1</span>
+          <span class="q-title">LARGE — Construct a DFA over {a, b} that accepts all strings containing "aba" as a substring.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron" style="transform:rotate(-90deg)">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body"><strong>What to remember:</strong> the longest suffix of input seen so far that is a prefix of "aba". This gives 4 memory configurations: none matched (q0), matched "a" (q1), matched "ab" (q2), matched "aba" (q3 — accept).</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body"><strong>States:</strong> Q = {q0, q1, q2, q3}. Start: q0. Accept: {q3}.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body"><strong>Transitions:</strong>
+                <table>
+                  <thead><tr><th>State</th><th>on a</th><th>on b</th><th>Note</th></tr></thead>
+                  <tbody>
+                    <tr class="td-start"><td><strong>q0</strong> (start)</td><td>q1</td><td>q0</td><td>"a" starts pattern; "b" resets</td></tr>
+                    <tr><td>q1</td><td>q1</td><td>q2</td><td>another "a" still holds "a" prefix; "b" advances to "ab"</td></tr>
+                    <tr><td>q2</td><td>q3</td><td>q0</td><td>"a" completes "aba"; "b" → "abb", no prefix matches → reset</td></tr>
+                    <tr class="td-accept"><td><strong>q3</strong> (accept)</td><td>q3</td><td>q3</td><td>pattern found; stay accepted regardless of future input</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body"><strong>Verify:</strong> Trace "baba": q0→q0→q1→q2→q3 ✓ (accept). Trace "ab": q0→q1→q2 (reject) ✓. Trace "aaba": q0→q1→q1→q2→q3 ✓ (accept).</div>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <strong>Common error:</strong> The transition q1 on 'a' goes back to q1, NOT to q0. "aa" still ends in "a", so the first character of "aba" is still matched. Many students reset to q0 here — wrong.
+          </div>
+          <div class="callout callout-exam">
+            <strong>Exam note:</strong> Always check q2 on 'b' carefully. "abb" has no prefix of "aba" as a suffix — it resets to q0, not q1. Draw the reset arrows; they are the hardest to get right.
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2: Large -->
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q2</span>
+          <span class="q-title">LARGE — Construct a DFA over {0, 1} that accepts strings where the number of 1s is divisible by 3.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron" style="transform:rotate(-90deg)">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body"><strong>What to remember:</strong> (count of 1s seen so far) mod 3. The remainder can be 0, 1, or 2 — giving 3 states.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body"><strong>States:</strong> Q = {r0, r1, r2}. Start: r0 (0 mod 3). Accept: {r0} only — 0 is divisible by 3, so the empty string is accepted.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body"><strong>Transitions:</strong>
+                <table>
+                  <thead><tr><th>State</th><th>on 0</th><th>on 1</th><th>Note</th></tr></thead>
+                  <tbody>
+                    <tr class="td-both"><td><strong>r0</strong> (start/accept)</td><td>r0</td><td>r1</td><td>#1s ≡ 0 mod 3</td></tr>
+                    <tr><td>r1</td><td>r1</td><td>r2</td><td>#1s ≡ 1 mod 3</td></tr>
+                    <tr><td>r2</td><td>r2</td><td>r0</td><td>#1s ≡ 2 mod 3</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body"><strong>Verify:</strong> "0" → r0→r0 (accept) ✓. "1" → r0→r1 (reject) ✓. "111" → r0→r1→r2→r0 (accept) ✓. "101" → r0→r1→r1→r2 (reject) ✓.</div>
+            </div>
+          </div>
+          <div class="callout callout-insight">
+            <strong>Key insight:</strong> 0s don't change the count — they are self-loops on every state. 1s cycle through remainders: 0→1→2→0→... This pattern applies to any "count mod n" problem with n states cycling on the counted symbol.
+          </div>
+          <div class="callout callout-exam">
+            <strong>Exam note:</strong> r0 is BOTH start AND accept (empty string has 0 ones, 0 is divisible by 3). Students sometimes forget r0 is an accept state. Mark it with a double circle.
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3: Small -->
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q3</span>
+          <span class="q-title">SMALL — Construct a DFA over {0, 1} that accepts strings ending in '0'.</span>
+          <span class="badge badge-med">MED</span>
+          <span class="card-chevron" style="transform:rotate(-90deg)">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body"><strong>What to remember:</strong> only the last character seen. Two cases: last char was 0, or it wasn't (empty string or last was 1). Both non-accepting cases behave identically → 2 states total.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body"><strong>States:</strong> Q = {qe, q0}. Start: qe (not accept — empty string does not end in 0). Accept: {q0}.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body"><strong>Transitions:</strong>
+                <table>
+                  <thead><tr><th>State</th><th>on 0</th><th>on 1</th></tr></thead>
+                  <tbody>
+                    <tr class="td-start"><td><strong>qe</strong> (start)</td><td>q0</td><td>qe</td></tr>
+                    <tr class="td-accept"><td><strong>q0</strong> (accept)</td><td>q0</td><td>qe</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body"><strong>Verify:</strong> "0" → qe→q0 ✓. "10" → qe→qe→q0 ✓. "01" → qe→q0→qe (reject) ✓. "" → qe (reject) ✓.</div>
+            </div>
+          </div>
+          <div class="callout callout-insight">
+            <strong>Key insight:</strong> Both "empty string" and "last char was 1" behave identically (transitions and accept status are the same), so they collapse into one state. If two situations are indistinguishable going forward, they are the same state.
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4: Cross Product -->
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q4</span>
+          <span class="q-title">CROSS PRODUCT — Intersection of Q2 and Q3: strings where #1s ≡ 0 (mod 3) AND the string ends in '0'.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron" style="transform:rotate(-90deg)">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body"><strong>Input DFAs:</strong> DFA A (Q2 above) has states {r0, r1, r2}; DFA B (Q3 above) has states {qe, q0}.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body"><strong>Cross product states:</strong> 3 × 2 = 6. Label: (rᵢ, qⱼ). Start: (r0, qe). For <strong>intersection</strong>, accept only where r ∈ {r0} AND q ∈ {q0} → accept = {(r0, q0)} only.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body"><strong>Transition table</strong> — δ((r, q), sym) = (δ_A(r, sym), δ_B(q, sym)):
+                <table>
+                  <thead><tr><th>State</th><th>on 0</th><th>on 1</th></tr></thead>
+                  <tbody>
+                    <tr class="td-start"><td><strong>(r0, qe)</strong> start</td><td>(r0, q0)</td><td>(r1, qe)</td></tr>
+                    <tr class="td-accept"><td><strong>(r0, q0)</strong> ACCEPT</td><td>(r0, q0)</td><td>(r1, qe)</td></tr>
+                    <tr><td>(r1, qe)</td><td>(r1, q0)</td><td>(r2, qe)</td></tr>
+                    <tr><td>(r1, q0)</td><td>(r1, q0)</td><td>(r2, qe)</td></tr>
+                    <tr><td>(r2, qe)</td><td>(r2, q0)</td><td>(r0, qe)</td></tr>
+                    <tr><td>(r2, q0)</td><td>(r2, q0)</td><td>(r0, qe)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body"><strong>Verify:</strong> "0" → (r0,qe)→(r0,q0) ACCEPT ✓ [0 ones, ends in 0]. "10" → (r0,qe)→(r1,qe)→(r1,q0) REJECT ✓ [1 one, ends in 0 but 1≢0 mod 3]. "1110" → (r0,qe)→(r1,qe)→(r2,qe)→(r0,qe)→(r0,q0) ACCEPT ✓ [3 ones, ends in 0].</div>
+            </div>
+          </div>
+          <div class="callout callout-insight">
+            <strong>Key insight:</strong> Each row is computed mechanically — you don't need to reason about the combined language. Just apply δ_A and δ_B independently for each symbol, then pair the results. Fill the table row by row without skipping.
+          </div>
+          <div class="callout callout-exam">
+            <strong>Exam note:</strong> For <strong>union</strong> instead of intersection, the accept states would be: all (r, q) where r = r0 OR q = q0. That gives: {(r0,qe), (r0,q0), (r1,q0), (r2,q0)}. Confirm which operation is asked before marking accept states.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MATH -->
+  <section class="card" id="math">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">∑</span>
+      <span class="card-title">Mathematics</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="formula">
+        <div class="formula-name">DFA Formal Tuple</div>
+        <div class="formula-display">M = (Q, Σ, δ, q₀, F)</div>
+        <div class="formula-vars">Q = states · Σ = alphabet · δ: Q×Σ→Q (total) · q₀ = start · F = accept states</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Extended Transition Function δ*</div>
+        <div class="formula-display">δ*(q, ε) = q
+δ*(q, wa) = δ(δ*(q, w), a)</div>
+        <div class="formula-vars">δ* reads a full string. δ reads one symbol. L(M) = { w ∈ Σ* | δ*(q₀, w) ∈ F }</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">Cross Product State Count</div>
+        <div class="formula-display">|Q₁ × Q₂| = |Q₁| · |Q₂|</div>
+        <div class="formula-vars">Cross product transition: δ((r,s), a) = (δ₁(r,a), δ₂(s,a))
+Intersection accept: r ∈ F₁ AND s ∈ F₂
+Union accept:        r ∈ F₁ OR  s ∈ F₂</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FIGURES -->
+  <section class="card" id="figures">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📊</span>
+      <span class="card-title">State Diagram Reference</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <!-- Fig 1: ends in 0 -->
+      <div class="figure-wrap">
+        <div class="svg-wrap">
+          <svg viewBox="0 0 340 155" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px;display:block;margin:.5rem auto">
+            <defs>
+              <marker id="arr-f1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0,10 3.5,0 7" fill="currentColor"/>
+              </marker>
+            </defs>
+            <!-- start arrow -->
+            <line x1="15" y1="78" x2="63" y2="78" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr-f1)"/>
+            <!-- qe (start, not accept) at (90,78) -->
+            <circle cx="90" cy="78" r="25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="90" y="74" text-anchor="middle" font-size="11" fill="currentColor" font-family="monospace">qe</text>
+            <text x="90" y="87" text-anchor="middle" font-size="9" fill="currentColor">(start)</text>
+            <!-- q0 (accept) at (250,78) -->
+            <circle cx="250" cy="78" r="25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="250" cy="78" r="18" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="250" y="74" text-anchor="middle" font-size="11" fill="currentColor" font-family="monospace">q0</text>
+            <text x="250" y="87" text-anchor="middle" font-size="9" fill="currentColor">(accept)</text>
+            <!-- qe self-loop on 1 -->
+            <path d="M 78,54 C 65,16 115,16 102,54" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr-f1)"/>
+            <text x="90" y="10" text-anchor="middle" font-size="13" fill="currentColor">1</text>
+            <!-- qe --0--> q0 arc above -->
+            <path d="M 113,68 Q 170,32 227,68" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr-f1)"/>
+            <text x="170" y="28" text-anchor="middle" font-size="13" fill="currentColor">0</text>
+            <!-- q0 --1--> qe arc below -->
+            <path d="M 227,88 Q 170,122 113,88" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr-f1)"/>
+            <text x="170" y="132" text-anchor="middle" font-size="13" fill="currentColor">1</text>
+            <!-- q0 self-loop on 0 -->
+            <path d="M 238,54 C 225,16 275,16 262,54" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr-f1)"/>
+            <text x="250" y="10" text-anchor="middle" font-size="13" fill="currentColor">0</text>
+          </svg>
+        </div>
+        <p class="figure-caption">Fig 1. DFA for "strings over {0,1} ending in 0" (Q3). qe = start/non-accept; q0 = accept.</p>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Fig 2: 1s divisible by 3 -->
+      <div class="figure-wrap">
+        <div class="svg-wrap">
+          <svg viewBox="0 0 470 175" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:470px;display:block;margin:.5rem auto">
+            <defs>
+              <marker id="arr-f2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0,10 3.5,0 7" fill="currentColor"/>
+              </marker>
+            </defs>
+            <!-- start arrow -->
+            <line x1="15" y1="85" x2="63" y2="85" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr-f2)"/>
+            <!-- r0 (start, accept) at (90,85) double circle -->
+            <circle cx="90" cy="85" r="25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="90" cy="85" r="18" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="90" y="81" text-anchor="middle" font-size="11" fill="currentColor" font-family="monospace">r0</text>
+            <text x="90" y="93" text-anchor="middle" font-size="8.5" fill="currentColor">(s/acc)</text>
+            <!-- r1 at (230,85) -->
+            <circle cx="230" cy="85" r="25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="230" y="89" text-anchor="middle" font-size="11" fill="currentColor" font-family="monospace">r1</text>
+            <!-- r2 at (370,85) -->
+            <circle cx="370" cy="85" r="25" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <text x="370" y="89" text-anchor="middle" font-size="11" fill="currentColor" font-family="monospace">r2</text>
+            <!-- r0 self-loop on 0 -->
+            <path d="M 78,61 C 65,23 115,23 102,61" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr-f2)"/>
+            <text x="90" y="15" text-anchor="middle" font-size="13" fill="currentColor">0</text>
+            <!-- r0 --1--> r1 -->
+            <line x1="115" y1="76" x2="205" y2="76" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr-f2)"/>
+            <text x="160" y="66" text-anchor="middle" font-size="13" fill="currentColor">1</text>
+            <!-- r1 self-loop on 0 -->
+            <path d="M 218,61 C 205,23 255,23 242,61" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr-f2)"/>
+            <text x="230" y="15" text-anchor="middle" font-size="13" fill="currentColor">0</text>
+            <!-- r1 --1--> r2 -->
+            <line x1="255" y1="76" x2="345" y2="76" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr-f2)"/>
+            <text x="300" y="66" text-anchor="middle" font-size="13" fill="currentColor">1</text>
+            <!-- r2 self-loop on 0 -->
+            <path d="M 358,61 C 345,23 395,23 382,61" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr-f2)"/>
+            <text x="370" y="15" text-anchor="middle" font-size="13" fill="currentColor">0</text>
+            <!-- r2 --1--> r0 curved arc below -->
+            <path d="M 356,100 C 320,148 120,148 116,100" fill="none" stroke="currentColor" stroke-width="1.5" marker-end="url(#arr-f2)"/>
+            <text x="235" y="163" text-anchor="middle" font-size="13" fill="currentColor">1</text>
+          </svg>
+        </div>
+        <p class="figure-caption">Fig 2. DFA for "#1s divisible by 3" (Q2). r0 = start and accept (double circle); r1, r2 = non-accept. 0s self-loop; 1s cycle r0→r1→r2→r0.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FACULTY PATTERNS -->
+  <section class="card" id="patterns">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🎯</span>
+      <span class="card-title">Faculty Pattern Analysis</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="callout callout-note">
+        <strong>Source:</strong> Faculty announcement (TNF) prior to Quiz 1, Sem 9 Summer 2026.<br>
+        <strong>Scope:</strong> This is the first quiz written by TNF this semester — no historical quiz data yet. Pattern below is from the faculty announcement only. Midterm and Final are centrally set at BRACU; do not read those patterns here.
+      </div>
+
+      <div class="pattern-grid">
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Large DFA Construction</div>
+          <div class="pattern-freq">2×</div>
+          <div class="pattern-desc">Announced explicitly. Expect 4–6 states each.</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Small DFA Construction</div>
+          <div class="pattern-freq">1×</div>
+          <div class="pattern-desc">Announced explicitly. Likely 2–3 states.</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Cross Product</div>
+          <div class="pattern-freq">1×</div>
+          <div class="pattern-desc">Announced. Intersection or union — know both accept conditions.</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Regular Expressions</div>
+          <div class="pattern-freq">0×</div>
+          <div class="pattern-desc">Explicitly excluded by faculty announcement.</div>
+        </div>
+      </div>
+
+      <p><strong>Observed / inferred tendencies:</strong></p>
+      <ul>
+        <li>Pattern was announced in detail — TNF appears to be transparent about quiz structure. Take the announced pattern at face value.</li>
+        <li>Cross product builds on the DFA construction questions — if you construct the two DFAs correctly, the cross product table is mechanical. Do not skip verifying the two source DFAs.</li>
+        <li>Past assignments (Assignment 1 Part A) cover DFA design and NFA→DFA — DFA construction comfort is essential for both the quiz and the assignment.</li>
+      </ul>
+
+    </div>
+  </section>
+
+  <!-- PROBABLE QUESTIONS -->
+  <section class="card" id="probable">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🔮</span>
+      <span class="card-title">Probable Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="probable-list">
+
+        <div class="probable-item">
+          <div class="prob-rank rank-1">1</div>
+          <div class="prob-content">
+            <div class="prob-q">Large DFA: construct for a modular counting condition (e.g., #0s divisible by 4, #1s mod 2 = 1) or suffix/substring matching.</div>
+            <div class="prob-reason">Two of the four questions are large DFAs — announced. Modular counting and suffix matching are the canonical TOC DFA problem types from Sipser Ch.1.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-2">2</div>
+          <div class="prob-content">
+            <div class="prob-q">Cross product for intersection of two DFAs built earlier in the quiz (or independently given).</div>
+            <div class="prob-reason">Announced. Cross product is the natural follow-on to DFA construction. The source DFAs may be the same ones built in Q1/Q2 of the quiz — do not abandon earlier work.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-3">3</div>
+          <div class="prob-content">
+            <div class="prob-q">Small DFA: 2-state condition such as "ends in symbol X" or "contains at least one X".</div>
+            <div class="prob-reason">Announced as a small DFA. These are typically the easiest marks on the quiz — do not overthink them. Check transitions carefully.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-n">4</div>
+          <div class="prob-content">
+            <div class="prob-q">Given a DFA diagram: identify the language it accepts, or trace a specific string.</div>
+            <div class="prob-reason">Low probability — not announced, but possible as a sub-part. Traceable mechanically from the transition function.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MNEMONICS -->
+  <section class="card" id="mnemonics">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧠</span>
+      <span class="card-title">Mnemonics &amp; Memory Aids</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">Q Σ δ q₀ F — "Quite Surely, Delta Queries Forward"</div>
+        <div class="mnemonic-body">The 5-tuple in order: states, alphabet, transition, start, accept. Write this at the top of every DFA answer to anchor the definition before drawing anything.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">DEAD: "Dead Ends Accept Daily — never"</div>
+        <div class="mnemonic-body">Dead state = all transitions loop back to itself, never an accept state. Once the machine enters, it stays. Needed whenever rejection is permanent.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">Cross product: AND = Both · OR = Either</div>
+        <div class="mnemonic-body">Intersection → both components in accept state. Union → either component in accept state. Say it aloud before marking accept states in the cross product table.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">Memory = States</div>
+        <div class="mnemonic-body">The number of distinct things a DFA needs to remember = the minimum number of states. Can't remember more than you have states. Use this to sanity-check your design: "does each state represent exactly one memory configuration?"</div>
+      </div>
+
+      <div class="callout callout-note">
+        The best mnemonics are the ones you invent mid-exam. Write them in the margin and circle them.
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggleCard(header) {
+    header.closest('.card').classList.toggle('collapsed');
+  }
+  function toggleQA(questionEl) {
+    questionEl.closest('.qa').classList.toggle('open');
+  }
+  function toggleAnalytical(header) {
+    const el = header.closest('.analytical');
+    el.classList.toggle('open');
+    const chev = header.querySelector('.card-chevron');
+    if (chev) chev.style.transform = el.classList.contains('open') ? 'rotate(0deg)' : 'rotate(-90deg)';
+  }
+  function toggleTheme() {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('rg-theme', next); } catch(e) {}
+  }
+  (function() {
+    try {
+      const saved = localStorage.getItem('rg-theme');
+      if (saved) document.documentElement.dataset.theme = saved;
+    } catch(e) {}
+  })();
+</script>
+
+</body>
+</html>

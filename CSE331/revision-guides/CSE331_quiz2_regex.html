@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSE331 — Regular Expressions & FA→RE | Revision</title>
+
+  <style>
+    /* ===== THEME VARIABLES ===== */
+    :root[data-theme="light"] {
+      --bg:           #f5f6fa;
+      --surface:      #ffffff;
+      --surface-2:    #f0f1f5;
+      --border:       #dde1eb;
+      --text:         #1e2030;
+      --text-muted:   #6b7280;
+      --accent:       #2563eb;
+      --accent-bg:    #eff6ff;
+      --high:         #dc2626;
+      --high-bg:      #fef2f2;
+      --high-border:  #fecaca;
+      --med:          #b45309;
+      --med-bg:       #fffbeb;
+      --med-border:   #fde68a;
+      --low:          #2563eb;
+      --low-bg:       #eff6ff;
+      --low-border:   #bfdbfe;
+      --scan-bg:      #1e2030;
+      --scan-text:    #f8fafc;
+      --scan-surface: #2d3048;
+      --scan-border:  #3d4160;
+      --code-bg:      #1a1b26;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
+      --shadow:       0 2px 8px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.06);
+    }
+    :root[data-theme="dark"] {
+      --bg:           #0d0f18;
+      --surface:      #181b2a;
+      --surface-2:    #212438;
+      --border:       #2e3250;
+      --text:         #e2e8f0;
+      --text-muted:   #94a3b8;
+      --accent:       #60a5fa;
+      --accent-bg:    #1e2d45;
+      --high:         #f87171;
+      --high-bg:      #2d1b1b;
+      --high-border:  #7f1d1d;
+      --med:          #fbbf24;
+      --med-bg:       #2d2310;
+      --med-border:   #78350f;
+      --low:          #60a5fa;
+      --low-bg:       #1e2d45;
+      --low-border:   #1e40af;
+      --scan-bg:      #0d0f18;
+      --scan-text:    #e2e8f0;
+      --scan-surface: #181b2a;
+      --scan-border:  #2e3250;
+      --code-bg:      #0d0f18;
+      --code-text:    #c0caf5;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.3);
+      --shadow:       0 2px 8px rgba(0,0,0,.4);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 15px;
+    }
+    p  { margin-bottom: .5rem; font-size: .9rem; }
+    ul, ol { padding-left: 1.3rem; font-size: .9rem; }
+    li { margin-bottom: .3rem; }
+    strong { font-weight: 700; }
+
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--shadow-sm);
+    }
+    .site-header-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: .6rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+    .header-title { font-size: 1rem; font-weight: 800; letter-spacing: -.01em; }
+    .header-sub { font-size: .78rem; color: var(--text-muted); margin-top: .1rem; }
+    .theme-btn {
+      flex-shrink: 0;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: .3rem .75rem;
+      border-radius: .5rem;
+      cursor: pointer;
+      font-size: .82rem;
+      font-family: inherit;
+      transition: background .15s;
+    }
+    .theme-btn:hover { background: var(--border); }
+
+    .site-nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0 1rem;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .site-nav::-webkit-scrollbar { display: none; }
+    .site-nav a {
+      display: inline-block;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: .78rem;
+      font-weight: 500;
+      padding: .55rem .6rem;
+      border-bottom: 2px solid transparent;
+      transition: color .15s, border-color .15s;
+    }
+    .site-nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .meta-bar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
+    .meta-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .5rem;
+      padding: .35rem .75rem;
+      font-size: .78rem;
+      display: flex;
+      gap: .35rem;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .meta-pill-label { color: var(--text-muted); }
+    .meta-pill-value { font-weight: 700; }
+
+    .container { max-width: 920px; margin: 0 auto; padding: 1.25rem 1rem; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: .8rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .card-header {
+      padding: .75rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card-header:hover { background: var(--border); }
+    .card-icon { font-size: 1rem; flex-shrink: 0; }
+    .card-title { font-size: .95rem; font-weight: 700; flex: 1; }
+    .card-chevron { font-size: .75rem; color: var(--text-muted); transition: transform .2s; flex-shrink: 0; }
+    .card.collapsed .card-body  { display: none; }
+    .card.collapsed .card-chevron { transform: rotate(-90deg); }
+    .card-body { padding: 1.1rem; }
+
+    .card-scan { background: var(--scan-bg); border-color: var(--scan-border); }
+    .card-scan .card-header { background: var(--scan-surface); border-color: var(--scan-border); }
+    .card-scan .card-header:hover { background: var(--scan-border); }
+    .card-scan .card-title { color: var(--scan-text); }
+    .card-scan .card-icon  { color: #fbbf24; }
+    .card-scan .card-chevron { color: var(--scan-text); opacity: .6; }
+    .card-scan .card-body  { background: var(--scan-bg); }
+    .scan-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: .65rem;
+      margin-bottom: .9rem;
+    }
+    .scan-tile { background: var(--scan-surface); border: 1px solid var(--scan-border); border-radius: .55rem; padding: .75rem .85rem; }
+    .scan-tile-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; color: #94a3b8; margin-bottom: .3rem; }
+    .scan-tile-value { font-size: .88rem; font-weight: 700; color: var(--scan-text); line-height: 1.4; }
+    .scan-tile.tile-high  .scan-tile-label { color: #f87171; }
+    .scan-tile.tile-warn  .scan-tile-label { color: #fbbf24; }
+    .scan-tile.tile-sig   .scan-tile-label { color: #60a5fa; }
+    .scan-divider { border: none; border-top: 1px solid var(--scan-border); margin: .85rem 0; }
+    .scan-list { color: var(--scan-text); font-size: .88rem; }
+    .scan-list li { margin-bottom: .45rem; }
+
+    .badge {
+      display: inline-block;
+      font-size: .67rem;
+      font-weight: 800;
+      padding: .12rem .5rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      line-height: 1.4;
+      flex-shrink: 0;
+    }
+    .badge-high { background: var(--high-bg); color: var(--high); border: 1px solid var(--high-border); }
+    .badge-med  { background: var(--med-bg);  color: var(--med);  border: 1px solid var(--med-border); }
+    .badge-low  { background: var(--low-bg);  color: var(--low);  border: 1px solid var(--low-border); }
+
+    .concept {
+      border-left: 3px solid var(--border);
+      padding: .75rem .95rem;
+      margin-bottom: .75rem;
+      background: var(--surface-2);
+      border-radius: 0 .5rem .5rem 0;
+    }
+    .concept.imp-high { border-color: var(--high); }
+    .concept.imp-med  { border-color: var(--med); }
+    .concept.imp-low  { border-color: var(--low); }
+    .concept-title { font-weight: 700; font-size: .92rem; display: flex; align-items: center; gap: .45rem; margin-bottom: .4rem; flex-wrap: wrap; }
+    .concept-body { font-size: .88rem; }
+
+    .qa { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .65rem; overflow: hidden; }
+    .qa-q {
+      padding: .65rem .9rem;
+      font-weight: 600;
+      font-size: .88rem;
+      cursor: pointer;
+      background: var(--surface-2);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: .5rem;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .qa-q:hover { background: var(--border); }
+    .qa-q-text { flex: 1; line-height: 1.5; }
+    .qa-q-right { display: flex; align-items: center; gap: .4rem; flex-shrink: 0; }
+    .qa-toggle { font-size: .7rem; color: var(--text-muted); }
+    .qa-a { padding: .7rem .9rem; font-size: .88rem; border-top: 1px solid var(--border); display: none; line-height: 1.6; }
+    .qa.open .qa-a   { display: block; }
+    .qa.open .qa-toggle::after  { content: '▲'; }
+    .qa-toggle::after { content: '▼'; }
+
+    .analytical { border: 1px solid var(--border); border-radius: .55rem; margin-bottom: .85rem; overflow: hidden; }
+    .analytical-head {
+      padding: .65rem .9rem;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: .55rem;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .analytical-head:hover { background: var(--border); }
+    .q-num { font-weight: 800; font-size: .82rem; color: var(--accent); flex-shrink: 0; margin-top: .1rem; }
+    .q-title { font-weight: 600; font-size: .88rem; flex: 1; line-height: 1.5; }
+    .analytical-body { padding: 1rem; display: none; }
+    .analytical.open .analytical-body { display: block; }
+    .analytical.open .card-chevron { transform: rotate(0); }
+
+    .steps { display: flex; flex-direction: column; gap: .6rem; }
+    .step { display: flex; gap: .7rem; align-items: flex-start; }
+    .step-num {
+      width: 1.5rem; height: 1.5rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .72rem; font-weight: 800;
+      flex-shrink: 0; margin-top: .1rem;
+    }
+    .step-body { flex: 1; font-size: .88rem; line-height: 1.6; }
+    .step-body code { font-family: 'Fira Code', 'Courier New', monospace; background: var(--surface-2); padding: .05rem .3rem; border-radius: .25rem; }
+
+    .callout { border-radius: .45rem; padding: .6rem .85rem; font-size: .85rem; margin-top: .75rem; line-height: 1.55; }
+    .callout-insight { background: var(--accent-bg); border-left: 3px solid var(--accent); }
+    .callout-insight strong { color: var(--accent); }
+    .callout-warn { background: var(--high-bg); border-left: 3px solid var(--high); }
+    .callout-warn strong { color: var(--high); }
+    .callout-note { background: var(--surface-2); border-left: 3px solid var(--text-muted); }
+    .callout-exam { background: var(--med-bg); border-left: 3px solid var(--med); }
+    .callout-exam strong { color: var(--med); }
+
+    .formula {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: .5rem;
+      padding: .75rem 1rem;
+      margin-bottom: .75rem;
+    }
+    .formula-name { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: .4rem; font-weight: 700; }
+    .formula-display {
+      font-family: 'Fira Code', 'Courier New', monospace;
+      font-size: .95rem;
+      text-align: center;
+      padding: .5rem;
+      color: var(--accent);
+      font-weight: 600;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .formula-vars { font-size: .82rem; color: var(--text-muted); margin-top: .4rem; }
+
+    .pattern-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .6rem; margin-bottom: .85rem; }
+    .pattern-tile { background: var(--surface-2); border: 1px solid var(--border); border-radius: .5rem; padding: .7rem .85rem; }
+    .pattern-tile-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); margin-bottom: .25rem; }
+    .pattern-freq { font-size: 1.6rem; font-weight: 900; color: var(--accent); line-height: 1.1; }
+    .pattern-desc { font-size: .78rem; color: var(--text-muted); margin-top: .2rem; }
+
+    .probable-list { display: flex; flex-direction: column; }
+    .probable-item { display: flex; gap: .75rem; align-items: flex-start; padding: .75rem 0; border-bottom: 1px solid var(--border); }
+    .probable-item:last-child { border-bottom: none; }
+    .prob-rank {
+      width: 2rem; height: 2rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: .82rem; flex-shrink: 0;
+    }
+    .rank-1 { background: var(--high-bg); color: var(--high); border: 2px solid var(--high-border); }
+    .rank-2 { background: var(--med-bg);  color: var(--med);  border: 2px solid var(--med-border); }
+    .rank-3 { background: var(--low-bg);  color: var(--low);  border: 2px solid var(--low-border); }
+    .rank-n { background: var(--surface-2); color: var(--text-muted); border: 2px solid var(--border); }
+    .prob-content { flex: 1; }
+    .prob-q { font-size: .9rem; font-weight: 600; line-height: 1.5; }
+    .prob-reason { font-size: .8rem; color: var(--text-muted); margin-top: .2rem; line-height: 1.4; }
+
+    .mnemonic { background: var(--med-bg); border: 1px solid var(--med-border); border-radius: .5rem; padding: .75rem 1rem; margin-bottom: .6rem; }
+    .mnemonic-word { font-weight: 900; color: var(--med); font-size: 1.05rem; margin-bottom: .3rem; }
+    .mnemonic-body { font-size: .88rem; }
+
+    .divider { border: none; border-top: 1px solid var(--border); margin: .85rem 0; }
+    .tag {
+      background: var(--surface-2); border: 1px solid var(--border);
+      font-size: .73rem; padding: .1rem .5rem; border-radius: 999px;
+      color: var(--text-muted); display: inline-block; margin: .1rem;
+    }
+    .section-intro { font-size: .82rem; color: var(--text-muted); margin-bottom: .85rem; line-height: 1.5; }
+
+    .gnfa-diagram {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: .9rem 1rem;
+      border-radius: .5rem;
+      overflow-x: auto;
+      font-size: .8rem;
+      line-height: 1.7;
+      font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+      white-space: pre;
+      margin-bottom: .5rem;
+    }
+
+    @media print {
+      .site-header, .site-nav, .theme-btn { display: none !important; }
+      .container { padding: 0; }
+      .card { box-shadow: none; page-break-inside: avoid; border: 1px solid #ccc; }
+      .card-body, .qa-a, .analytical-body { display: block !important; }
+      .card.collapsed .card-body { display: block !important; }
+      .card-scan { background: #fff; color: #000; }
+      .scan-tile { background: #f5f5f5; }
+      .scan-tile-value { color: #000; }
+    }
+
+    @media (max-width: 480px) {
+      body { font-size: 14px; }
+      .site-header-inner { padding: .5rem .85rem; }
+      .container { padding: .85rem .65rem; }
+      .card-body { padding: .85rem; }
+      .formula-display { font-size: .82rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <div>
+      <div class="header-title">CSE331 — Regular Expressions & FA→RE</div>
+      <div class="header-sub">Quiz 2 &nbsp;·&nbsp; Faculty: TNF</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">☀ / ☾</button>
+  </div>
+</header>
+
+<nav class="site-nav" aria-label="Page sections">
+  <a href="#scan">⚡ Morning Scan</a>
+  <a href="#theory">📖 Theory</a>
+  <a href="#short-q">❓ Short Qs</a>
+  <a href="#analytical">🧮 Analytical</a>
+  <a href="#math">∑ Formulas & Identities</a>
+  <a href="#patterns">🎯 Patterns</a>
+  <a href="#probable">🔮 Probable Qs</a>
+  <a href="#mnemonics">🧠 Mnemonics</a>
+</nav>
+
+<main class="container">
+
+  <div class="meta-bar">
+    <div class="meta-pill"><span class="meta-pill-label">Course</span><span class="meta-pill-value">CSE331</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Topic</span><span class="meta-pill-value">Regular Expressions & FA→RE</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Exam</span><span class="meta-pill-value">Quiz 2</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Date</span><span class="meta-pill-value">2026-07-22, 8:10 AM</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Weight</span><span class="meta-pill-value">Quiz 20% (best 3/4)</span></div>
+    <div class="meta-pill"><span class="meta-pill-label">Built</span><span class="meta-pill-value">2026-07-18</span></div>
+  </div>
+
+  <!-- MORNING SCAN -->
+  <section class="card card-scan" id="scan">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">⚡</span>
+      <span class="card-title" style="color:var(--scan-text)">Morning Quick Scan</span>
+      <span class="card-chevron" style="color:var(--scan-text);opacity:.6">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="scan-grid">
+        <div class="scan-tile tile-high">
+          <div class="scan-tile-label">Must Know Cold</div>
+          <div class="scan-tile-value">GNFA state-elimination formula: new(p,r) = old(p,r) ∪ label(p,q)·label(q,q)*·label(q,r). Preprocessing: single entry-only start, single exit-free accept.</div>
+        </div>
+        <div class="scan-tile tile-warn">
+          <div class="scan-tile-label">Most Likely Tested</div>
+          <div class="scan-tile-value">Full FA→RE conversion via state elimination on a 3–4 state DFA — matches Lecture 9's worked example and Assignment 1B's fixed-order requirement almost exactly.</div>
+        </div>
+        <div class="scan-tile">
+          <div class="scan-tile-label">Common Trap</div>
+          <div class="scan-tile-value">R+ε does NOT simplify to R (unlike R·ε=R, R+∅=R, R·∅=∅). Also: complement of "length ≥ n" is "length ≤ n−1", not "length &lt; n" written carelessly.</div>
+        </div>
+        <div class="scan-tile tile-sig">
+          <div class="scan-tile-label">Faculty Signal</div>
+          <div class="scan-tile-value">TNF ran Set A / Set B variants (same structure, different constants) on Quiz 1 — expect the same here. Also: TNF changed the announced syllabus once already (RE was pulled from Quiz 1 despite being announced) — recheck the syllabus the night before.</div>
+        </div>
+      </div>
+      <hr class="scan-divider">
+      <p style="font-size:.82rem;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Top 3 things to have ready before entering the exam:</p>
+      <ol class="scan-list">
+        <li>Do one full GNFA state-elimination conversion by hand, start to finish, on a fresh 3-state DFA — timed.</li>
+        <li>Have the RE pattern cheat sheet (length parity/mod-n, at-least/at-most, contains/doesn't-contain, starts/ends-with) recallable without looking.</li>
+        <li>Re-verify tonight whether the syllabus still includes both topics as announced — TNF has pulled RE from a quiz syllabus before (Quiz 1).</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- THEORY -->
+  <section class="card" id="theory">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">📖</span>
+      <span class="card-title">Theory</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="concept imp-high">
+        <div class="concept-title">
+          Regular Expression — Definition & Operators
+          <span class="badge badge-high">HIGH</span>
+        </div>
+        <div class="concept-body">
+          <p>A regular expression is a combination of symbols and operations (union, concatenation, Kleene star) that defines exactly the strings belonging to a language.</p>
+          <ul>
+            <li><strong>Union</strong> (∪ or +): either operand.</li>
+            <li><strong>Concatenation</strong>: operands back-to-back.</li>
+            <li><strong>Kleene star</strong> (*): zero or more repetitions.</li>
+            <li><strong>Σ</strong> = any single symbol; <strong>Σ*</strong> = any string including ε; <strong>Σ⁺ = ΣΣ*</strong> = any string of length ≥ 1.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">
+          Common RE Pattern Cheat Sheet
+          <span class="badge badge-high">HIGH</span>
+        </div>
+        <div class="concept-body">
+          <p>Length constraints (over Σ={0,1}):</p>
+          <ul>
+            <li>Even length: <code>(ΣΣ)*</code> &nbsp;|&nbsp; Odd length: <code>Σ(ΣΣ)*</code></li>
+            <li>Multiple of n: <code>(Σ…Σ)*</code> (n copies of Σ)</li>
+            <li>Length = kn+r: <code>Σ^r (Σ^n)*</code></li>
+            <li>Length ≥ n: <code>Σ^n Σ*</code> &nbsp;|&nbsp; Length ≤ n: <code>ε ∪ Σ ∪ ΣΣ ∪ … ∪ Σ^n</code> (explicit union, no shortcut)</li>
+          </ul>
+          <p>Substring / symbol-count constraints:</p>
+          <ul>
+            <li>Contains substring <code>w</code>: <code>Σ*wΣ*</code></li>
+            <li>Contains exactly k 0's: <code>1*01*01*…01*</code> (k copies of <code>01*</code>, one leading <code>1*</code>)</li>
+            <li>Doesn't contain <code>11</code>: <code>(0∪10)*(1∪ε)</code></li>
+            <li>Ends with <code>01</code> or <code>10</code>: <code>Σ*(01∪10)</code></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="concept imp-med">
+        <div class="concept-title">
+          Complement of a Regular Language & De Morgan's Law
+          <span class="badge badge-med">MED</span>
+        </div>
+        <div class="concept-body">
+          <p>To build a complement RE, don't negate term-by-term — re-derive from the opposite condition (e.g. "length ≥ n" complements to "length ≤ n−1", not "length &lt; n" written loosely).</p>
+          <p>Watch ε carefully: if ε is excluded from L (e.g. "starts and ends with same symbol" requires two symbols to compare), it must be explicitly added back into the complement, since ε trivially fails the original condition.</p>
+          <div class="formula-display" style="text-align:left;color:var(--text)">A ∪ B = A̅ ∩ B̅ &nbsp;&nbsp;|&nbsp;&nbsp; L₁ ∩ L₂ = L̅₁ ∪ L̅₂</div>
+        </div>
+      </div>
+
+      <div class="concept imp-high">
+        <div class="concept-title">
+          GNFA & State Elimination (FA → RE)
+          <span class="badge badge-high">HIGH</span>
+        </div>
+        <div class="concept-body">
+          <p>A GNFA (Generalized NFA) allows transition labels to be <strong>entire regular expressions</strong>, not just single symbols/ε. Converting a DFA/NFA to a GNFA and eliminating states one at a time down to just start→accept produces an equivalent RE.</p>
+          <p><strong>Required GNFA shape before elimination starts:</strong></p>
+          <ol>
+            <li>Start state has no incoming edges — add a new start state with an ε-edge into the old one if needed.</li>
+            <li>Exactly one accepting state — merge multiple accept states into one via ε-edges if needed.</li>
+            <li>The accepting state has no outgoing edges — demote it and add an ε-edge to a fresh, exit-free accept state if needed.</li>
+          </ol>
+          <div class="callout callout-warn">
+            <strong>Common error:</strong> Forgetting to check all three preprocessing conditions before starting elimination — a DFA with a self-loop on the accept state, for instance, needs the fresh accept-state step.
+          </div>
+        </div>
+      </div>
+
+      <div class="concept imp-low">
+        <div class="concept-title">
+          RE → NFA (Thompson's Construction)
+          <span class="badge badge-low">LOW — likely out of scope</span>
+        </div>
+        <div class="concept-body">
+          <p>Opposite direction of this quiz's stated syllabus ("FA to Regular Expression"). Thompson's construction builds an NFA from an RE using ε-transition scaffolding per operator (union, concatenation, star). Know it exists and roughly how union/star fragments are wired, but do not spend prep time drilling it for Quiz 2 unless the syllabus is confirmed to include it — it is, however, tested on Assignment 1 Part B.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SHORT QUESTIONS -->
+  <section class="card" id="short-q">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">❓</span>
+      <span class="card-title">Short Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <p class="section-intro">Tap a question to reveal the answer. Try to recall first.</p>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What are the three conditions a GNFA must satisfy before state elimination begins?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">(1) Start state has no incoming edges. (2) Exactly one accepting state. (3) The accepting state has no outgoing edges. Add new ε-connected start/accept states as needed to force this shape.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Write the general formula for the new edge label when eliminating state q between states p and r.</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">new_label(p,r) = old_label(p,r) ∪ label(p,q)·label(q,q)*·label(q,r) — the existing direct edge, unioned with the path that detours through q and loops on q's self-label zero or more times.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">When does the state elimination process stop, and what is the final answer?</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">When only the start and accept states remain (every other state eliminated one at a time). The label on the final start→accept edge is the resulting regular expression.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Write a regular expression over {0,1} for "length is even."</span>
+          <span class="qa-q-right"><span class="badge badge-high">HIGH</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">(ΣΣ)* — pair symbols two at a time, any number of pairs including zero.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Write a regex for "doesn't contain 11" over {0,1}.</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">(0∪10)*(1∪ε) — repeating the block (0∪10) can never produce two consecutive 1's, since every 1 immediately starts a new block.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">State De Morgan's Law for regular languages.</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">A̅∪B̅ from A∩B — i.e. complement(A∪B) = complement(A)∩complement(B), and complement(L₁∩L₂) = complement(L₁)∪complement(L₂). Same as set De Morgan's, applied directly.</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">Which RE identity does NOT simplify further in general: R·ε, R·∅, R+ε, or R+∅?</span>
+          <span class="qa-q-right"><span class="badge badge-med">MED</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">R+ε — it stays as R+ε unless ε∈L(R) already. Contrast with R+∅=R (∅ is the union identity) and R·ε=R, R·∅=∅ (concatenation identity/absorber).</div>
+      </div>
+
+      <div class="qa">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span class="qa-q-text">What is a GNFA and how does it differ from a regular NFA?</span>
+          <span class="qa-q-right"><span class="badge badge-low">LOW</span><span class="qa-toggle"></span></span>
+        </div>
+        <div class="qa-a">A Generalized NFA — its transitions can be labeled with entire regular expressions instead of just single symbols or ε. Used as an intermediate structure for converting a DFA/NFA into an RE via state elimination.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ANALYTICAL QUESTIONS -->
+  <section class="card" id="analytical">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧮</span>
+      <span class="card-title">Analytical Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q1</span>
+          <span class="q-title">Convert the given DFA to a regular expression using the GNFA state-elimination method. (Lecture 9 worked example — the closest known analogue to what Quiz 2 will ask.)</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="gnfa-diagram">Original DFA — start: 1, accept: 3, Σ={a,b}
+  1 --a--> 2
+  2 --b--> 2 (self-loop)
+  2 --a--> 1
+  1 --b--> 3
+  3 --a--> 1
+  3 --b--> 3 (self-loop)</div>
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body"><strong>Preprocess into GNFA form.</strong> Add new start state 6 with <code>6 --ε--> 1</code> (old start already has incoming edges from state 3, so this is required). Add new accept state f with <code>3 --ε--> f</code>, since state 3 currently has outgoing edges and can't remain the accept state.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body"><strong>Eliminate state 2</strong> (order used: 2, 3, 1). Incoming to 2: {1,3}. Outgoing from 2: {1,f}. Apply the formula to each of the 4 pairs (1,1), (1,f), (3,1), (3,f):<br>
+                1→1: <code>ab*a</code> &nbsp;|&nbsp; 1→f: <code>ab*</code> &nbsp;|&nbsp; 3→1: <code>b ∪ ab*a</code> &nbsp;|&nbsp; 3→f: <code>ε ∪ ab*</code></div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body"><strong>Eliminate state 3.</strong> Only state 1 remains as an internal state. Fold state 3's self-loop (<code>b</code>) and its edges into 1's self-loop and 1→f edge:<br>
+                1→1 (self-loop): <code>ab*a ∪ b(b ∪ ab*a)</code> &nbsp;|&nbsp; 1→f: <code>ab* ∪ b(ε ∪ ab*)</code></div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body"><strong>Eliminate state 1</strong> (last internal state). This collapses directly to a single start→accept edge labeled with the final RE — apply the self-loop as a Kleene star prefix, then the direct edge.</div>
+            </div>
+          </div>
+          <div class="callout callout-warn">
+            <strong>Unverified — re-derive by hand:</strong> Step 2's labels for the (3,1) and (3,f) pairs were transcribed from a handwritten scan where the edge <em>direction</em> between states 1 and 3 (1→3 vs. 3→1) was illegible. Step 3 then reuses those labels as if they run 1→3, which is inconsistent with how they were transcribed in step 2. This is the exact computation the quiz is likely to test — do not trust this worked example's algebra as-is. Redraw the original DFA from the definition, re-derive both transitions between 1 and 3 directly from the diagram, and redo steps 2–4 yourself before relying on the final RE below.
+          </div>
+          <div class="callout callout-insight">
+            <strong>Key insight:</strong> Every elimination step only ever touches the 4 (or fewer) pairs that route through the eliminated state — the rest of the GNFA is untouched. Track incoming/outgoing sets for the state being removed before writing any labels.
+          </div>
+          <div class="callout callout-exam">
+            <strong>Exam note:</strong> Final RE (unverified, see warning above) = <code>(ab*a + b(b+ab*a))* (ab* + b(ε+ab*))</code>. Assignment 1 Part B requires a <em>fixed</em> elimination order (q2, q4, q1, q3) — if Quiz 2 specifies an order, follow it exactly; do not pick your own even if a different order looks simpler.
+          </div>
+        </div>
+      </div>
+
+      <div class="analytical">
+        <div class="analytical-head" onclick="toggleAnalytical(this)">
+          <span class="q-num">Q2</span>
+          <span class="q-title">Write a regular expression for: strings over {0,1} where the first and third symbols are the same (if they exist). Then write the complement.</span>
+          <span class="badge badge-high">HIGH</span>
+          <span class="card-chevron">▼</span>
+        </div>
+        <div class="analytical-body">
+          <div class="steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-body">Handle the two matching cases separately: first=third=0, or first=third=1. Pattern: <code>0 Σ 0 Σ*</code> and <code>1 Σ 1 Σ*</code> (fixed 1st/3rd symbol, free 2nd symbol, free tail).</div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-body">Add the vacuous cases — strings too short to have a 3rd symbol still satisfy "if they exist": <code>ε ∪ Σ ∪ ΣΣ</code> (lengths 0, 1, 2).</div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-body">Full RE: <code>0Σ0Σ* ∪ 1Σ1Σ* ∪ ε ∪ Σ ∪ ΣΣ</code>.</div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-body">Complement: only strings of length ≥ 3 where first ≠ third are excluded — <code>0Σ1Σ* ∪ 1Σ0Σ*</code>. The short-string terms (ε, Σ, ΣΣ) drop out entirely since they were already included on the "true" side.</div>
+            </div>
+          </div>
+          <div class="callout callout-insight">
+            <strong>Key insight:</strong> "If they exist" clauses always need an explicit short-string union — this is the exact trap tested in Quiz 1 (Q2b: "first and third positions contain the same symbol, if they exist").
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FORMULAS & IDENTITIES -->
+  <section class="card" id="math">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">∑</span>
+      <span class="card-title">Formulas & Identities</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="formula">
+        <div class="formula-name">State Elimination Rule</div>
+        <div class="formula-display">new(p,r) = old(p,r) ∪ label(p,q)·label(q,q)*·label(q,r)</div>
+        <div class="formula-vars">Where q is the state being eliminated; p, r are its neighbors (p can equal r for a self-loop result). Apply once per (p,r) pair reachable through q.</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">RE Identities (concatenation / union identities)</div>
+        <div class="formula-display">R·ε = R      R·∅ = ∅      R+∅ = R      R+ε = R+ε (no further simplification)</div>
+        <div class="formula-vars">ε is the concatenation identity; ∅ is absorbing under concatenation and is the union identity. R+ε only reduces to R if ε∈L(R) already.</div>
+      </div>
+
+      <div class="formula">
+        <div class="formula-name">De Morgan's Law (regular languages)</div>
+        <div class="formula-display">complement(A∪B) = complement(A) ∩ complement(B)      complement(L1∩L2) = complement(L1) ∪ complement(L2)</div>
+        <div class="formula-vars">Directly inherited from set-theoretic De Morgan's — applies to regular expressions/languages without modification.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FACULTY PATTERN ANALYSIS -->
+  <section class="card" id="patterns">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🎯</span>
+      <span class="card-title">Faculty Pattern Analysis</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="callout callout-note">
+        <strong>Source:</strong> Quiz 1 (2026-07-01, DFA/cross-product topic) + Assignment 1 Part B spec (RE→NFA, DFA→RE state elimination). Faculty: TNF.
+        <br><strong>Scope:</strong> Midterm and Final are centrally set at BRACU — patterns here are from TNF's own quizzes and assignments only. This is TNF's <strong>first</strong> quiz/assignment on RE/FA→RE, so there is no direct prior-quiz precedent on this specific topic — Assignment 1B and the lecture 9 worked example are the closest available signal.
+      </div>
+
+      <div class="pattern-grid">
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Set A/B variant split</div>
+          <div class="pattern-freq">1/1</div>
+          <div class="pattern-desc">Quiz 1 had two parallel question sets, same structure, different constants — expect this again</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Pure construction, no theory-only Qs</div>
+          <div class="pattern-freq">1/1</div>
+          <div class="pattern-desc">All 20 marks on Quiz 1 were construction-based; zero pure definition/theory questions</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Partial credit for showing work</div>
+          <div class="pattern-freq">confirmed</div>
+          <div class="pattern-desc">Quiz 1 Q2c explicitly allowed partial credit for "at least N states" — likely extends to showing elimination steps even if final RE is wrong</div>
+        </div>
+        <div class="pattern-tile">
+          <div class="pattern-tile-label">Fixed elimination order required</div>
+          <div class="pattern-freq">confirmed (A1B)</div>
+          <div class="pattern-desc">Assignment 1B mandates elimination order q2,q4,q1,q3 — watch for a specified order in the quiz too</div>
+        </div>
+      </div>
+
+      <p><strong>Observed tendencies:</strong></p>
+      <ul>
+        <li>TNF announces syllabus scope in advance and usually honors it — but has revised scope mid-course once already (RE was excluded from Quiz 1 despite an earlier announcement including it). Reconfirm the night before.</li>
+        <li>Question difficulty tends to run slightly above the "textbook simple" version of a concept (Quiz 1's positional/prefix constraints were harder than basic mod-n counting) — prepare for compound conditions, not just isolated patterns.</li>
+        <li>TNF was lenient on Quiz 1 (20/20, first quiz of the semester) — do not assume that grading leniency continues into Quiz 2.</li>
+      </ul>
+
+    </div>
+  </section>
+
+  <!-- PROBABLE QUESTIONS -->
+  <section class="card" id="probable">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🔮</span>
+      <span class="card-title">Probable Questions</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="probable-list">
+
+        <div class="probable-item">
+          <div class="prob-rank rank-1">1</div>
+          <div class="prob-content">
+            <div class="prob-q">Full FA→RE conversion via GNFA state elimination on a 3–4 state DFA, possibly with a specified elimination order</div>
+            <div class="prob-reason">Directly matches the lecture 9 worked example structure and Assignment 1B's near-identical requirement — strongest signal of the flagship skill being tested this quiz.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-2">2</div>
+          <div class="prob-content">
+            <div class="prob-q">Write a regular expression for a compound language description (length + substring/positional constraint combined)</div>
+            <div class="prob-reason">Matches Quiz 1's format exactly ("write a DFA/RE for X") and Lecture 7's example bank of compound patterns.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-3">3</div>
+          <div class="prob-content">
+            <div class="prob-q">GNFA preprocessing as an explicit sub-step — "convert this DFA into proper GNFA form before eliminating"</div>
+            <div class="prob-reason">The 3-rule checklist is well-defined and procedural, exactly the kind of discrete step TNF likes to test in isolation before the full construction.</div>
+          </div>
+        </div>
+
+        <div class="probable-item">
+          <div class="prob-rank rank-n">4</div>
+          <div class="prob-content">
+            <div class="prob-q">Complement of a given RE, possibly via De Morgan's Law</div>
+            <div class="prob-reason">Covered in lecture 8 alongside RE construction; plausible as a smaller sub-question rather than a full standalone problem.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MNEMONICS -->
+  <section class="card" id="mnemonics">
+    <div class="card-header" onclick="toggleCard(this)">
+      <span class="card-icon">🧠</span>
+      <span class="card-title">Mnemonics & Memory Aids</span>
+      <span class="card-chevron">▼</span>
+    </div>
+    <div class="card-body">
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"In, Loop, Out"</div>
+        <div class="mnemonic-body">State elimination formula, recalled in plain order: new(p,r) = old(p,r) ∪ <strong>in</strong>(p→q) · <strong>loop</strong>(q→q)* · <strong>out</strong>(q→r).</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"One In, One Out"</div>
+        <div class="mnemonic-body">GNFA preprocessing checklist: start has no edges IN, accept has no edges OUT, and there's only ONE accept state.</div>
+      </div>
+
+      <div class="mnemonic">
+        <div class="mnemonic-word">"If they exist ⇒ add the short ones"</div>
+        <div class="mnemonic-body">Any positional RE condition ("if they exist") needs an explicit union of the too-short-to-apply cases (ε, Σ, ΣΣ, …) — the exact trap in Quiz 1's Q2b.</div>
+      </div>
+
+      <div class="callout callout-note">
+        Add your own from class. The best mnemonics are the ones you invented yourself.
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function toggleCard(header) {
+    header.closest('.card').classList.toggle('collapsed');
+  }
+  function toggleQA(questionEl) {
+    questionEl.closest('.qa').classList.toggle('open');
+  }
+  function toggleAnalytical(header) {
+    header.closest('.analytical').classList.toggle('open');
+    const chev = header.querySelector('.card-chevron');
+    if (chev) chev.style.transform =
+      header.closest('.analytical').classList.contains('open') ? 'rotate(0deg)' : 'rotate(-90deg)';
+  }
+  function toggleTheme() {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('rg-theme', next); } catch(e) {}
+  }
+  (function() {
+    try {
+      const saved = localStorage.getItem('rg-theme');
+      if (saved) document.documentElement.dataset.theme = saved;
+    } catch(e) {}
+  })();
+</script>
+
+</body>
+</html>
