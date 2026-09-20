@@ -61,3 +61,5 @@ Located at: `CSE331/pyq/other-faculty-assignments/`
 | not labelled | Fall 2024 | [`CSE331_otherfaculty_fa24_assignment1.pdf`](other-faculty-assignments/CSE331_otherfaculty_fa24_assignment1.pdf) | Assignment 1 |
 | not labelled | Fall 2025 | [`CSE331_otherfaculty_fa25_final_assignment.pdf`](other-faculty-assignments/CSE331_otherfaculty_fa25_final_assignment.pdf) | Final assignment |
 | not labelled | Spring 2025 | [`CSE331_otherfaculty_sp25_assignment2.pdf`](other-faculty-assignments/CSE331_otherfaculty_sp25_assignment2.pdf) | Assignment 2 |
+
+**Note:** These are from different faculty sections. TNF-authored assignments are the primary reference for pattern analysis in this semester.
