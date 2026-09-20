@@ -20,7 +20,8 @@ This is one student's personal resource archive, shared informally. It is not an
   - `assignments/` — the faculty-issued assignment question PDFs only (CSE321 theory, CSE331 Parts A/B, CSE370 assignments 1–3). No solutions or submissions.
   - `docs/` — faculty-issued course documents: course outlines and schedule, plus CSE321's exam questionnaire preparation strategy and CSE331's additional-resources list
   - `lab/` (CSE321, CSE370) — faculty lab material. CSE321: lab outline, `lab-assignments/` (the two prompts), `lab-tasks/` (handouts, example code and practice problems for labs 0.1–6, plus the lottery-scheduling reading materials from lab 6: an OSTEP chapter and a UCR lecture deck), `project/` (the SimpleFS term-project specification, the supplementary animated walkthrough — the spec is authoritative if they differ — and a printout of the submission form's instructions). CSE370: `lab-assignments/` (the three prompts), `sheets/` (lab sheets and their data) and the lab submission template. Lab slides for CSE370 are under `slides/lab/`.
-  - `pyq/` — previous-question pattern analysis, plus the actual PYQ PDFs where available (CSE370 doesn't share PYQs — confirmed, not an oversight)
+  - `pyq/` — previous-question pattern analysis, plus the actual PYQ PDFs where available (CSE370 doesn't share PYQs — confirmed, not an oversight). CSE331 also has `pyq/other-faculty-assignments/`: past assignment sheets from other faculty sections, useful for practice but not written by TNF.
+  - `shared-notes/` (CSE331 only) — Turing Machines and Reducibility lecture notes that TNF shared with the class, with authors credited in `resources/cse331_resources.md`
   - `slides/` — faculty lecture slides, where shared
   - `mock-exams/` — self-built mock question sets
   - `revision-guides/` — consolidated per-exam revision guides

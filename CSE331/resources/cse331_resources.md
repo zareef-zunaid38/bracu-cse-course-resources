@@ -13,8 +13,13 @@ The course follows this book. Definitions, theorems, and proofs in this course a
 > [!info] No slides for this course. TNF confirmed verbally — no lecture slides will be provided for Summer 2026. Rely on Sipser, MIT OCW, and in-class notes.
 > Partial gap-fill: [Lecture Notes](../lecture-notes/CSE331_lecture_01_prelims.md) (2026-06-08 to 2026-06-29) transcribed from Farhan Labib's handwritten notes, status `needs-review`. Covers Topics 1–3 (Preliminaries through NFA→DFA subset construction).
 
-## Additional Lecture Notes (not included)
-TNF shared two extra lecture notes written by other students: one on Turing Machines (Topics 17–19: TM definition and examples, decidability proofs, the Universal TM and the Halting Problem) and one on Reducibility (Topic 22: the gcd/lcm intuition for A ≤ B, and why the direction of a reduction matters for undecidability proofs). They belong to their authors, so they are not hosted here — ask TNF or your classmates for them.
+## Lecture Notes Shared by TNF
+`CSE331/shared-notes/` — Turing Machines (covers topics 17–19), by Rafiad Sadat Shahir (RSS), TNF-shared. Two versions kept, content differs:
+- `CSE331_lecturenote_rss_L10_turing_machines.pdf` (2025 original) — TM definition/examples, "Difference with Finite Automata" list, A_DFA decidability proof, **A_REX decidability proof** (regex→NFA→DFA→simulate), Universal TM, Halting Problem undecidability.
+- `CSE331_lecturenote_rss_L10_turing_machines_v2_2026.pdf` (received 2026-08-25, LaTeX-retypeset) — same core content minus the "Difference with FA" list, but swaps A_REX for **E_DFA decidability proof** (reachability-marking algorithm). Otherwise matches v1.
+- RSS's affiliation to the course is unconfirmed; content trusted as accurate on TNF's authority as the sharing source.
+
+`CSE331_lecturenote_rifat_reducibility.pdf` (received 2026-09-02, TNF-shared, by Md. Rifat Rahman, June 2026) — Reducibility (Topic 22): intuitive gcd/lcm framing of A ≤ B, general reduce-to-known-solved-problem strategy, why the direction matters for undecidability proofs (reduce a *known* undecidable problem *into* the unknown one, never the reverse), A_NFA/A_REX decidability via reduction to A_DFA, and the two worked undecidability reductions used directly in [Lecture 19](../lecture-notes/CSE331_lecture_19_2026-09-02.md): A_TM undecidable (reduced from HALT_TM) and E_TM undecidable (reduced from A_TM). Used to resolve Lecture 19's diagram ambiguity.
 
 ## Class Recordings (MHB Sir) — Online Only
 Recordings by Mursalin Habib Sir are online only.
@@ -52,7 +57,7 @@ Coverage map (for finding relevant videos):
 ### Computability (Topics 17–19)
 - Sipser Ch 3 — primary
 - MIT OCW 18.404 Lectures 9–11
-- Turing Machines lecture note shared by TNF (not included in this repo). Covers TM 7-tuple definition, state-diagram notation, worked TM constructions (contains-11, 0ⁿ1ⁿ, w#w), configurations, Church-Turing thesis, Turing recognizable vs. decidable, A_DFA decidability, Universal TM (A_TM), and the Halting Problem undecidability proof (diagonalization/self-reference technique).
+- RSS lecture note (both versions — see *Lecture Notes Shared by TNF* above). Covers TM 7-tuple definition, state-diagram notation, worked TM constructions (contains-11, 0ⁿ1ⁿ, w#w), configurations, Church-Turing thesis, Turing recognizable vs. decidable, A_DFA decidability, Universal TM (A_TM), and the Halting Problem undecidability proof (diagonalization/self-reference technique).
 - Key insight: a TM is just a DFA with an infinite read/write tape. The power comes from the ability to write.
 
 ### Decidability (Topics 20–21)

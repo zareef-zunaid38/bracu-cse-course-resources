@@ -12,7 +12,7 @@ status: active
 > - **Centrally created (BRACU question committee):** Midterm, Final
 > - **Faculty written (TNF):** Quizzes, Assignments
 >
-> Do not attribute midterm or final pattern notes to TNF style — they are drawn from a separate central pool. Quiz and assignment patterns are TNF-specific. Past assignments from other faculty sections exist but are not included in this repo — if you find any, filter for TNF-authored ones only.
+> Do not attribute midterm or final pattern notes to TNF style — they are drawn from a separate central pool. Quiz and assignment patterns are TNF-specific. `CSE331/pyq/other-faculty-assignments/` contains past assignments from multiple faculty (RSS, KKP, AFA, RFR, FDM) — filter for TNF-authored ones only.
 
 | Assessment | Created By | Confirmed |
 |---|---|---|
@@ -252,6 +252,8 @@ Item 1 now explicitly says "for Regular Languages" — confirms the earlier lect
 **Created by:** TNF
 **Assignment 1 Part A:** DFA design, NFA→DFA conversion. Deadline: 2026-07-08 11:59 PM.
 **Assignment 1 Part B:** Regex, RE→NFA, DFA→RE via state elimination. Deadline: 2026-07-24 11:59 PM. TNF released feedback 2026-07-26 for students who had submitted by then.
+
+**PYQ reference:** `CSE331/pyq/other-faculty-assignments/` — past assignments from multiple faculty sections, see [pyq_index](pyq/pyq_index.md)
 
 > [!confirmed] **Component finalized: 4.75/10 — confirmed 2026-09-17 via the official CSE331 marks Google Sheet.** Both Assignment 1 parts (A and B) were missed (`task-history/tasks-history.md` #12) → Assignment 1 total = 0/10. Assignment 2 Part A = 4.5/5 (post-penalty, #36), Part B = **5/5** (newly confirmed, #48) → Assignment 2 total = 9.5/10. Overall component = average of the two assignments' totals = (0 + 9.5)/2 = **4.75/10**, no components still pending.
 
