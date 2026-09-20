@@ -5,10 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CSE331 — Regular Languages | Mid-Term Revision</title>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
-    onload="renderMathInElement(document.body, {delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]})">
+  <!-- KaTeX 0.16.11: the copy in ../../assets/katex is used first (works offline once the page has been opened);
+       the jsDelivr CDN is only a fallback for when this file is downloaded on its own. -->
+  <link rel="stylesheet" href="../../assets/katex/katex.min.css"
+        onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css'">
+  <script>
+  (function () {
+    var LOCAL = '../../assets/katex/', CDN = 'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/';
+    var OPTS = {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]};
+    function add(src, ok, bad) {
+      var s = document.createElement('script');
+      s.src = src; s.onload = ok; s.onerror = bad;
+      document.head.appendChild(s);
+    }
+    function render() { renderMathInElement(document.body, OPTS); }
+    function loadFrom(base, fail) {
+      add(base + 'katex.min.js', function () {
+        add(base + 'contrib/auto-render.min.js', function () {
+          if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', render);
+          else render();
+        }, fail);
+      }, fail);
+    }
+    loadFrom(LOCAL, function () { loadFrom(CDN, function () {}); });
+  })();
   </script>
 
   <style>

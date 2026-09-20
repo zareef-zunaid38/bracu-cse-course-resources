@@ -1,6 +1,6 @@
 # Pumping Lemma — 20 Worked Non-Regularity Proofs
 
-Practice sheet condensed from a YouTube walkthrough ("20 Pumping Lemma Examples") shared by TNF as supplementary Pumping Lemma material for CSE331. Cleaned up from a raw auto-caption transcript into standard proof-by-contradiction write-ups — filler, timestamps, and spoken asides removed; all technical content and reasoning preserved.
+Practice sheet condensed from the YouTube walkthrough ["Pumping Lemma for Regular Languages - 20 Examples"](https://www.youtube.com/watch?v=x2J5kaf6gjg) by Easy Theory, shared by TNF as supplementary Pumping Lemma material for CSE331. Cleaned up from a raw auto-caption transcript into standard proof-by-contradiction write-ups — filler, timestamps, and spoken asides removed; all technical content and reasoning preserved.
 
 **Standard proof skeleton used throughout:** Assume $L$ is regular, so a pumping length $p$ exists. Choose a witness string $w \in L$ with $|w|\ge p$. For any decomposition $w=xyz$ with $|xy|\le p$, $|y|>0$, exhibit some $i\ge0$ such that $xy^iz \notin L$ — contradicting the Pumping Lemma, so $L$ is not regular.
 
