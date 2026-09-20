@@ -1,3 +1,9 @@
+---
+source: CSE331_otherfaculty_fdm_su25_assignment1.docx (the original, included in this repo)
+fidelity: the summary above the divider is paraphrased and may omit detail; the final section 'Full extracted text' is a complete script extraction of the source text (images and diagrams are not transcribed there — 2 embedded image(s); see the summary or the source)
+source-mtime: 2025-07-17T08:51:56
+generated: summary earlier (2026-09); header and full-text section added 2026-09-20
+---
 # CSE331 Assignment 1 Summer 2025 (FDM)
 
 Assignment question paper for CSE331 Automata and Computability Summer 2025 (Faculty: FDM), covering DFA state diagrams, product construction, NFA subset construction, regular expressions, RE to NFA conversions, and state elimination.
@@ -83,3 +89,107 @@ Convert Regular Expressions to equivalent NFAs (using Thompson's construction):
 Convert the given DFA into an equivalent regular expression using the **state elimination method**.
 - **Constraint:** Must follow this exact sequence to eliminate states: $C, D, E, F, A, B$.
 - Show all intermediate Generalized NFA (GNFA) steps and state transition expressions.
+
+---
+
+## Full extracted text
+
+<!-- script-extracted 2026-09-20 from the source: all text, table cells, speaker notes, image alt text, link targets, headers/footers, footnotes, comments; list numbering, formatting and images are not reproduced -->
+
+CSE331: Automata and Computability
+
+Summer’25 | Assignment 1
+
+Deadline: 24th July, 2025
+
+Question 1 [10 marks]
+
+Draw state diagram for a DFA of the following regular languages:
+
+L = {w ∈ string that has “b” in the second last digit}, Σ = {a, b}
+
+L2 = {w ∈ a string starts with ‘ba’ and contains 'bba'}, Σ = {a, b}
+
+L3 = {w ∈ a string where 0 is followed by at least one 1}, Σ = {0, 1}
+
+L4 = {w ∈ {0, 1} | w ends with 0 and does not contain the substring 11}
+
+L5 = {w ∈{a, b}: length of w is multiple of 3 ∩ contains at least two a’s}
+
+Question 2 [10 marks]
+
+Let Σ = {a, b}. Consider the following languages over Σ.
+
+L1 = {w : w a string that starts and ends with different symbol}
+
+L2 = {w : a string that has subsequence of ‘aa’}
+
+L3 = {w : a string that contains 'aba' and ends with 'b'} L4 = {w ∈ {01, 1}*}
+
+(a) Give the state diagram for a DFA that recognizes L2.
+
+(b) How many states will be there for L1 ∩ L2, if use cross product rule?
+
+(c) Draw a DFA state diagram for L1 ∩ L2.
+
+(d) Find all the unique strings of length four for L4*.
+
+(e) Give the state diagram for a DFA that recognizes L3.
+
+Question 3 [5 marks]
+
+(a) When converting the given NFA to an equivalent DFA using the subset construction method, what is the maximum number of states that the resulting DFA can have? (1 Point)
+
+(b) Identify the subsets of states from the given NFA that will correspond to the rejecting states in its equivalent DFA. (1 Point)
+
+(c) Determine the ε-closure of state q2 in the given NFA. (1 Point)
+
+(d) What is δ({q0, q4}, a) in the given NFA? List all the states. [Recall: δ({q}, 0) refers to the set of states the NFA transitions to when it is in state q and receives input a.] (1 Points)
+
+(e) What would be the start state of the converted DFA? Write the subset of the start state.
+
+Question 4 [5 marks]
+
+Draw state diagram for a NFA of the following regular languages:
+
+L1 = {w ∈ a string that contains ‘aba’ ∩ ends with ‘aab’}, Σ = {a, b}
+
+L3 = {w ∈ a string where third last symbol is ‘b’}, Σ = {a, b}
+
+Question 5 [20 marks]
+
+Let Σ = {0, 1}. Give regular expressions generating each of the following languages over Σ.
+
+(a) {w : w starts with a 1 and ends in a 0}
+
+(b) {w : the length of w is even}
+
+(c) {w : every 1 in w is followed by an even number of 0s}
+
+(d) {w : w does not contain 10}
+
+(e) {w : 10 appears in w exactly once}
+
+(Hint: If w = x10y, what can you say about x and y?)
+
+(f) {w : w containing strings where 0’s and 1’s are alternate}
+
+(g) {w : w containing strings where every third position in w is 1}
+
+(h) {w : w containing strings where every 1 in w is followed by at least two 0}
+
+(i) {w : w containing strings where every third position in w is 1 ∩ every 1 in w is followed by at least two 0}
+
+(j) {w : w containing strings that end in three consecutive 1’s}
+
+Question 6 [5 marks]
+
+Convert Regular Expression to NFAs:
+
+(a++ b)*b + a (ba)*
+
+(a+ b + c)* b + c+
+
+Question 7 [5 marks]
+
+Convert the following DFA into an equivalent regular expression using the state elimination method. Must follow this sequence to eliminate: C, D, E, F, A, B. Show all steps.

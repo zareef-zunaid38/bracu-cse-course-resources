@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # Practice Problems on POSIX Threads
 
 Code analysis practice problems exploring POSIX thread creation, argument passing, sequential join vs concurrent execution, and global variable modification.

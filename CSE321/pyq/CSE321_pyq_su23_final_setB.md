@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE321 Final Examination Summer 2023 Set B
 
 CSE321 Operating Systems Summer 2023 Set B Final exam covering printer counting semaphore synchronization, semaphore vs mutex implementation differences, Peterson's algorithm execution timeline tracing, Banker's algorithm safe sequence and request verification, Resource Allocation Graph deadlock analysis, dynamic memory partitioning (best-fit/worst-fit), cache memory for TLB paging hardware, Effective Access Time comparison, page table logical to physical address conversion, and page replacement algorithms (LRU vs OPT).

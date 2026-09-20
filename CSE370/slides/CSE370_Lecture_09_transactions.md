@@ -1,3 +1,10 @@
+---
+source: CSE370_Lecture_09_transactions.pdf (the original, included in this repo)
+fidelity: transcription (this file's own note says it is transcribed with confidence); page markers not recorded
+verified: numbers checked against the PDF text layer on 2026-09-20; example values 1000/950, 2000/2050, 700/600 come from slide images not viewed
+source-mtime: 2026-09-03T14:26:22
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE370 Lecture 9: Transactions
 
 BRAC University CSE370: Database Systems slide deck, 30 slides. Clean digital slides

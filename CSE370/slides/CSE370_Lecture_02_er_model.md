@@ -1,3 +1,10 @@
+---
+source: CSE370_Lecture_02_er_model.pdf (the original, included in this repo)
+fidelity: transcription (this file's own note says it is transcribed with confidence); page markers not recorded
+verified: sampled slides 6, 11, 15 compared with the PDF images on 2026-09-20: matched
+source-mtime: 2026-06-29T21:15:58
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE370 Lecture 2: Data Modeling Using ER Model
 
 BRAC University CSE370: Database Systems slide deck, 17 slides. Clean digital slides, fully

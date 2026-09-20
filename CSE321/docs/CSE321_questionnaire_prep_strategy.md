@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # Exam Questionnaire Preparation Strategy of CSE321
 
 Standard guidelines for CSE321 exam question difficulty distribution (Easy 35%, Moderate 35%, Difficult 30% with 10% Advanced), question classifications, and difficulty definitions.

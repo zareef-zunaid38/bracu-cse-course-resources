@@ -1,3 +1,10 @@
+---
+source: CSE370_Lecture_03_eer.pdf (the original, included in this repo)
+fidelity: transcription (this file's own note says it is transcribed with confidence); page markers not recorded
+verified: sampled slides 4, 8, 12 compared with the PDF images on 2026-09-20: matched
+source-mtime: 2026-06-29T21:15:58
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE370 Lecture 3: Enhanced Entity Relationships
 
 BRAC University CSE370: Database Systems slide deck, 13 slides. Clean digital slides, fully

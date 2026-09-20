@@ -1,3 +1,10 @@
+---
+source: CSE370_Lecture_04_relational_constraints.pdf (the original, included in this repo)
+fidelity: transcription (this file's own note says it is transcribed with confidence); page markers not recorded
+verified: sampled slides 5, 9, 13 compared with the PDF images on 2026-09-20: matched
+source-mtime: 2026-06-29T21:15:58
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE370 Lecture 4: Relational Data Model & Database Constraints
 
 BRAC University CSE370: Database Systems slide deck, 15 slides. Clean digital slides, fully

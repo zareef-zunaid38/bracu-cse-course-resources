@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # Practice Problems on Process Synchronization
 
 Code analysis practice problems exploring thread concurrency, mutex locks (pthread_mutex_t), and semaphores (sem_t) in C.

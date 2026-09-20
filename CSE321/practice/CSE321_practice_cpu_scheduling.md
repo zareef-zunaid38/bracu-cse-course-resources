@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # Practice Problems on CPU Scheduling
 
 CSE321 practice problems and numerical solutions for CPU scheduling algorithms: FCFS, SRJF, Preemptive Priority, Round Robin, and Multilevel Feedback Queue (MLFQ).

@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE321 Final Examination Summer 2022
 
 CSE321 Operating Systems Summer 2022 Final exam covering data integrity, critical section requirements, programming contest PC resource critical section identification, Peterson's algorithm execution table tracing up to 45ms, Banker's algorithm with 5 resource types, paging vs contiguous allocation, internal fragmentation calculation, segmentation logical-to-physical address translation, static partitioning (First/Best/Worst Fit), and MVT dynamic memory compaction.

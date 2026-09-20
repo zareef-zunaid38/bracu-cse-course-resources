@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # Practice Problems on System Calls
 
 Practice problems covering C Linux system calls: file I/O (`open`, `write`), process hierarchy with `fork()` and ordered printing (`wait`), odd PID conditional fork counting, `exec` with sort/oddeven programs, and process tree ID printing.

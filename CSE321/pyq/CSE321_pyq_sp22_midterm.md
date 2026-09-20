@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE321 Midterm Examination Spring 2022
 
 CSE321 Operating Systems Spring 2022 Midterm exam paper covering dual-mode operations, multiprogramming vs multiprocessing, Process Control Block & context switching, fork() output tracing, Amdahl's Law speedup calculation, pthreads concurrent execution, and CPU scheduling (SRTF and Round Robin).

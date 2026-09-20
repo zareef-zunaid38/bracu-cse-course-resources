@@ -1,3 +1,10 @@
+---
+source: CSE321_pyq_quiz4_sp22_ntr.pdf (the original, included in this repo)
+fidelity: transcription (this file's own note says it is transcribed with confidence); page markers not recorded
+verified: numbers checked against the PDF text layer on 2026-09-20 (adds '1 KB = 1024 Bytes', which the question does not state)
+source-mtime: 2025-01-31T20:04:54
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE 321 Quiz 4 Spring 2022 (NTR)
 
 Quiz 4 question paper for CSE321 Spring 2022 (Instructor: NTR) covering memory placement strategies (First Fit, Worst Fit, Best Fit), MFT vs MVT memory partitioning, and paging frame calculation with internal fragmentation.

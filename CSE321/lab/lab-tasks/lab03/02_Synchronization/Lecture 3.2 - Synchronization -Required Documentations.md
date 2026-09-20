@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # Lecture 3.2: Process & Thread Synchronization (Semaphores & Mutexes)
 
 Reference guide for POSIX semaphores (`semaphore.h`) and mutexes (`pthread.h`), including operations, memory visibility, function signatures (`sem_init`, `sem_wait`, `sem_post`, `sem_destroy`, `pthread_mutex_*`), and usage rules.

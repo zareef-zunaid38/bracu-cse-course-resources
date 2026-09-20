@@ -1,3 +1,10 @@
+---
+source: CSE370_Lecture_11_query_processing.pdf (the original, included in this repo)
+fidelity: transcription (this file's own note says it is transcribed with confidence); page markers not recorded
+verified: numbers checked against the PDF text layer on 2026-09-20
+source-mtime: 2026-09-03T14:23:23
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE370 Lecture 11: Query Processing
 
 BRAC University CSE370: Database Systems slide deck, 15 slides. Clean digital slides

@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # Guide to Configuring xv6-riscv in Lab PCs
 
 Step-by-step instructions for installing QEMU, the RISC-V GNU toolchain, cloning `xv6-riscv`, and running `make qemu` on lab Linux machines.

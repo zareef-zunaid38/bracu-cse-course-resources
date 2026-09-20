@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # Practice Problems on Fork()
 
 CSE321 practice problems on C's `fork()` system call, predicting outputs of various process-spawning code blocks.

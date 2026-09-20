@@ -1,3 +1,9 @@
+---
+source: CSE321_pyq_fa22_final_setB.docx (the original, not included in this repo)
+fidelity: the summary above the divider is paraphrased and may omit detail; the final section 'Full extracted text' is a complete script extraction of the source text (images and diagrams are not transcribed there — 2 embedded image(s); see the summary or the source)
+source-mtime: 2025-01-31T20:04:50
+generated: summary earlier (2026-09); header and full-text section added 2026-09-20
+---
 # CSE 321 Final Examination Fall 2022 (Set B)
 
 Final examination question paper for CSE321 Fall 2022 Set B covering Amdahl's Law, multithreading models, Peterson's solution, Banker's Algorithm, RAG deadlock analysis, dynamic memory partitioning, paging, MMU, and page replacement.
@@ -32,7 +38,7 @@ Docx last modified: 31-01-2025.
     do {
         flag[i] = true;
         turn = j;
-        while(flag[j] == true && turn == j) {
+        while(flag[j] == true && turn == 1) { // sic: source prints "turn == 1" (likely meant j)
             // busy wait
         }
         // critical section
@@ -91,3 +97,37 @@ Docx last modified: 31-01-2025.
 Consider a computer with a main memory that has 3 frames and page reference string of 0-7 pages:
 `[ 3, 0, 6, 4, 2, 6, 7, 2, 0, 1, 7 ]`  
 The page reference string represents the order in which the pages are accessed by a program. Apply **FIFO** & **LRU** algorithm to simulate the page replacement that occurs when the main memory can hold at most 3 pages at a time. Record the number of page faults and compare the result. Mention which algorithm performs better in this scenario.\n
+
+---
+
+## Full extracted text
+
+<!-- script-extracted 2026-09-20 from the source: all text, table cells, speaker notes, image alt text, link targets, headers/footers, footnotes, comments; list numbering, formatting and images are not reproduced -->
+
+Department of Computer Science and Engineering
+
+  (text box) B
+
+Final Examination Fall 2022
+
+CSE 321: Operating Systems
+
+| Duration: 2 Hours | Total Marks: 40 |
+
+Answer the following questions.
+
+Figures in the right margin indicate marks.
+
+| 1. / CO4 | a) A system has processes to execute of which 30% is serial. If the number of cores is increased from 1 to 3, what will be the increase in performance? / b) Distinguish between many-to-one and one-to-one multithreading models. | [2] / [2] |
+
+| 2. / CO5 | a) Suppose a medical center is providing Covid vaccination. In that center maximum of 6 people can take vaccines at a time in separate booths. But approximately 50 people went there to take vaccines on a particular day. Therefore, the authorities have decided that they will provide vaccines to 6 people at a time and keep others waiting in a queue. If any of the vaccine booths get free a person from the queue will be taken to that booth according to the first come first serve manner for vaccination. Logically explain which synchronization method has been used here / b) For Peterson’s problem below conditions will be applied. / There are two processes: P1 and P2. / Each Statement takes 4ms to execute. / Context Switch will occur after 12ms. / Both the Critical & Remainder section contains 3 statements. / For P1: i=0 and j=1 / For P2: i=1 and j=0 / turn=0 / flag[0] = FALSE, flag[1] = FALSE / The structure of process Pi in Peterson’s solution: / | do{ / flag[i] = true; / turn = j; / while(flag[j] == true && turn == 1){ / //busy wait / } / //critical section / flag[i] = false; / //remainder section / }while(true); | / Complete the table given below for processes P1 and P2 using Peterson’s solution. / | Process 1: i=0, j=1 | Process 2: i=1, j=0 | | [2] / [4] |
+
+| 3. / CO5 | a) Consider the following snapshot of a system: / |  |  | Allocation |  | MAX | / |  |  | A | B | C | D |  | A | B | C | D | / | P0 |  | 5 | 1 | 1 | 4 |  | 10 | 5 | 10 | 11 | / | P1 |  | 2 | 8 | 6 | 4 |  | 9 | 12 | 9 | 10 | / | P2 |  | 2 | 2 | 6 | 2 |  | 5 | 9 | 10 | 3 | / | P3 |  | 4 | 6 | 8 | 2 |  | 4 | 6 | 8 | 3 | / |  |  | Available |  |  |  |  |  | / |  |  | 4 | 4 | 6 | 4 |  |  |  |  |  | / Is the system in a safe state? Apply Banker’s safety algorithm to find out the safe sequence. You need to calculate the need matrix. / P0 requests for (3 3 6 1), check the validity of the request. If the request is valid, does the system enter a deadlock? / b) Suppose, in an office, we have a set of resource types, R = {R1, R2, R3} and a set of processes, P = {P1, P2, P3, P4, P5}. R1, R2, and R3 have 3, 2, and 1 instance respectively. / P1 is holding 1 instance of R3 / P1 requests 1 instance of R1 / P3 requests for 1 instance of R3 / P3 is holding 2 instances of R2 / P2 requests for 1 instance of R2 / P2 is holding 1 instance of R1 / P4 is holding 1 instance of R1 / P4 requests 1 instance of R2 / P5 is holding 1 instance of R1 / Construct a resource allocation graph for the above scenario. Mention the number of cycles found and identify whether there is a deadlock or not. | [4] / [2+3] / [3] |
+
+| 4. / CO6 | a) At a particular time, the snapshot of the Main memory is given below for dynamic partitioning where gray portions of the memory represent occupied spaces. Apply worst fit and first fit algorithms to place processes with the space requirement of P1=300k, P2=200k, P3=149k, P4=146k, P5=100k, P6= 50k, P7=22k and P8=29k (in order). Explain which algorithm makes the most effective use of memory. / b) Assume that in a paged memory management system the page size for processes is 4 bytes and the Physical Memory size is 36 bytes. Show the users’ view of memory which is mapped into physical memory. / c) If the page size is 6 KB, how many frames will be needed in Main memory for a process size of 102,506 Bytes? Is there any internal fragmentation? - If yes, calculate the value. [1 KB = 1024 Bytes] | [2+2+1] / [2] / [2] |
+
+|  | d) Discuss the purpose of MMU. | [3] |
+
+| 5. / CO6 | Consider a computer with a main memory that has 3 frames and page reference string of 0-7 pages: [3 0 6 4 2 6 7 2 0 1 7]. The page reference string represents the order in which the pages are accessed by a program. Apply FIFO & LRU algorithm to simulate the page replacement that occurs when the main memory can hold at most 3 pages at a time. Record the number of page faults and compare the result. Mention which algorithm performs better in this scenario. | [4+1+1] |
+
+s

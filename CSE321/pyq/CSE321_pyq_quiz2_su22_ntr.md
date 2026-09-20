@@ -1,3 +1,10 @@
+---
+source: CSE321_pyq_quiz2_su22_ntr.pdf (the original, included in this repo)
+fidelity: transcription (this file's own note says it is transcribed with confidence); page markers not recorded
+verified: numbers checked against the PDF text layer on 2026-09-20
+source-mtime: 2025-01-31T20:04:54
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE 321 Quiz 2 Summer 2022 (NTR)
 
 Quiz 2 question paper for CSE321 Summer 2022 (Instructor: NTR) covering the convoy effect, preemptive priority scheduling, Round Robin tradeoffs, MLFQ starvation, and Round Robin Gantt chart calculation.

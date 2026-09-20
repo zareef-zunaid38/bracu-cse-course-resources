@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE 321 Midterm Examination Fall 2022 (Set B)
 
 Midterm examination question paper for CSE321 Fall 2022 Set B covering dual-mode operation, OS services, process states, fork() code tracing, Multilevel Queue starvation, Round Robin, and Preemptive Priority scheduling.

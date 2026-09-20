@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE 321 Midterm Examination Fall 2022 (Set A)
 
 Midterm examination question paper for CSE321 Fall 2022 Set A covering time-sharing systems, system call interface, fork() output prediction, Round Robin, and Preemptive Priority scheduling.

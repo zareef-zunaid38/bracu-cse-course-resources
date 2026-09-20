@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE370 Lab Submission Template
 
 Submission document structure for CSE370 database laboratory assignments specifying student identification header and 10 query/shell-screenshot answer slots.

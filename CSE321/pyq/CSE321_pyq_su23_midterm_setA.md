@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE321 Midterm Examination Summer 2023 Set A
 
 CSE321 Operating Systems Summer 2023 Set A Midterm exam covering cooperating processes and IPC models, multiprogrammed OS architecture drawbacks, privileged instructions identification, fork() and wait() arithmetic output tracing, Round Robin and Preemptive Priority CPU scheduling, data parallelism, multithreading for real-time ADAS embedded systems, and Amdahl's Law performance calculation.

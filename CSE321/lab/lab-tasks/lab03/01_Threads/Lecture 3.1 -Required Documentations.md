@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # Lecture 3.1: POSIX Threads (pthreads) Documentation
 
 Reference guide for Linux POSIX Threads API (`pthread.h`), compilation with `-lpthread`, and core functions (`pthread_create`, `pthread_exit`, `pthread_join`).

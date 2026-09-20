@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # Practice Problems on Bash Scripting (Lab 02)
 
 Lab 02 practice problems on Bash shell scripting covering line/word counting, file type detection, file permissions, recursive file deletion, batch copying, directory listing options, pattern matching, primes, and asterisks pattern generation.

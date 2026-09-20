@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # Lecture 4: Inter-Process Communication (IPC) Documentation
 
 Detailed API reference and procedural guide for Unix IPC mechanisms in C: pipes (`pipe`, `read`, `write`, `close`), System V shared memory (`ftok`, `shmget`, `shmat`, `shmctl`), and message queues (`msgget`, `msgsnd`, `msgrcv`, `msgctl`).

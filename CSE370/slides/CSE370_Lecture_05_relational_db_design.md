@@ -1,3 +1,10 @@
+---
+source: CSE370_Lecture_05_relational_db_design.pdf (the original, included in this repo)
+fidelity: transcription (this file's own note says it is transcribed with confidence); page markers not recorded
+verified: sampled slides 6, 17 compared with the PDF images on 2026-09-20: matched
+source-mtime: 2026-06-27T15:58:36
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE370 Lecture 5: Relational Database Design (Mapping ER/EER to Relational Schema)
 
 BRAC University CSE370: Database Systems slide deck, 20 slides. Clean digital slides, fully

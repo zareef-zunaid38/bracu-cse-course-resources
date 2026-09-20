@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE 321: Operating Systems Laboratory Outline
 
 Laboratory activity plan, assessments, assignments, term project, grading policies, and attendance requirements for CSE321 Lab (Summer 2026).

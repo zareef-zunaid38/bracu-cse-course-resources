@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE370 Lab Assignment 1 (Summer 2026)
 
 Single-table MySQL lab assignment managing an inter-university marathon runner database (`runners`), including table creation, sample data insertion, schema modifications, calculated metric updates, and filtering queries.

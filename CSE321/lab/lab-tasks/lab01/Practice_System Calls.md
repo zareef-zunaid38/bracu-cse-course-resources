@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # Practice Problems on System Calls (Lab 01)
 
 Lab 01 practice problems on C system calls: file I/O loops, 3-level process hierarchies and synchronization, conditional forking based on PID parity, sorting/parity multi-program execution, and process ID tree tracking.

@@ -1,3 +1,8 @@
+---
+source: original file no longer available
+fidelity: the original file is no longer available, so this text version is the only record; it has not been re-verified against the original
+generated: earlier (2026-09); header added 2026-09-20
+---
 # Practice Problems: Intro to C Programming
 
 Introductory C practice problems covering numerical operations, string/file whitespace removal, password validation, email domain checking, palindrome detection with pointers, structure-based bill calculation, and perfect numbers.

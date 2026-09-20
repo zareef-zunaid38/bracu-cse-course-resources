@@ -1,3 +1,10 @@
+---
+source: CSE370_practice_ch10_normalization.pdf (the original, included in this repo)
+fidelity: transcription (this file's own note says it is transcribed with confidence); page markers not recorded
+verified: numbers checked against the PDF text layer on 2026-09-20
+source-mtime: 2026-07-29T08:20:48
+generated: earlier (2026-09); header added 2026-09-20
+---
 # CSE370 Chapter 10 Normalization Practice Sheet
 
 CSE370 normalization practice problems and official solutions covering decomposition of relational schemas into 1NF, 2NF, and 3NF by identifying partial and transitive functional dependencies.
