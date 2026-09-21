@@ -96,6 +96,19 @@ Consider the following processes arriving in the ready queue:
   - Each statement takes 4 ms to execute.
   - Critical section contains 3 statements.
   - Remainder section contains 2 statements.
+  - Figure (transcribed): the mutex-lock code the process uses —
+    ```c
+    acquire(){
+        while(!available)
+            ;//busy wait
+        available=false;
+    }
+
+    release(){
+        available=true;
+    }
+    ```
+    and the process structure: `do{ acquire(); //critical section release(); //remainder section }while(true);`
   - Complete the execution table for processes P1, P2, and P3 using mutex lock.
 
 ---

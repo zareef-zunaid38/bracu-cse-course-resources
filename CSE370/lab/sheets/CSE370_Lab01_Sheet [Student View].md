@@ -24,6 +24,7 @@ Docx last modified: 26-06-2026.
 - **Step 2:** Install XAMPP.
 - **Step 3:** Open XAMPP Control Panel and start **Apache** and **MySQL** modules.
 - **Step 4:** Click the **Shell** button on the right side of the control panel window.
+  - Figures (described): the XAMPP download page (Apache Friends, XAMPP 8.2.4 for Windows / Linux / OS X, download bar boxed in red); the XAMPP Control Panel v3.3.0 with the **Start** buttons beside Apache and MySQL boxed in red; the same panel with the **Shell** button boxed in red. The panel's log in these screenshots shows a Tomcat "port 8080 in use" warning, which is unrelated to the lab.
 - **Step 5:** Connect to MySQL server:
   ```bash
   mysql -u root -p

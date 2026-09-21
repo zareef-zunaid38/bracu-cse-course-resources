@@ -17,8 +17,15 @@ Docx last modified: 02-06-2026.
 - List five use cases for applying the knowledge from our CSE331 course. Describe each in detail.
 
 #### Question 2: Pumping Lemma Proof
-- Prove $L$ is a non-regular language using the Pumping Lemma:
-  $$L = \{w \in \{a,b\}^* : w = a^i b^j \text{ where } i > j \text{ and } j \ge 0\}$$
+- Prove each language non-regular using the Pumping Lemma. Eight languages are given; the first seven are images in the source and are transcribed here in the order they appear (the eighth is text):
+  1. $L = \{w \in \{a,b\}^* \mid w = a^i b^j,\ i < j,\ i \ge 0\}$
+  2. $L = \{0^n 1^m \mid n = 3q + r_1,\ m = 3q + r_2,\ q \ge 0,\ 0 \le r_1, r_2 \le 2\}$
+  3. $L = \{w \in \{0,1\}^* \mid w = 0^{n!},\ n \ge 0\}$
+  4. $L = \{w \in \{0,1\}^* \mid w = 10^{n^2},\ n \ge 0\}$
+  5. $L = \{w \in \{0,1\}^* \mid w = 0^a 1^b 1^c 0^d,\ a + b = c + d,\ a,b,c,d \ge 0\}$
+  6. $L = \{w \in \Sigma^* \mid w = a^n 1^m 0^k,\ \text{where } n = m \text{ or } n \ne k\}$
+  7. $L = \{w \in \{0,1,2\}^* \mid w = 0^n 1^m 2^{n-m},\ n \ge m \ge 0\}$
+  8. $L = \{w \in \{a,b\}^* : w = a^i b^j \text{ where } i > j \text{ and } j \ge 0\}$
 
 #### Question 3: Context-Free Grammar (CFG) Design
 Design CFGs for each of the following languages:
@@ -91,6 +98,7 @@ Construct CFGs generating:
 16. Convert Regular Expression into CFG: $((ab)^* + (a+b^3)cb)^*$
 17. Convert Regular Expression into CFG: $(a^*b^* + (ac+b^*c)b)^*$
 18. Convert DFA into CFG.
+    - **Figure (transcribed) — the DFA to convert (over {0,1}):** start state A; accepting states B and C. Transitions: A —0,1→ B; B —0,1→ C; C —1→ D; C —0→ A; D —0,1→ D (self-loop).
 
 #### Question 2: Derivation, Parse Tree, Ambiguity
 - **Grammar 1:**

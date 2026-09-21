@@ -47,9 +47,10 @@ Let $\Sigma = \{a, b\}$. Consider the following languages over $\Sigma$:
 
 ### Question 3 [5 Marks]
 Given an NFA specification:
+- **Figure (transcribed) — the given NFA over {a, b}:** start state q0; accepting states q2, q3, q4. Transitions: q0 —a,b→ q1; q0 —b→ q2; q1 —b→ q1 (self-loop); q1 —a,ε→ q3; q2 —a,b→ q2 (self-loop); q2 —b,ε→ q4; q3 —a→ q4; q4 —a,b→ q3.
 - **(a)** [1 Mark] When converting the given NFA to an equivalent DFA using the subset construction method, what is the maximum number of states that the resulting DFA can have?
 - **(b)** [1 Mark] Identify the subsets of states from the given NFA that will correspond to the rejecting states in its equivalent DFA.
-- **(c)** [1 Mark] Determine the $\epsilon$-closure of state $q_2$ in the given NFA ($	ext{ECLOSE}(q_2)$).
+- **(c)** [1 Mark] Determine the $\epsilon$-closure of state $q_2$ in the given NFA ($\text{ECLOSE}(q_2)$).
 - **(d)** [1 Mark] What is $\delta(\{q_0, q_4\}, a)$ in the given NFA? List all the states. [Recall: $\delta(\{q\}, a)$ refers to the set of states the NFA transitions to when in state $q$ with input $a$.]
 - **(e)** [1 Mark] What would be the start state of the converted DFA? Write the subset of the start state.
 
@@ -87,6 +88,7 @@ Convert Regular Expressions to equivalent NFAs (using Thompson's construction):
 
 ### Question 7 [5 Marks]
 Convert the given DFA into an equivalent regular expression using the **state elimination method**.
+- **Figure (transcribed) — the given DFA over {a, b}:** start state A; accepting states A, E, F. Transitions: A —a→ B; A —b→ D; B —b→ C; B —a→ E; C —a,b→ C (self-loop); D —a→ B; E —a→ F; E —b→ D; F —a→ C; F —b→ F (self-loop).
 - **Constraint:** Must follow this exact sequence to eliminate states: $C, D, E, F, A, B$.
 - Show all intermediate Generalized NFA (GNFA) steps and state transition expressions.
 
